@@ -19,6 +19,9 @@ var mobId = 1
 var player = null
 var castle = null
 
+var pathArray : Array = []
+var currentPathIndex = 0
+
 signal increase_score(amount : int)
 
 # Called when the node enters the scene tree for the first time.
@@ -47,8 +50,74 @@ func start_game():
 	add_child(castle)
 	castle.position = screen_size - Vector2(20,20)
 	
+	pathArray.append(generate_path(Vector2(0,0), castle.position))
+	
 	$MobTimer.start()
 	$HUD.set_score(0)
+
+func generate_path(start: Vector2, end: Vector2) -> Curve2D:
+	var curve : Curve2D = Curve2D.new()
+	curve.add_point(start)
+	curve.add_point(end)
+	var best_bl = 0
+	var best : Curve2D = null
+	
+	for i in 50:
+		var x = rng.randf_range(start.x, end.x)
+		var y = rng.randf_range(start.y, end.y)
+		var d : Curve2D = curve.duplicate()
+		d.add_point(Vector2(x, y), Vector2(0,0), Vector2(0,0), 1)
+		var bl = absf(1800.0 - d.get_baked_length())
+		if best == null || bl < best_bl:
+			best = d
+			best_bl = bl
+	curve = best
+	best = null
+	
+	for i in 50:
+		var x = rng.randf_range(start.x, end.x)
+		var y = rng.randf_range(start.y, end.y)
+		var d : Curve2D = curve.duplicate()
+		d.add_point(Vector2(x, y), Vector2(0,0), Vector2(0,0), rng.randi_range(1, 2))
+		var bl = absf(2200.0 - d.get_baked_length())
+		if best == null || bl < best_bl:
+			best = d
+			best_bl = bl
+	curve = best
+	best = null
+	
+	for i in 50:
+		var x = rng.randf_range(start.x, end.x)
+		var y = rng.randf_range(start.y, end.y)
+		var d : Curve2D = curve.duplicate()
+		d.add_point(Vector2(x, y), Vector2(0,0), Vector2(0,0), rng.randi_range(1, 3))
+		var bl = absf(2600.0 - d.get_baked_length())
+		if best == null || bl < best_bl:
+			best = d
+			best_bl = bl
+	curve = best
+	best = null
+	
+	for i in 50:
+		var x = rng.randf_range(start.x, end.x)
+		var y = rng.randf_range(start.y, end.y)
+		var d : Curve2D = curve.duplicate()
+		d.add_point(Vector2(x, y), Vector2(0,0), Vector2(0,0), rng.randi_range(1, 4))
+		var bl = absf(3000.0 - d.get_baked_length())
+		if best == null || bl < best_bl:
+			best = d
+			best_bl = bl
+	curve = best
+	best = null
+	
+	return curve
+
+func current_path() -> Curve2D:
+	if pathArray.size() == 1:
+		return pathArray[0]
+	else:
+		currentPathIndex += 1
+		return pathArray[currentPathIndex % pathArray.size()]
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
@@ -62,20 +131,26 @@ func _on_title_timer_timeout():
 	$TitleTimer.stop()
 	
 func _on_mob_timer_timeout():
-	var start_index = rng.randi_range(- screen_size.x, screen_size.y)
-	if start_index < 0:
-		spawn_mob(mobId, Vector2(0 - start_index, 0))
-	else:
-		spawn_mob(mobId, Vector2(0, start_index))
+	spawn_mob(mobId, 0, current_path())
 	mobId += 1
+	
+	if mobId % 11 == 0:
+		var increase = (mobId % 121 == 0)
+		var start = Vector2(0,0)
+		if rng.randi() % 2 == 1:
+			start.x = rng.randi_range(0, screen_size.x)
+		else:
+			start.y = rng.randi_range(0, screen_size.y)
+		pathArray.append(generate_path(start, castle.position))
+		if increase != true:
+			pathArray.remove_at(0)
 		
-func spawn_mob(id, pos):
+func spawn_mob(id, dist, path):
 	var mob = mob_scene.instantiate()
-	mob.position = Vector2(clamp(pos.x, 8, screen_size.x - 8), clamp(pos.y, 8, screen_size.y - 8))
+	mob.position = path.sample_baked(dist)
 	var speed_scale = rng.randf_range(0.8, 1.2)
-	mob.set_target($Castle, speed_scale, id)
+	mob.set_target($Castle, speed_scale, id, path, dist)
 	call_deferred("add_child", mob)
-	#add_child(mob)
 
 func game_over():
 	$AudioStreamPlayer2D.play()
