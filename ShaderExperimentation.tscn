@@ -1,0 +1,31 @@
+[gd_scene load_steps=8 format=3 uid="uid://ru53aoggfttm"]
+
+[ext_resource type="Shader" path="res://flowShader.gdshader" id="1_vcrwa"]
+[ext_resource type="Texture2D" uid="uid://ca0emmen6kvp4" path="res://icon.svg" id="2_yiqta"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_mgsdm"]
+noise_type = 3
+seed = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jna6b"]
+noise = SubResource("FastNoiseLite_mgsdm")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_bdcco"]
+noise_type = 3
+seed = 3
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_exwrk"]
+noise = SubResource("FastNoiseLite_bdcco")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bhlm2"]
+shader = ExtResource("1_vcrwa")
+shader_parameter/noiseX = SubResource("NoiseTexture2D_jna6b")
+shader_parameter/noiseY = SubResource("NoiseTexture2D_exwrk")
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_bhlm2")
+position = Vector2(575.5, 326)
+scale = Vector2(8.97656, 5.09375)
+texture = ExtResource("2_yiqta")

@@ -1,0 +1,28 @@
+[gd_scene load_steps=7 format=3 uid="uid://d1jafpuwvy3d0"]
+
+[ext_resource type="Script" path="res://mob.gd" id="1_7i00h"]
+[ext_resource type="PackedScene" uid="uid://unyekg2bj1ix" path="res://smallExplosion.tscn" id="2_p6cdx"]
+[ext_resource type="SpriteFrames" uid="uid://bd27qr2v2wm4s" path="res://EnemySpriteFrames.tres" id="3_53vnf"]
+[ext_resource type="Shader" path="res://mob.gdshader" id="3_ljf0o"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hlyll"]
+shader = ExtResource("3_ljf0o")
+shader_parameter/mutatorA = 0.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x5ls6"]
+size = Vector2(30, 28)
+
+[node name="Mob" type="Area2D"]
+collision_layer = 7
+collision_mask = 7
+script = ExtResource("1_7i00h")
+explosion_scene = ExtResource("2_p6cdx")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_hlyll")
+scale = Vector2(0.25, 0.25)
+sprite_frames = ExtResource("3_53vnf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_x5ls6")

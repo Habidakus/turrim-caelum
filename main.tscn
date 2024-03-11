@@ -1,0 +1,52 @@
+[gd_scene load_steps=14 format=3 uid="uid://3nphprqd1it8"]
+
+[ext_resource type="PackedScene" uid="uid://cc4fq5x80sure" path="res://player.tscn" id="1_eo6vi"]
+[ext_resource type="Script" path="res://main.gd" id="1_jojh5"]
+[ext_resource type="PackedScene" uid="uid://d1jafpuwvy3d0" path="res://mob.tscn" id="2_jwed4"]
+[ext_resource type="PackedScene" uid="uid://bh48jxqg3q5jl" path="res://castle.tscn" id="4_132h1"]
+[ext_resource type="PackedScene" uid="uid://d2hbtaulje8em" path="res://hud.tscn" id="5_24kkr"]
+[ext_resource type="Shader" path="res://flowShader.gdshader" id="5_ie5a8"]
+[ext_resource type="Texture2D" uid="uid://ca0emmen6kvp4" path="res://icon.svg" id="6_rkdrj"]
+[ext_resource type="AudioStream" uid="uid://35jfxy4vlym0" path="res://big-explosion-6801.mp3" id="8_03yxr"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vua4k"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_gcp24"]
+noise = SubResource("FastNoiseLite_vua4k")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_5ugkn"]
+seed = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ld3ie"]
+noise = SubResource("FastNoiseLite_5ugkn")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qn386"]
+shader = ExtResource("5_ie5a8")
+shader_parameter/noiseX = SubResource("NoiseTexture2D_gcp24")
+shader_parameter/noiseY = SubResource("NoiseTexture2D_ld3ie")
+
+[node name="Main" type="Node"]
+script = ExtResource("1_jojh5")
+mob_scene = ExtResource("2_jwed4")
+player_scene = ExtResource("1_eo6vi")
+castle_scene = ExtResource("4_132h1")
+
+[node name="Background" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_qn386")
+position = Vector2(600, 400)
+scale = Vector2(9.375, 6.25)
+texture = ExtResource("6_rkdrj")
+
+[node name="MobTimer" type="Timer" parent="."]
+
+[node name="TitleTimer" type="Timer" parent="."]
+wait_time = 3.0
+
+[node name="HUD" parent="." instance=ExtResource("5_24kkr")]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_03yxr")
+volume_db = -10.0
+pitch_scale = 1.88
+
+[connection signal="increase_score" from="." to="." method="_on_increase_score"]

@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://cc4fq5x80sure"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_f2hwf"]
+[ext_resource type="PackedScene" uid="uid://7b1rw0muei85" path="res://bullet.tscn" id="2_fktcj"]
+[ext_resource type="PackedScene" uid="uid://d3l0j1xvohr6g" path="res://bigEexplosion.tscn" id="3_hk7yx"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1rw7w"]
+radius = 12.0
+height = 28.0
+
+[node name="Player" type="Area2D"]
+script = ExtResource("1_f2hwf")
+bullet_scene = ExtResource("2_fktcj")
+explosion_scene = ExtResource("3_hk7yx")
+metadata/_edit_group_ = true
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+position = Vector2(-14, 7)
+scale = Vector2(0.25, 0.25)
+polygon = PackedVector2Array(8, 24, 104, 24, 104, -24, 88, -40, 88, 8, 72, 8, 72, -88, 56, -72, 40, -88, 40, 8, 24, 8, 24, -40, 8, -24)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_1rw7w")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

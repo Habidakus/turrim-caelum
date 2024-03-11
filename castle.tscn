@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://bh48jxqg3q5jl"]
+
+[ext_resource type="Script" path="res://castle.gd" id="1_1yvym"]
+[ext_resource type="Texture2D" uid="uid://cexw42au12vap" path="res://castle.png" id="1_hivjy"]
+[ext_resource type="PackedScene" uid="uid://d3l0j1xvohr6g" path="res://bigEexplosion.tscn" id="2_ylutj"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_b3qoe"]
+radius = 12.0
+
+[node name="Castle" type="Area2D"]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_1yvym")
+explosion_scene = ExtResource("2_ylutj")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_hivjy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_b3qoe")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
