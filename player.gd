@@ -1,10 +1,10 @@
 extends Area2D
 
-@export var speed = 600
+@export var speed = 200
 @export var bullet_scene: PackedScene = null
 @export var explosion_scene : PackedScene
 var screen_size;
-var rate_of_fire = 0.33;
+var rate_of_fire = 1;
 var next_shot
 
 # Called when the node enters the scene tree for the first time.
@@ -15,10 +15,9 @@ func _ready():
 
 func get_screen_size():
 	return screen_size
-
-func _draw():
+	
+#func _draw():
 	#draw_line(Vector2.ZERO, to_local(draw_target), Color.RED, 5, true)
-	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

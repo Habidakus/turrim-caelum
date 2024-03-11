@@ -55,9 +55,9 @@ func on_hit():
 		return
 	
 	if spawn_children > 0:
-		get_parent().spawn_mob(id_for_spawn / 13, distance_travelled - 10.0, path)
 		get_parent().spawn_mob(id_for_spawn / 13, distance_travelled - 20.0, path)
-		get_parent().spawn_mob(id_for_spawn / 13, distance_travelled - 30.0, path)
+		get_parent().spawn_mob(id_for_spawn / 13, distance_travelled - 40.0, path)
+		get_parent().spawn_mob(id_for_spawn / 13, distance_travelled - 60.0, path)
 	
 	# Explode
 	var particle = explosion_scene.instantiate()
