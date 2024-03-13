@@ -52,12 +52,16 @@ func set_target(node : Area2D, rotSpd : float, id : int, p: Curve2D, dist):
 func on_hit():
 	if hp > 1:
 		hp -= 1
+		get_parent().play_impact_sound()
+		var tween = get_tree().create_tween()
+		tween.tween_property(self, "scale", Vector2(0.5, 0.5), 0.1).set_trans(Tween.TRANS_BOUNCE)
+		tween.tween_property(self, "scale", self.scale, 0.1).set_trans(Tween.TRANS_BOUNCE)
 		return
 	
 	if spawn_children > 0:
 		get_parent().spawn_mob(id_for_spawn / 13, distance_travelled - 20.0, path)
-		get_parent().spawn_mob(id_for_spawn / 13, distance_travelled - 40.0, path)
-		get_parent().spawn_mob(id_for_spawn / 13, distance_travelled - 60.0, path)
+		get_parent().spawn_mob(id_for_spawn / 13, distance_travelled - 50.0, path)
+		get_parent().spawn_mob(id_for_spawn / 13, distance_travelled - 80.0, path)
 	
 	# Explode
 	var particle = explosion_scene.instantiate()

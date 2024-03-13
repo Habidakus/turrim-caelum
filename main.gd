@@ -63,8 +63,18 @@ func generate_path(start: Vector2, end: Vector2) -> Curve2D:
 	var best : Curve2D = null
 	
 	for i in 50:
-		var x = rng.randf_range(start.x, end.x)
-		var y = rng.randf_range(start.y, end.y)
+		var tStart = start
+		if rng.randi() % 2 == 1:
+			tStart.x += 40;
+		else:
+			tStart.y += 40;
+		var tEnd = end
+		if rng.randi() % 2 == 1:
+			tEnd.x -= 40;
+		else:
+			tEnd.y -= 40;
+		var x = rng.randf_range(tStart.x, tEnd.x)
+		var y = rng.randf_range(tStart.y, tEnd.y)
 		var d : Curve2D = curve.duplicate()
 		d.add_point(Vector2(x, y), Vector2(0,0), Vector2(0,0), 1)
 		var bl = absf(1800.0 - d.get_baked_length())
@@ -75,8 +85,18 @@ func generate_path(start: Vector2, end: Vector2) -> Curve2D:
 	best = null
 	
 	for i in 50:
-		var x = rng.randf_range(start.x, end.x)
-		var y = rng.randf_range(start.y, end.y)
+		var tStart = start
+		if rng.randi() % 2 == 1:
+			tStart.x += 40;
+		else:
+			tStart.y += 40;
+		var tEnd = end
+		if rng.randi() % 2 == 1:
+			tEnd.x -= 40;
+		else:
+			tEnd.y -= 40;
+		var x = rng.randf_range(tStart.x, tEnd.x)
+		var y = rng.randf_range(tStart.y, tEnd.y)
 		var d : Curve2D = curve.duplicate()
 		d.add_point(Vector2(x, y), Vector2(0,0), Vector2(0,0), rng.randi_range(1, 2))
 		var bl = absf(2200.0 - d.get_baked_length())
@@ -87,8 +107,18 @@ func generate_path(start: Vector2, end: Vector2) -> Curve2D:
 	best = null
 	
 	for i in 50:
-		var x = rng.randf_range(start.x, end.x)
-		var y = rng.randf_range(start.y, end.y)
+		var tStart = start
+		if rng.randi() % 2 == 1:
+			tStart.x += 40;
+		else:
+			tStart.y += 40;
+		var tEnd = end
+		if rng.randi() % 2 == 1:
+			tEnd.x -= 40;
+		else:
+			tEnd.y -= 40;
+		var x = rng.randf_range(tStart.x, tEnd.x)
+		var y = rng.randf_range(tStart.y, tEnd.y)
 		var d : Curve2D = curve.duplicate()
 		d.add_point(Vector2(x, y), Vector2(0,0), Vector2(0,0), rng.randi_range(1, 3))
 		var bl = absf(2600.0 - d.get_baked_length())
@@ -99,8 +129,18 @@ func generate_path(start: Vector2, end: Vector2) -> Curve2D:
 	best = null
 	
 	for i in 50:
-		var x = rng.randf_range(start.x, end.x)
-		var y = rng.randf_range(start.y, end.y)
+		var tStart = start
+		if rng.randi() % 2 == 1:
+			tStart.x += 40;
+		else:
+			tStart.y += 40;
+		var tEnd = end
+		if rng.randi() % 2 == 1:
+			tEnd.x -= 40;
+		else:
+			tEnd.y -= 40;
+		var x = rng.randf_range(tStart.x, tEnd.x)
+		var y = rng.randf_range(tStart.y, tEnd.y)
 		var d : Curve2D = curve.duplicate()
 		d.add_point(Vector2(x, y), Vector2(0,0), Vector2(0,0), rng.randi_range(1, 4))
 		var bl = absf(3000.0 - d.get_baked_length())
@@ -151,6 +191,9 @@ func spawn_mob(id, dist, path):
 	var speed_scale = rng.randf_range(0.8, 1.2)
 	mob.set_target($Castle, speed_scale, id, path, dist)
 	call_deferred("add_child", mob)
+
+func play_impact_sound():
+	$ImpactPlayer.play()
 
 func game_over():
 	$AudioStreamPlayer2D.play()

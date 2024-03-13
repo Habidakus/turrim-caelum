@@ -4,7 +4,9 @@ extends Area2D
 @export var bullet_scene: PackedScene = null
 @export var explosion_scene : PackedScene
 var screen_size;
-var rate_of_fire = 1;
+var rate_of_fire : float = 1;
+var bullet_lifespan : float = 5.0;
+var bullet_speed : float = 100.0;
 var next_shot
 
 # Called when the node enters the scene tree for the first time.
@@ -36,7 +38,7 @@ func _process(delta):
 		velocity = velocity.normalized() * speed
 	
 	position += velocity * delta
-	position = position.clamp(Vector2.ZERO, screen_size)
+	position = position.clamp(Vector2(20,20), screen_size - Vector2(20,20))
 	
 	var maxDist = -1
 	var closestMob = null
@@ -53,7 +55,7 @@ func _process(delta):
 		if next_shot <= 0:
 				next_shot = rate_of_fire
 				var bullet = bullet_scene.instantiate()
-				bullet.init(self.position, closestMob)
+				bullet.init(self.position, bullet_lifespan, bullet_speed, closestMob)
 				self.get_parent().add_child(bullet)
 
 
