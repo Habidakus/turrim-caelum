@@ -14,6 +14,7 @@ extends Node
 var screen_size;
 var rng = RandomNumberGenerator.new()
 var money = 0
+var spendable_money : int = 0
 var score = 0
 var mobId = 1
 var player = null
@@ -21,6 +22,7 @@ var castle = null
 
 var pathArray : Array = []
 var currentPathIndex = 0
+var player_paused : bool = false
 
 signal increase_score(amount : int)
 
@@ -29,15 +31,18 @@ func _ready():
 	$MobTimer.timeout.connect(_on_mob_timer_timeout)
 	$TitleTimer.timeout.connect(_on_title_timer_timeout)
 	get_tree().paused = true
+	player_paused = false
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	$TitleTimer.wait_time = 1
 	$TitleTimer.start()
 
 func start_game():
 	money = 0
+	spendable_money = 0
 	score = 0
 	mobId = 1
 	get_tree().paused = false
+	player_paused = false
 	
 	# Create the player
 	player = player_scene.instantiate()
@@ -50,18 +55,15 @@ func start_game():
 	add_child(castle)
 	castle.position = screen_size - Vector2(20,20)
 	
+	pathArray = []
 	pathArray.append(generate_path(Vector2(0,0), castle.position))
 	
 	$MobTimer.start()
 	$HUD.set_score(0)
 
-func generate_path(start: Vector2, end: Vector2) -> Curve2D:
-	var curve : Curve2D = Curve2D.new()
-	curve.add_point(start)
-	curve.add_point(end)
+func add_path_point(start: Vector2, end: Vector2, desired_length: float, curve : Curve2D) -> Curve2D:
 	var best_bl = 0
 	var best : Curve2D = null
-	
 	for i in 50:
 		var tStart = start
 		if rng.randi() % 2 == 1:
@@ -70,87 +72,33 @@ func generate_path(start: Vector2, end: Vector2) -> Curve2D:
 			tStart.y += 40;
 		var tEnd = end
 		if rng.randi() % 2 == 1:
-			tEnd.x -= 40;
+			tEnd.x -= 80;
 		else:
-			tEnd.y -= 40;
+			tEnd.y -= 80;
 		var x = rng.randf_range(tStart.x, tEnd.x)
 		var y = rng.randf_range(tStart.y, tEnd.y)
 		var d : Curve2D = curve.duplicate()
-		d.add_point(Vector2(x, y), Vector2(0,0), Vector2(0,0), 1)
-		var bl = absf(1800.0 - d.get_baked_length())
+		var insert_point = 1
+		if curve.point_count > 2:
+			insert_point = rng.randi_range(1, curve.point_count - 1)
+		d.add_point(Vector2(x, y), Vector2(0,0), Vector2(0,0), insert_point)
+		var bl = absf(desired_length - d.get_baked_length())
 		if best == null || bl < best_bl:
 			best = d
 			best_bl = bl
-	curve = best
-	best = null
+	return best
+
+func generate_path(start: Vector2, end: Vector2) -> Curve2D:
+	var two_points : Curve2D = Curve2D.new()
+	two_points.add_point(start)
+	two_points.add_point(end)
 	
-	for i in 50:
-		var tStart = start
-		if rng.randi() % 2 == 1:
-			tStart.x += 40;
-		else:
-			tStart.y += 40;
-		var tEnd = end
-		if rng.randi() % 2 == 1:
-			tEnd.x -= 40;
-		else:
-			tEnd.y -= 40;
-		var x = rng.randf_range(tStart.x, tEnd.x)
-		var y = rng.randf_range(tStart.y, tEnd.y)
-		var d : Curve2D = curve.duplicate()
-		d.add_point(Vector2(x, y), Vector2(0,0), Vector2(0,0), rng.randi_range(1, 2))
-		var bl = absf(2200.0 - d.get_baked_length())
-		if best == null || bl < best_bl:
-			best = d
-			best_bl = bl
-	curve = best
-	best = null
+	var three_points = add_path_point(start, end, 1800.0, two_points);
+	var four_points = add_path_point(start, end, 2200.0, three_points);
+	var five_points = add_path_point(start, end, 2600.0, four_points);
+	var six_points = add_path_point(start, end, 3000.0, five_points);
 	
-	for i in 50:
-		var tStart = start
-		if rng.randi() % 2 == 1:
-			tStart.x += 40;
-		else:
-			tStart.y += 40;
-		var tEnd = end
-		if rng.randi() % 2 == 1:
-			tEnd.x -= 40;
-		else:
-			tEnd.y -= 40;
-		var x = rng.randf_range(tStart.x, tEnd.x)
-		var y = rng.randf_range(tStart.y, tEnd.y)
-		var d : Curve2D = curve.duplicate()
-		d.add_point(Vector2(x, y), Vector2(0,0), Vector2(0,0), rng.randi_range(1, 3))
-		var bl = absf(2600.0 - d.get_baked_length())
-		if best == null || bl < best_bl:
-			best = d
-			best_bl = bl
-	curve = best
-	best = null
-	
-	for i in 50:
-		var tStart = start
-		if rng.randi() % 2 == 1:
-			tStart.x += 40;
-		else:
-			tStart.y += 40;
-		var tEnd = end
-		if rng.randi() % 2 == 1:
-			tEnd.x -= 40;
-		else:
-			tEnd.y -= 40;
-		var x = rng.randf_range(tStart.x, tEnd.x)
-		var y = rng.randf_range(tStart.y, tEnd.y)
-		var d : Curve2D = curve.duplicate()
-		d.add_point(Vector2(x, y), Vector2(0,0), Vector2(0,0), rng.randi_range(1, 4))
-		var bl = absf(3000.0 - d.get_baked_length())
-		if best == null || bl < best_bl:
-			best = d
-			best_bl = bl
-	curve = best
-	best = null
-	
-	return curve
+	return six_points
 
 func current_path() -> Curve2D:
 	if pathArray.size() == 1:
@@ -161,6 +109,13 @@ func current_path() -> Curve2D:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
+	if Input.is_action_just_pressed("pause"):
+		if player != null:
+			get_tree().paused = (get_tree().paused == false)
+			player_paused = get_tree().paused
+		return # gobble up the "Pause" press, so we don't accidently start the game
+	if player_paused:
+		return
 	if get_tree().paused && $TitleTimer.is_stopped():
 		if Input.is_anything_pressed():
 			$HUD.start_game()
@@ -208,10 +163,15 @@ func game_over():
 		bullet.queue_free()
 	
 	get_tree().paused = true
+	player_paused = false
 	$TitleTimer.wait_time = 3
 	$TitleTimer.start()
 
 func _on_increase_score(amount):
 	money += amount
+	if money >= 23:
+		spendable_money += 1
+		money -= 23
+		$HUD.set_money(spendable_money)
 	score += amount
 	$HUD.set_score(score)

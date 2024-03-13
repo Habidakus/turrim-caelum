@@ -9,6 +9,7 @@ var speed : float = 100
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	self.add_to_group("bullet")
+	process_mode = Node.PROCESS_MODE_PAUSABLE
 	if $AudioStreamPlayer2D != null:
 		$AudioStreamPlayer2D.play()
 

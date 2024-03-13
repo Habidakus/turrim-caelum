@@ -17,6 +17,7 @@ var path : Curve2D = null
 func _ready():
 	animationSprite.play()
 	animationSprite.speed_scale = rotateSpeed
+	process_mode = Node.PROCESS_MODE_PAUSABLE
 	self.add_to_group("mob")
 
 func set_target(node : Area2D, rotSpd : float, id : int, p: Curve2D, dist):

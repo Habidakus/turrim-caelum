@@ -16,6 +16,27 @@ offset_right = 88.0
 offset_bottom = 26.0
 text = "9999"
 
+[node name="MoneyLabel" type="Label" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -188.0
+offset_right = -40.0
+offset_bottom = 23.0
+grow_horizontal = 0
+text = "ENTER to upgrade:"
+horizontal_alignment = 2
+
+[node name="MoneyValue" type="Label" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 26.0
+grow_horizontal = 0
+size_flags_horizontal = 4
+text = "9999"
+
 [node name="GameTitle" type="Label" parent="."]
 anchors_preset = 8
 anchor_left = 0.5
