@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://s8vdyytovc4r"]
+
+[ext_resource type="Script" path="res://CardData.gd" id="1_7nm5e"]
+
+[resource]
+script = ExtResource("1_7nm5e")
+cardName = "Gyrojet Bullets"
+description = "Gyrojet backing means bullets fly faster: 
++33% bullet travel speed"
+boonType = 1
+boonMultiple = 1.33

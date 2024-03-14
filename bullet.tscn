@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://7b1rw0muei85"]
 
-[ext_resource type="Texture2D" uid="uid://dfgm075882s7j" path="res://Bullet01.png" id="1_iogfj"]
 [ext_resource type="Script" path="res://bullet.gd" id="1_yysn3"]
-[ext_resource type="AudioStream" uid="uid://xf32ji65lqjv" path="res://sci-fi-energy-gun-39409.mp3" id="3_1cqer"]
+[ext_resource type="Texture2D" uid="uid://dfgm075882s7j" path="res://Graphics/Bullet01.png" id="2_joiej"]
+[ext_resource type="AudioStream" uid="uid://xf32ji65lqjv" path="res://Sound/sci-fi-energy-gun-39409.mp3" id="3_16rjs"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lxq8e"]
 radius = 3.0
@@ -16,13 +16,13 @@ metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.125, 0.125)
-texture = ExtResource("1_iogfj")
+texture = ExtResource("2_joiej")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_lxq8e")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("3_1cqer")
-volume_db = -25.0
+stream = ExtResource("3_16rjs")
+volume_db = -20.106
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]

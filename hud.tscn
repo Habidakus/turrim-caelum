@@ -1,9 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://d2hbtaulje8em"]
+[gd_scene load_steps=5 format=3 uid="uid://d2hbtaulje8em"]
 
 [ext_resource type="Script" path="res://hud.gd" id="1_edgxy"]
+[ext_resource type="PackedScene" uid="uid://uiim2bkkgwug" path="res://card_template.tscn" id="2_yx255"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_x5c2e"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_7uxpj"]
+viewport_path = NodePath("CardA/SubViewport")
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_edgxy")
+card_template_scene = ExtResource("2_yx255")
 
 [node name="ScoreLabel" type="Label" parent="."]
 offset_right = 40.0
@@ -82,3 +89,55 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 24
 text = "(Press any key to start game)"
+
+[node name="CardA" type="TextureRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -125.0
+offset_top = -175.0
+offset_right = 125.0
+offset_bottom = 175.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("ViewportTexture_x5c2e")
+
+[node name="CardC" type="TextureRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 149.0
+offset_top = -175.0
+offset_right = 399.0
+offset_bottom = 175.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("ViewportTexture_7uxpj")
+
+[node name="CardB" type="TextureRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -397.0
+offset_top = -175.0
+offset_right = -147.0
+offset_bottom = 175.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("ViewportTexture_7uxpj")
+
+[connection signal="gui_input" from="CardA" to="." method="_on_card_a_gui_input"]
+[connection signal="mouse_entered" from="CardA" to="." method="_on_card_a_mouse_entered"]
+[connection signal="mouse_exited" from="CardA" to="." method="_on_card_a_mouse_exited"]
+[connection signal="gui_input" from="CardC" to="." method="_on_card_a_gui_input"]
+[connection signal="mouse_entered" from="CardC" to="." method="_on_card_a_mouse_entered"]
+[connection signal="mouse_exited" from="CardC" to="." method="_on_card_a_mouse_exited"]
+[connection signal="gui_input" from="CardB" to="." method="_on_card_a_gui_input"]
+[connection signal="mouse_entered" from="CardB" to="." method="_on_card_a_mouse_entered"]
+[connection signal="mouse_exited" from="CardB" to="." method="_on_card_a_mouse_exited"]

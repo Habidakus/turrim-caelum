@@ -7,6 +7,7 @@ var screen_size;
 var rate_of_fire : float = 1;
 var bullet_lifespan : float = 5.0;
 var bullet_speed : float = 100.0;
+var bullet_damage : float = 1;
 var next_shot
 
 # Called when the node enters the scene tree for the first time.
@@ -17,6 +18,20 @@ func _ready():
 
 func get_screen_size():
 	return screen_size
+
+func apply_card(cardData : CardData):
+	get_parent().player_has_spent()
+	match cardData.boonType:
+		CardData.BoonType.playerSpeed:
+			speed *= cardData.boonMultiple
+		CardData.BoonType.bulletSpeed:
+			bullet_speed *= cardData.boonMultiple
+		CardData.BoonType.fireRate:
+			rate_of_fire /= cardData.boonMultiple
+		CardData.BoonType.bulletLife:
+			bullet_lifespan *= cardData.boonMultiple
+		CardData.BoonType.moreDamage:
+			bullet_damage *= cardData.boonMultiple
 	
 #func _draw():
 	#draw_line(Vector2.ZERO, to_local(draw_target), Color.RED, 5, true)
@@ -55,13 +70,12 @@ func _process(delta):
 		if next_shot <= 0:
 				next_shot = rate_of_fire
 				var bullet = bullet_scene.instantiate()
-				bullet.init(self.position, bullet_lifespan, bullet_speed, closestMob)
+				bullet.init(self.position, bullet_lifespan, bullet_speed, closestMob, bullet_damage)
 				self.get_parent().add_child(bullet)
-
 
 func _on_area_entered(area):
 	if area in get_tree().get_nodes_in_group("mob"):
-		area.on_hit()
+		area.on_hit(5)
 		
 		# Explode
 		var particle = explosion_scene.instantiate()

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://derr1esd7x2n6"]
+
+[ext_resource type="Script" path="res://CardData.gd" id="1_u1gsb"]
+
+[resource]
+script = ExtResource("1_u1gsb")
+cardName = "Pure Fuel"
+description = "Nothing but the best for our pilots: +50% more speed"
+boonType = 0
+boonMultiple = 1.5

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dfgm075882s7j"
-path="res://.godot/imported/Bullet01.png-fcf947ff41144e9bf0b0d7a981e70006.ctex"
+uid="uid://cexw42au12vap"
+path="res://.godot/imported/castle.png-d80765810ddac866f186d84964daa28c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Bullet01.png"
-dest_files=["res://.godot/imported/Bullet01.png-fcf947ff41144e9bf0b0d7a981e70006.ctex"]
+source_file="res://Graphics/castle.png"
+dest_files=["res://.godot/imported/castle.png-d80765810ddac866f186d84964daa28c.ctex"]
 
 [params]
 

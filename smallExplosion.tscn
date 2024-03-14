@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://unyekg2bj1ix"]
 
 [ext_resource type="Script" path="res://explosion.gd" id="1_y8nxt"]
-[ext_resource type="AudioStream" uid="uid://28p4l4aujyyj" path="res://short-explosion-6055.mp3" id="2_q2vtb"]
+[ext_resource type="AudioStream" uid="uid://28p4l4aujyyj" path="res://Sound/short-explosion-6055.mp3" id="2_jqjjb"]
 
 [sub_resource type="Gradient" id="Gradient_k7l7f"]
 offsets = PackedFloat32Array(0, 0.486364, 1)
@@ -29,5 +29,5 @@ scale_amount_min = 0.0
 color_ramp = SubResource("Gradient_k7l7f")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("2_q2vtb")
-volume_db = -15.0
+stream = ExtResource("2_jqjjb")
+volume_db = -26.012

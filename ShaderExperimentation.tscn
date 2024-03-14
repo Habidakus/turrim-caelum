@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://ru53aoggfttm"]
 
-[ext_resource type="Shader" path="res://flowShader.gdshader" id="1_vcrwa"]
-[ext_resource type="Texture2D" uid="uid://ca0emmen6kvp4" path="res://icon.svg" id="2_yiqta"]
+[ext_resource type="Shader" path="res://Graphics/flowShader.gdshader" id="1_vcrwa"]
+[ext_resource type="Texture2D" uid="uid://ca0emmen6kvp4" path="res://Graphics/icon.svg" id="2_yiqta"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_mgsdm"]
 noise_type = 3

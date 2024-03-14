@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://bistt38yy3ni1"]
+
+[node name="Card" type="SubViewport"]
+size = Vector2i(200, 350)
+
+[node name="Name" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -23.5
+offset_right = 23.5
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Name
+"
+
+[node name="Description" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -44.5
+offset_top = -11.5
+offset_right = 44.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "Description
+"

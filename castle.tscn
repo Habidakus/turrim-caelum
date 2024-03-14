@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://bh48jxqg3q5jl"]
 
 [ext_resource type="Script" path="res://castle.gd" id="1_1yvym"]
-[ext_resource type="Texture2D" uid="uid://cexw42au12vap" path="res://castle.png" id="1_hivjy"]
+[ext_resource type="Texture2D" uid="uid://cexw42au12vap" path="res://Graphics/castle.png" id="1_hivjy"]
 [ext_resource type="PackedScene" uid="uid://d3l0j1xvohr6g" path="res://bigEexplosion.tscn" id="2_ylutj"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_b3qoe"]

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://bbouy78p4kusb"]
+
+[ext_resource type="Script" path="res://CardData.gd" id="1_3musq"]
+
+[resource]
+script = ExtResource("1_3musq")
+cardName = "Rifled Barrel"
+description = "Bullets fly farther: +50% flight time for bullets"
+boonType = 3
+boonMultiple = 1.5

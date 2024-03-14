@@ -24,6 +24,16 @@ var pathArray : Array = []
 var currentPathIndex = 0
 var player_paused : bool = false
 
+var possible_cards = [
+	load("res://Data/fasterBullets_a1.tres"),
+	load("res://Data/fasterBullets_a2.tres"),
+	load("res://Data/fasterPlayer_a1.tres"),
+	load("res://Data/fasterPlayer_a2.tres"),
+	load("res://Data/fasterFireRate_a1.tres"),
+	load("res://Data/longLivedBullets_a1.tres"),
+	load("res://Data/lethalBullets_a1.tres"),
+]
+
 signal increase_score(amount : int)
 
 # Called when the node enters the scene tree for the first time.
@@ -67,9 +77,9 @@ func add_path_point(start: Vector2, end: Vector2, desired_length: float, curve :
 	for i in 50:
 		var tStart = start
 		if rng.randi() % 2 == 1:
-			tStart.x += 40;
+			tStart.x += 80;
 		else:
-			tStart.y += 40;
+			tStart.y += 80;
 		var tEnd = end
 		if rng.randi() % 2 == 1:
 			tEnd.x -= 80;
@@ -107,12 +117,20 @@ func current_path() -> Curve2D:
 		currentPathIndex += 1
 		return pathArray[currentPathIndex % pathArray.size()]
 
+func start_shopping():
+	possible_cards.shuffle()
+	$HUD.spend_points(possible_cards[0], possible_cards[1], possible_cards[2], player)
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	if Input.is_action_just_pressed("pause"):
-		if player != null:
+		if player != null && spendable_money > 0:
 			get_tree().paused = (get_tree().paused == false)
 			player_paused = get_tree().paused
+			if player_paused:
+				start_shopping()
+			else:
+				$HUD.stop_shopping()
 		return # gobble up the "Pause" press, so we don't accidently start the game
 	if player_paused:
 		return
@@ -167,6 +185,16 @@ func game_over():
 	$TitleTimer.wait_time = 3
 	$TitleTimer.start()
 
+func player_has_spent():
+	spendable_money -= 1
+	$HUD.set_money(spendable_money)
+	if spendable_money <= 0:
+		$HUD.stop_shopping()
+		get_tree().paused = false
+		player_paused = false
+	else:
+		start_shopping()
+	
 func _on_increase_score(amount):
 	money += amount
 	if money >= 23:

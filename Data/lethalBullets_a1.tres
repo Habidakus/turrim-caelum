@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://dtcsjj8nthe3w"]
+
+[ext_resource type="Script" path="res://CardData.gd" id="1_uoxyt"]
+
+[resource]
+script = ExtResource("1_uoxyt")
+cardName = "Elephant Bullets"
+description = "These larger bullets do more damage to larger aliens."
+boonType = 4
+boonMultiple = 2.0

@@ -3,6 +3,7 @@ extends Area2D
 var target_loc : Vector2
 var target_vec : Vector2
 var can_kill : bool = true
+var damage : float = 1
 var lifespan : float
 var speed : float = 100
 
@@ -13,12 +14,13 @@ func _ready():
 	if $AudioStreamPlayer2D != null:
 		$AudioStreamPlayer2D.play()
 
-func init(start_pos : Vector2, _lifespan: float, _speed : float, target):
+func init(start_pos : Vector2, _lifespan: float, _speed : float, target, _damage : float):
 	target_loc = target.position
 	target_vec = (target_loc - start_pos).normalized()
 	rotation = target_vec.angle() + PI / 2.0
 	position = start_pos + target_vec * 5.0
 	lifespan = _lifespan
+	damage = _damage
 	speed = _speed
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -38,4 +40,4 @@ func _on_area_entered(area : Area2D):
 	if area in mobs:
 		can_kill = false
 		self.queue_free()
-		area.on_hit()
+		area.on_hit(damage)

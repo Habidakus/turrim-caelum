@@ -50,13 +50,13 @@ func set_target(node : Area2D, rotSpd : float, id : int, p: Curve2D, dist):
 	else:
 		$AnimatedSprite2D.material = null
 
-func on_hit():
-	if hp > 1:
-		hp -= 1
+func on_hit(damage : float):
+	if hp > damage:
+		hp -= damage
 		get_parent().play_impact_sound()
 		var tween = get_tree().create_tween()
 		tween.tween_property(self, "scale", Vector2(0.5, 0.5), 0.1).set_trans(Tween.TRANS_BOUNCE)
-		tween.tween_property(self, "scale", self.scale, 0.1).set_trans(Tween.TRANS_BOUNCE)
+		tween.tween_property(self, "scale", Vector2(size, size), 0.1).set_trans(Tween.TRANS_BOUNCE)
 		return
 	
 	if spawn_children > 0:
