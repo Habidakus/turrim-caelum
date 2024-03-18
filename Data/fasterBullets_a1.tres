@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://dncxuxi5ptjiu"]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dncxuxi5ptjiu"]
 
-[ext_resource type="Script" path="res://CardData.gd" id="1_ekwdw"]
+[ext_resource type="Script" path="res://Data/cardData_fasterBullets.gd" id="1_ywrvf"]
 
 [resource]
-script = ExtResource("1_ekwdw")
+script = ExtResource("1_ywrvf")
 cardName = "Rocket Bullets"
-description = "Replace bullets with rockets: 
-+33% bullet travel speed"
+description = "Replace bullets with rockets:
++ 50% faster speed"
 boonType = 1
-boonMultiple = 1.33
+boonMultiple = 1.5

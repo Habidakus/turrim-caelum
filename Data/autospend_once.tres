@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cdo4c160nbs8s"]
+
+[ext_resource type="Script" path="res://Data/cardData_autospend.gd" id="1_28yxa"]
+
+[resource]
+script = ExtResource("1_28yxa")
+cardName = "Accountant"
+description = "No need to hit ENTER to spend points - the selection will appear as soon as available."
+boonType = 5
+boonMultiple = 0.0

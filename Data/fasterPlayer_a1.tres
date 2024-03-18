@@ -1,9 +1,9 @@
-[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://bwyk5dkqw45g2"]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://bwyk5dkqw45g2"]
 
-[ext_resource type="Script" path="res://CardData.gd" id="1_iyf8o"]
+[ext_resource type="Script" path="res://Data/cardData_fasterPlayer.gd" id="1_gxpha"]
 
 [resource]
-script = ExtResource("1_iyf8o")
+script = ExtResource("1_gxpha")
 cardName = "High Octane Fuel"
 description = "High Octane Fuel makes for faster flying: +50% player speed"
 boonType = 0

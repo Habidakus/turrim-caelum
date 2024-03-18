@@ -11,13 +11,45 @@ extends Node
 @export var player_scene: PackedScene
 @export var castle_scene: PackedScene
 
+# TODO List:
+#
+# Godot Tech to learn:
+# - settings screen
+# - local persistence
+# - more particle system
+# - controller support
+# - state machine (for use in which mode we're in: playing, scoreboard, info screen, etc...)
+#
+# Features to add:
+# - game outro (score, unlocks, etc...)
+# - high-score board
+# - highlight final "jag" of any particular path (the one that connects to the castle) with particles so that player is aware of when mobs are on a final approach
+#   - add new upgrade card that can reveal the penultimate jag
+# - barriers on the castle (unlocked via upgrades?)
+# - meta progression
+#   - permanently apply some upgrades
+#   - more maps:
+#     - rocks that will block both enemy paths & blow up the player
+#     - walls (like rocks, but much longer)
+# -     hostile zones that would blow up the player but allow mobs to pass through
+# - how to play screen
+# - general info screen
+# - more advancements:
+#   - multi shot
+#   - power shot
+#   - hailstorm
+#   - movement-based power attacks (move in circle, move in star pattern, etc...)
+#
+# Bugs to fix:
+# - Add sound & VFX feedback when selecting upgrade card
+
 var screen_size;
 var rng = RandomNumberGenerator.new()
 var money = 0
 var spendable_money : int = 0
 var score = 0
 var mobId = 1
-var player = null
+var player : Player = null
 var castle = null
 
 var pathArray : Array = []
@@ -32,6 +64,7 @@ var possible_cards = [
 	load("res://Data/fasterFireRate_a1.tres"),
 	load("res://Data/longLivedBullets_a1.tres"),
 	load("res://Data/lethalBullets_a1.tres"),
+	load("res://Data/autospend_once.tres"),
 ]
 
 signal increase_score(amount : int)
@@ -119,21 +152,34 @@ func current_path() -> Curve2D:
 
 func start_shopping():
 	possible_cards.shuffle()
-	$HUD.spend_points(possible_cards[0], possible_cards[1], possible_cards[2], player)
+	var cardA : CardData = null
+	var cardB : CardData = null
+	var cardC : CardData = null
+	for card in possible_cards:
+		card.initialize_for_purchase(player, card)
+		if card.is_possible(player, card):
+			if cardA == null:
+				cardA = card
+			elif cardB == null:
+				cardB = card
+			elif cardC == null:
+				cardC = card
+	$HUD.spend_points(cardA, cardB, cardC, player)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	if Input.is_action_just_pressed("pause"):
-		if player != null && spendable_money > 0:
-			get_tree().paused = (get_tree().paused == false)
-			player_paused = get_tree().paused
-			if player_paused:
-				start_shopping()
-			else:
-				$HUD.stop_shopping()
-		return # gobble up the "Pause" press, so we don't accidently start the game
-	if player_paused:
-		return
+	if player != null:
+		if player_paused:
+			return
+		if player.autospend || Input.is_action_just_pressed("pause"):
+			if spendable_money > 0:
+				get_tree().paused = (get_tree().paused == false)
+				player_paused = get_tree().paused
+				if player_paused:
+					start_shopping()
+				else:
+					$HUD.stop_shopping()
+			return # gobble up the "Pause" press, so we don't accidently start the game
 	if get_tree().paused && $TitleTimer.is_stopped():
 		if Input.is_anything_pressed():
 			$HUD.start_game()

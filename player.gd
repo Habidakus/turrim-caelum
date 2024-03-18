@@ -1,14 +1,17 @@
 extends Area2D
 
-@export var speed = 200
+class_name Player
+
+@export var speed = 150
 @export var bullet_scene: PackedScene = null
 @export var explosion_scene : PackedScene
 var screen_size;
 var rate_of_fire : float = 1;
 var bullet_lifespan : float = 5.0;
-var bullet_speed : float = 100.0;
+var bullet_speed : float = 175.0;
 var bullet_damage : float = 1;
 var next_shot
+var autospend : bool = false;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -23,15 +26,17 @@ func apply_card(cardData : CardData):
 	get_parent().player_has_spent()
 	match cardData.boonType:
 		CardData.BoonType.playerSpeed:
-			speed *= cardData.boonMultiple
+			speed *= cardData.get_multiple(self, cardData)
 		CardData.BoonType.bulletSpeed:
-			bullet_speed *= cardData.boonMultiple
+			bullet_speed *= cardData.get_multiple(self, cardData)
 		CardData.BoonType.fireRate:
-			rate_of_fire /= cardData.boonMultiple
+			rate_of_fire /= cardData.get_multiple(self, cardData)
 		CardData.BoonType.bulletLife:
-			bullet_lifespan *= cardData.boonMultiple
+			bullet_lifespan *= cardData.get_multiple(self, cardData)
 		CardData.BoonType.moreDamage:
-			bullet_damage *= cardData.boonMultiple
+			bullet_damage *= cardData.get_multiple(self, cardData)
+		CardData.BoonType.autospend:
+			autospend = true
 	
 #func _draw():
 	#draw_line(Vector2.ZERO, to_local(draw_target), Color.RED, 5, true)

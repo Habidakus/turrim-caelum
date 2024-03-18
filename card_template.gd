@@ -1,6 +1,6 @@
 extends Control
 
-var player = null
+var player : Player = null
 var mouseOver : bool = false
 var cardData : CardData = null
 
@@ -8,11 +8,11 @@ var cardData : CardData = null
 func _ready():
 	pass # Replace with function body.
 
-func init(_cardData : CardData, _player):
+func init(_cardData : CardData, _player : Player):
 	player = _player
 	cardData = _cardData
 	$Label.text = cardData.cardName
-	$Description.text = cardData.description
+	$Description.text = cardData.get_description(_player, _cardData)
 
 func mouse_hover(is_hovering : bool):
 	if is_hovering:

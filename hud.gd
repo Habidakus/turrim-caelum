@@ -43,12 +43,12 @@ func _ready():
 	$MoneyValue.hide()
 	$MoneyLabel.hide()
 
-func init_card(card, cardData: CardData, player):
+func init_card(card, cardData: CardData, player : Player):
 	var cardTemplate = find_card_template(card)
 	if cardTemplate != null:
 		cardTemplate.init(cardData, player)
 
-func spend_points(cardA : CardData, cardB : CardData, cardC : CardData, player):
+func spend_points(cardA : CardData, cardB : CardData, cardC : CardData, player : Player):
 	init_card($CardA, cardA, player)
 	init_card($CardB, cardB, player)
 	init_card($CardC, cardC, player)
