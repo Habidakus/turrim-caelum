@@ -102,6 +102,9 @@ func set_money(dollars : int):
 	if dollars > 0:
 		$MoneyLabel.show()
 		$MoneyValue.show()
+	else:
+		$MoneyLabel.hide()
+		$MoneyValue.hide()
 	$MoneyValue.text = str(dollars)
 	
 func set_score(score : int):
