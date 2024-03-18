@@ -19,8 +19,11 @@ func find_card_template(card) -> Control:
 
 func setup_card(card : TextureRect):
 	var viewport = SubViewport.new()
+	viewport.render_target_clear_mode = SubViewport.CLEAR_MODE_ALWAYS
+	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 	viewport.size = Vector2(250, 350)
 	viewport.add_child(card_template_scene.instantiate())
+	card.size = Vector2(250,350)
 	card.add_child(viewport)
 	card.texture = viewport.get_texture()
 
