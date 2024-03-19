@@ -22,23 +22,6 @@ func _ready():
 
 func get_screen_size():
 	return screen_size
-
-#func apply_card(cardData : CardData):
-	#match cardData.boonType:
-		#CardData.BoonType.playerSpeed:
-			#speed *= cardData.get_multiple(self, cardData)
-		#CardData.BoonType.bulletSpeed:
-			#bullet_speed *= cardData.get_multiple(self, cardData)
-		#CardData.BoonType.fireRate:
-			#rate_of_fire /= cardData.get_multiple(self, cardData)
-		#CardData.BoonType.bulletLife:
-			#bullet_lifespan *= cardData.get_multiple(self, cardData)
-		#CardData.BoonType.moreDamage:
-			#bullet_damage *= cardData.get_multiple(self, cardData)
-		#CardData.BoonType.revealSooner:
-			#showPathDist = showPathDist / cardData.get_multiple(self, cardData)
-		#CardData.BoonType.autospend:
-			#autospend = true
 	
 #func _draw():
 	#draw_line(Vector2.ZERO, to_local(draw_target), Color.RED, 5, true)

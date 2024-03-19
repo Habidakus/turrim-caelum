@@ -23,8 +23,6 @@ extends Node
 # Features to add:
 # - game outro (score, unlocks, etc...)
 # - high-score board
-# - highlight final "jag" of any particular path (the one that connects to the castle) with particles so that player is aware of when mobs are on a final approach
-#   - add new upgrade card that can reveal the penultimate jag
 # - barriers on the castle (unlocked via upgrades?)
 # - meta progression
 #   - permanently apply some upgrades
@@ -35,10 +33,8 @@ extends Node
 #     - hostile zones that would blow up the player but allow mobs to pass through
 # - how to play screen
 # - general info screen
-# - give every enemy hp, and have it increase proportional to advancement rate
 # - display stats while in advancement selection screen (and on end screen)
 # - more advancements:
-#   - expand "Elephant rounds" to a full gammet of increased damage
 #   - multi shot
 #   - power shot
 #   - hailstorm
