@@ -1,16 +1,19 @@
 extends Area2D
 
+class_name Mob
+
 var distance_travelled = 0.0
 var target
 var rotateSpeed
 var travelSpeed = 33.0
 var score = 1
-var hp = 10
-var armor = 0
+var hp : float = 10
+var armor : float = 0
 var size = 1.0
 var id_for_spawn = 0
 var spawn_children = 0
 var path : Curve2D = null
+var pathLength;
 @export var explosion_scene : PackedScene
 @onready var animationSprite = $AnimatedSprite2D
 
@@ -25,6 +28,7 @@ func set_target(node : Area2D, rotSpd : float, id : int, p: Curve2D, dist):
 	id_for_spawn = id
 	var id_for_hp = id
 	path = p
+	pathLength = path.get_baked_length()
 	target = node.position;
 	distance_travelled = dist
 	rotateSpeed = rotSpd;
@@ -106,6 +110,11 @@ func on_hit(damage : float):
 func _process(delta):
 	distance_travelled += delta * travelSpeed;
 	self.position = path.sample_baked(distance_travelled)
+	var close : float = distance_travelled / pathLength - 0.75
+	var spin : float = 25.0
+	if close > 0.05:
+		var amount = close / 0.05
+		spin *= pow(2.0, amount)
 	#var dir = (target - self.position).normalized()
 	#self.position += dir * delta * travelSpeed;
-	self.rotation_degrees += delta * 25.0 * rotateSpeed
+	self.rotation_degrees += delta * spin * rotateSpeed

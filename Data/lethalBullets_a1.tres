@@ -1,9 +1,9 @@
-[gd_resource type="Resource" script_class="CardData" load_steps=2 format=3 uid="uid://dtcsjj8nthe3w"]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dtcsjj8nthe3w"]
 
-[ext_resource type="Script" path="res://CardData.gd" id="1_uoxyt"]
+[ext_resource type="Script" path="res://Data/cardData_lethalBullets.gd" id="1_sxyl8"]
 
 [resource]
-script = ExtResource("1_uoxyt")
+script = ExtResource("1_sxyl8")
 cardName = "Elephant Bullets"
 description = "These larger bullets do more damage to aliens."
 boonType = 4

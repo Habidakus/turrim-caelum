@@ -3,7 +3,7 @@ extends CardData
 var newBulletsPerMinute;
 
 func is_possible(player: Player, cardData: CardData) -> bool:
-	return get_multiple(player, cardData) * player.bullet_speed > player.speed
+	return newBulletsPerMinute < 301
 
 func initialize_for_purchase(_player: Player, _cardData: CardData):
 	var currentBulletsPerMinute = 60 / _player.rate_of_fire

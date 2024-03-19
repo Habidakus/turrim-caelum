@@ -60,6 +60,7 @@ var castle = null
 var pathArray : Array = []
 var currentPathIndex = 0
 var player_paused : bool = false
+var rolling_mob_health_average : float = 0
 
 var possible_cards = [
 	load("res://Data/fasterBullets_a1.tres"),
@@ -91,6 +92,7 @@ func start_game():
 	mobId = 1
 	get_tree().paused = false
 	player_paused = false
+	rolling_mob_health_average = 0
 	
 	# Create the player
 	player = player_scene.instantiate()
@@ -109,6 +111,9 @@ func start_game():
 	$MobTimer.start()
 	$HUD.set_score(0)
 
+func get_mob_average_health() -> float:
+	return rolling_mob_health_average
+
 func add_path_point(start: Vector2, end: Vector2, desired_length: float, curve : Curve2D) -> Curve2D:
 	var best_bl = 0
 	var best : Curve2D = null
@@ -118,11 +123,15 @@ func add_path_point(start: Vector2, end: Vector2, desired_length: float, curve :
 			tStart.x += 80;
 		else:
 			tStart.y += 80;
+		tStart.x = clamp(tStart.x, 20, screen_size.x - 20)
+		tStart.y = clamp(tStart.y, 20, screen_size.y - 20)
 		var tEnd = end
 		if rng.randi() % 2 == 1:
 			tEnd.x -= 80;
 		else:
 			tEnd.y -= 80;
+		tEnd.x = clamp(tEnd.x, 20, screen_size.x - 20)
+		tEnd.y = clamp(tEnd.y, 20, screen_size.y - 20)
 		var x = rng.randf_range(tStart.x, tEnd.x)
 		var y = rng.randf_range(tStart.y, tEnd.y)
 		var d : Curve2D = curve.duplicate()
@@ -134,6 +143,8 @@ func add_path_point(start: Vector2, end: Vector2, desired_length: float, curve :
 		if best == null || bl < best_bl:
 			best = d
 			best_bl = bl
+		if x < 0 || y < 0 || x > screen_size.x || y > screen_size.y:
+			print_debug("x y = (", x, ", ", y, ")")
 	return best
 
 func generate_path(start: Vector2, end: Vector2) -> Curve2D:
@@ -210,11 +221,15 @@ func _on_mob_timer_timeout():
 			pathArray.remove_at(0)
 		
 func spawn_mob(id, dist, path):
-	var mob = mob_scene.instantiate()
+	var mob : Mob = mob_scene.instantiate()
 	mob.position = path.sample_baked(dist)
 	var speed_scale = rng.randf_range(0.8, 1.2)
 	mob.set_target($Castle, speed_scale, id, path, dist)
 	call_deferred("add_child", mob)
+	if rolling_mob_health_average == 0:
+		rolling_mob_health_average = mob.hp + mob.armor
+	else:
+		rolling_mob_health_average = (rolling_mob_health_average * 20 + mob.hp + mob.armor) / 21.0
 
 func play_impact_sound():
 	$ImpactPlayer.play()

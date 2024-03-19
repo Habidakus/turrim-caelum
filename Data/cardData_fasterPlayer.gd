@@ -1,4 +1,5 @@
 extends CardData
 
 func is_possible(player: Player, cardData: CardData) -> bool:
-	return cardData.get_multiple(player, cardData) * player.speed < player.bullet_speed
+	var new_speed : float = cardData.get_multiple(player, cardData) * player.speed
+	return new_speed < player.bullet_speed && new_speed <= 1000.0
