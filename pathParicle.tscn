@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://dhr8o6o00bvcl"]
+[gd_scene load_steps=3 format=3 uid="uid://dhr8o6o00bvcl"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_bo0e7"]
+
+[sub_resource type="Gradient" id="Gradient_t456a"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 
 [node name="pathParticle" type="CPUParticles2D"]
 material = SubResource("CanvasItemMaterial_bo0e7")
@@ -13,5 +16,6 @@ gravity = Vector2(0, 0)
 angular_velocity_min = -524.57
 angular_velocity_max = 108.0
 color = Color(0.427451, 1, 1, 1)
+color_ramp = SubResource("Gradient_t456a")
 hue_variation_min = -1.0
 hue_variation_max = 0.65

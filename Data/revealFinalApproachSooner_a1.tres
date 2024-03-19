@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://rwsu7fr31uy"]
+
+[ext_resource type="Script" path="res://Data/cardData_revealSooner.gd" id="1_cc5fj"]
+
+[resource]
+script = ExtResource("1_cc5fj")
+cardName = "Better Radar"
+description = "Enemy on final approach give telltale signs sooner."
+boonType = 6
+boonMultiple = 1.1

@@ -71,6 +71,7 @@ var possible_cards = [
 	load("res://Data/longLivedBullets_a1.tres"),
 	load("res://Data/lethalBullets_a1.tres"),
 	load("res://Data/autospend_once.tres"),
+	load("res://Data/revealFinalApproachSooner_a1.tres"),
 ]
 
 signal increase_score(amount : int)
@@ -110,6 +111,12 @@ func start_game():
 	
 	$MobTimer.start()
 	$HUD.set_score(0)
+
+func get_show_path_dist() -> float:
+	if player != null:
+		return player.showPathDist
+	else:
+		return 0.7
 
 func get_mob_average_health() -> float:
 	return rolling_mob_health_average

@@ -3,12 +3,13 @@ extends Resource
 class_name CardData
 
 enum BoonType { 
-	playerSpeed, 
-	bulletSpeed,
-	fireRate,
-	bulletLife,
-	moreDamage,
-	autospend
+	playerSpeed = 1, 
+	bulletSpeed = 2,
+	fireRate = 3,
+	bulletLife = 4,
+	moreDamage = 5,
+	autospend = 6,
+	revealSooner = 7
 }
 
 @export_group("Text")
@@ -30,3 +31,6 @@ func get_description(_player: Player, _cardData: CardData) -> String:
 
 func get_multiple(_player: Player, _cardData: CardData) -> float:
 	return boonMultiple
+
+func apply_card(_player: Player):
+	print_debug("CARD ", cardName, " failed to implement apply_card")

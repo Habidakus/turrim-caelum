@@ -6,8 +6,9 @@ class_name Player
 @export var bullet_scene: PackedScene = null
 @export var explosion_scene : PackedScene
 var screen_size;
+var showPathDist : float = 0.7;
 var rate_of_fire : float = 0.75;
-var bullet_lifespan : float = 5.0;
+var bullet_lifespan : float = 3.0;
 var bullet_speed : float = 200.0;
 var bullet_damage : float = 8.0;
 var next_shot
@@ -22,21 +23,22 @@ func _ready():
 func get_screen_size():
 	return screen_size
 
-func apply_card(cardData : CardData):
-	get_parent().player_has_spent()
-	match cardData.boonType:
-		CardData.BoonType.playerSpeed:
-			speed *= cardData.get_multiple(self, cardData)
-		CardData.BoonType.bulletSpeed:
-			bullet_speed *= cardData.get_multiple(self, cardData)
-		CardData.BoonType.fireRate:
-			rate_of_fire /= cardData.get_multiple(self, cardData)
-		CardData.BoonType.bulletLife:
-			bullet_lifespan *= cardData.get_multiple(self, cardData)
-		CardData.BoonType.moreDamage:
-			bullet_damage *= cardData.get_multiple(self, cardData)
-		CardData.BoonType.autospend:
-			autospend = true
+#func apply_card(cardData : CardData):
+	#match cardData.boonType:
+		#CardData.BoonType.playerSpeed:
+			#speed *= cardData.get_multiple(self, cardData)
+		#CardData.BoonType.bulletSpeed:
+			#bullet_speed *= cardData.get_multiple(self, cardData)
+		#CardData.BoonType.fireRate:
+			#rate_of_fire /= cardData.get_multiple(self, cardData)
+		#CardData.BoonType.bulletLife:
+			#bullet_lifespan *= cardData.get_multiple(self, cardData)
+		#CardData.BoonType.moreDamage:
+			#bullet_damage *= cardData.get_multiple(self, cardData)
+		#CardData.BoonType.revealSooner:
+			#showPathDist = showPathDist / cardData.get_multiple(self, cardData)
+		#CardData.BoonType.autospend:
+			#autospend = true
 	
 #func _draw():
 	#draw_line(Vector2.ZERO, to_local(draw_target), Color.RED, 5, true)

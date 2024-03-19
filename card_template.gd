@@ -21,4 +21,6 @@ func mouse_hover(is_hovering : bool):
 		$Background.color = Color.WHITE
 
 func apply():
-	player.apply_card(cardData)
+	cardData.apply_card(player)
+	player.get_parent().player_has_spent()
+

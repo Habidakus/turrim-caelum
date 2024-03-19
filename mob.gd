@@ -112,16 +112,25 @@ func on_hit(damage : float):
 func _process(delta):
 	distance_travelled += delta * travelSpeed;
 	self.position = path.sample_baked(distance_travelled)
-	var close : float = distance_travelled / pathLength - 0.7
+	var show_path_dist = get_parent().get_show_path_dist()
+	var close : float = (distance_travelled / pathLength) - show_path_dist
 	var spin : float = 25.0
 	if close > 0.05:
 		var amount = close / 0.05
 		if int(amount) - 1 > pathParticles.size():
 			var particle = path_particle_scene.instantiate()
 			particle.amount = 50 * amount
+			if close > 0.15:
+				var hue = (close - 0.15) / 0.15
+				if hue > 1:
+					hue = 1
+				var r = lerp(particle.color.r, Color.RED.r, hue) 
+				var b = lerp(particle.color.b, Color.RED.b, hue) 
+				var g = lerp(particle.color.g, Color.RED.g, hue)
+				particle.color.r = r
+				particle.color.b = b
+				particle.color.g = g
 			pathParticles.append(particle)
 			add_child(particle)
-		spin *= pow(1.5, amount)
-	#var dir = (target - self.position).normalized()
-	#self.position += dir * delta * travelSpeed;
+		spin *= lerp(1, 10, close / (1.0 - show_path_dist))
 	self.rotation_degrees += delta * spin * rotateSpeed
