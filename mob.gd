@@ -14,7 +14,9 @@ var id_for_spawn = 0
 var spawn_children = 0
 var path : Curve2D = null
 var pathLength;
+var pathParticles : Array = []
 @export var explosion_scene : PackedScene
+@export var path_particle_scene : PackedScene
 @onready var animationSprite = $AnimatedSprite2D
 
 # Called when the node enters the scene tree for the first time.
@@ -110,11 +112,16 @@ func on_hit(damage : float):
 func _process(delta):
 	distance_travelled += delta * travelSpeed;
 	self.position = path.sample_baked(distance_travelled)
-	var close : float = distance_travelled / pathLength - 0.75
+	var close : float = distance_travelled / pathLength - 0.7
 	var spin : float = 25.0
 	if close > 0.05:
 		var amount = close / 0.05
-		spin *= pow(2.0, amount)
+		if int(amount) - 1 > pathParticles.size():
+			var particle = path_particle_scene.instantiate()
+			particle.amount = 50 * amount
+			pathParticles.append(particle)
+			add_child(particle)
+		spin *= pow(1.5, amount)
 	#var dir = (target - self.position).normalized()
 	#self.position += dir * delta * travelSpeed;
 	self.rotation_degrees += delta * spin * rotateSpeed

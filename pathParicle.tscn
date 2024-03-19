@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://dhr8o6o00bvcl"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_bo0e7"]
+
+[node name="pathParticle" type="CPUParticles2D"]
+material = SubResource("CanvasItemMaterial_bo0e7")
+amount = 800
+lifetime = 5.0
+emission_shape = 1
+emission_sphere_radius = 12.43
+spread = 180.0
+gravity = Vector2(0, 0)
+angular_velocity_min = -524.57
+angular_velocity_max = 108.0
+color = Color(0.427451, 1, 1, 1)
+hue_variation_min = -1.0
+hue_variation_max = 0.65

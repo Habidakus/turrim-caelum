@@ -2,7 +2,7 @@ extends CardData
 
 var newBulletsPerMinute;
 
-func is_possible(player: Player, cardData: CardData) -> bool:
+func is_possible(_player: Player, _cardData: CardData) -> bool:
 	return newBulletsPerMinute < 301
 
 func initialize_for_purchase(_player: Player, _cardData: CardData):
