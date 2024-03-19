@@ -70,6 +70,12 @@ func set_target(node : Area2D, rotSpd : float, id : int, p: Curve2D, dist):
 	else:
 		$AnimatedSprite2D.material = null
 
+func play_impact_sound():
+	if armor > 0:
+		$ArmorTing.play()
+	else:
+		$ImpactPlayer.play()
+
 func on_hit(damage : float):
 	damage -= armor
 	if damage <= 0:
@@ -78,7 +84,7 @@ func on_hit(damage : float):
 		
 	if hp > damage:
 		hp -= damage
-		get_parent().play_impact_sound()
+		play_impact_sound()
 		var tween = get_tree().create_tween()
 		tween.tween_property(self, "scale", Vector2(0.5, 0.5), 0.1).set_trans(Tween.TRANS_BOUNCE)
 		tween.tween_property(self, "scale", Vector2(size, size), 0.1).set_trans(Tween.TRANS_BOUNCE)
@@ -99,7 +105,8 @@ func on_hit(damage : float):
 	particle.get_child(0).emitting = true
 	particle.get_child(0).one_shot = true
 	particle.get_child(0).lifetime *= size
-	particle.get_child(1).pitch_scale *= size
+	particle.get_child(1).pitch_scale /= size
+	particle.get_child(1).volume_db -= 20
 	get_parent().add_child(particle);
 	
 	# Increase player score

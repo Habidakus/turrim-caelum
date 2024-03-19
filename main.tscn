@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://3nphprqd1it8"]
+[gd_scene load_steps=14 format=3 uid="uid://3nphprqd1it8"]
 
 [ext_resource type="PackedScene" uid="uid://cc4fq5x80sure" path="res://player.tscn" id="1_eo6vi"]
 [ext_resource type="Script" path="res://main.gd" id="1_jojh5"]
@@ -8,7 +8,6 @@
 [ext_resource type="Shader" path="res://Graphics/flowShader.gdshader" id="5_ie5a8"]
 [ext_resource type="Texture2D" uid="uid://ca0emmen6kvp4" path="res://Graphics/icon.svg" id="6_rkdrj"]
 [ext_resource type="AudioStream" uid="uid://35jfxy4vlym0" path="res://Sound/big-explosion-6801.mp3" id="8_03yxr"]
-[ext_resource type="AudioStream" uid="uid://c677p3ptk387h" path="res://Sound/impact-fx-41103.mp3" id="9_8tvqa"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_vua4k"]
 
@@ -48,11 +47,6 @@ wait_time = 3.0
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("8_03yxr")
 volume_db = -10.0
-pitch_scale = 1.88
-
-[node name="ImpactPlayer" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("9_8tvqa")
-volume_db = -15.302
 pitch_scale = 1.88
 
 [connection signal="increase_score" from="." to="." method="_on_increase_score"]

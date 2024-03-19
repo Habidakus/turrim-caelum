@@ -1,10 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://d1jafpuwvy3d0"]
+[gd_scene load_steps=10 format=3 uid="uid://d1jafpuwvy3d0"]
 
 [ext_resource type="Script" path="res://mob.gd" id="1_7i00h"]
 [ext_resource type="PackedScene" uid="uid://unyekg2bj1ix" path="res://smallExplosion.tscn" id="2_p6cdx"]
 [ext_resource type="Shader" path="res://Graphics/mob.gdshader" id="3_3vebn"]
 [ext_resource type="PackedScene" uid="uid://dhr8o6o00bvcl" path="res://pathParicle.tscn" id="3_7nkw0"]
 [ext_resource type="SpriteFrames" uid="uid://bd27qr2v2wm4s" path="res://Graphics/EnemySpriteFrames.tres" id="4_ova30"]
+[ext_resource type="AudioStream" uid="uid://c677p3ptk387h" path="res://Sound/impact-fx-41103.mp3" id="6_vxse1"]
+[ext_resource type="AudioStream" uid="uid://qjmpoob7yvl3" path="res://Sound/22-caliber-with-ricochet-39679.mp3" id="7_mghvi"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hlyll"]
 shader = ExtResource("3_3vebn")
@@ -28,3 +30,12 @@ sprite_frames = ExtResource("4_ova30")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_x5ls6")
+
+[node name="ImpactPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_vxse1")
+volume_db = -15.302
+pitch_scale = 1.88
+
+[node name="ArmorTing" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_mghvi")
+volume_db = -26.012

@@ -105,6 +105,9 @@ func start_game():
 	pathArray = []
 	pathArray.append(generate_path(Vector2(0,0), castle.position))
 	
+	if OS.has_environment("USERNAME"):
+		print(OS.get_environment("USERNAME"))
+	
 	$MobTimer.start()
 	$HUD.set_score(0)
 
@@ -233,9 +236,6 @@ func spawn_mob(id, dist, path):
 		rolling_mob_health_average = mob.hp + mob.armor
 	else:
 		rolling_mob_health_average = (rolling_mob_health_average * 20 + mob.hp + mob.armor) / 21.0
-
-func play_impact_sound():
-	$ImpactPlayer.play()
 
 func game_over():
 	$AudioStreamPlayer2D.play()
