@@ -29,19 +29,24 @@ extends Node
 # - meta progression
 #   - permanently apply some upgrades
 #   - more maps:
+#     - maps that start with mob ID at larger numbers 
 #     - rocks that will block both enemy paths & blow up the player
 #     - walls (like rocks, but much longer)
-# -     hostile zones that would blow up the player but allow mobs to pass through
+#     - hostile zones that would blow up the player but allow mobs to pass through
 # - how to play screen
 # - general info screen
+# - give every enemy hp, and have it increase proportional to advancement rate
+# - display stats while in advancement selection screen (and on end screen)
 # - more advancements:
+#   - expand "Elephant rounds" to a full gammet of increased damage
 #   - multi shot
 #   - power shot
 #   - hailstorm
 #   - movement-based power attacks (move in circle, move in star pattern, etc...)
-#
+#   - GIVE & TAKE, some advancements increase one stat while takng others away
 # Bugs to fix:
 # - Add sound & VFX feedback when selecting upgrade card
+# - bullets should live for distance travelled, not time in the air
 
 var screen_size;
 var rng = RandomNumberGenerator.new()

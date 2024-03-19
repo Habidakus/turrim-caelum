@@ -6,10 +6,10 @@ class_name Player
 @export var bullet_scene: PackedScene = null
 @export var explosion_scene : PackedScene
 var screen_size;
-var rate_of_fire : float = 1;
+var rate_of_fire : float = 0.75;
 var bullet_lifespan : float = 5.0;
-var bullet_speed : float = 175.0;
-var bullet_damage : float = 1;
+var bullet_speed : float = 200.0;
+var bullet_damage : float = 8.0;
 var next_shot
 var autospend : bool = false;
 
@@ -80,7 +80,7 @@ func _process(delta):
 
 func _on_area_entered(area):
 	if area in get_tree().get_nodes_in_group("mob"):
-		area.on_hit(5)
+		area.on_hit(100)
 		
 		# Explode
 		var particle = explosion_scene.instantiate()

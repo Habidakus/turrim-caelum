@@ -3,9 +3,10 @@ extends Area2D
 var distance_travelled = 0.0
 var target
 var rotateSpeed
-var travelSpeed = 60.0
+var travelSpeed = 33.0
 var score = 1
-var hp = 1
+var hp = 10
+var armor = 0
 var size = 1.0
 var id_for_spawn = 0
 var spawn_children = 0
@@ -22,28 +23,41 @@ func _ready():
 
 func set_target(node : Area2D, rotSpd : float, id : int, p: Curve2D, dist):
 	id_for_spawn = id
+	var id_for_hp = id
 	path = p
 	target = node.position;
 	distance_travelled = dist
 	rotateSpeed = rotSpd;
 	var mutatorA = 0
+	# ELEVEN - armored
+	while (id != 0) && (id % 2) == 0:
+		id = int(id / 2)
+		armor += 1
+		travelSpeed *= 0.95
+	# SEVEN - super sized
 	while (id != 0) && (id % 7) == 0:
 		id = int(id / 7)
-		hp += 3
+		hp += 30
 		score += 1
 		size *= 1.3333
 		travelSpeed *= 0.9
+	# FIVE - speedy
 	while (id != 0) && (id % 5) == 0:
 		id = int(id / 5)
 		travelSpeed *= 2.0
 		rotateSpeed *= 2.0
 		score += 1
-	while (id != 0) && (id != 0) && (id % 9) == 0:
-		id = int(id / 9)
-		spawn_children = 3
+	# THREE - children
+	while (id != 0) && (id % 3) == 0:
+		id = int(id / 3)
+		id_for_spawn = int(id_for_spawn / 3)
+		spawn_children += 1
 		mutatorA = 1
 		travelSpeed *= 0.8
 		score += 1
+	while (id_for_hp > 31):
+		id_for_hp -= 31
+		hp *= 1.1
 	self.scale *= size
 	if mutatorA > 0:
 		$AnimatedSprite2D.material.set_shader_parameter("mutatorA", mutatorA)
@@ -51,6 +65,11 @@ func set_target(node : Area2D, rotSpd : float, id : int, p: Curve2D, dist):
 		$AnimatedSprite2D.material = null
 
 func on_hit(damage : float):
+	damage -= armor
+	if damage <= 0:
+		# TODO: Play *plink* sound
+		return
+		
 	if hp > damage:
 		hp -= damage
 		get_parent().play_impact_sound()
@@ -59,10 +78,13 @@ func on_hit(damage : float):
 		tween.tween_property(self, "scale", Vector2(size, size), 0.1).set_trans(Tween.TRANS_BOUNCE)
 		return
 	
+	var offset = distance_travelled - 20.0
 	if spawn_children > 0:
-		get_parent().spawn_mob(id_for_spawn / 13, distance_travelled - 20.0, path)
-		get_parent().spawn_mob(id_for_spawn / 13, distance_travelled - 50.0, path)
-		get_parent().spawn_mob(id_for_spawn / 13, distance_travelled - 80.0, path)
+		spawn_children += 2
+	while spawn_children > 0:
+		spawn_children -= 1
+		get_parent().spawn_mob(id_for_spawn, offset, path)
+		offset -= 30.0
 	
 	# Explode
 	var particle = explosion_scene.instantiate()
