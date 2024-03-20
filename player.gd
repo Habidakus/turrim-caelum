@@ -8,7 +8,7 @@ class_name Player
 var screen_size;
 var showPathDist : float = 0.7;
 var rate_of_fire : float = 0.75;
-var bullet_lifespan : float = 3.0;
+var bullet_range : float = 250.0;
 var bullet_speed : float = 200.0;
 var bullet_damage : float = 8.0;
 var next_shot
@@ -60,7 +60,8 @@ func _process(delta):
 		if next_shot <= 0:
 				next_shot = rate_of_fire
 				var bullet = bullet_scene.instantiate()
-				bullet.init(self.position, bullet_lifespan, bullet_speed, closestMob, bullet_damage)
+				var lifespan = bullet_range / bullet_speed;
+				bullet.init(self.position, lifespan, bullet_speed, closestMob, bullet_damage)
 				self.get_parent().add_child(bullet)
 
 func _on_area_entered(area):

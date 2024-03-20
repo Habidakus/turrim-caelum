@@ -144,7 +144,10 @@ func add_path_point(start: Vector2, end: Vector2, desired_length: float, curve :
 		var insert_point = 1
 		if curve.point_count > 2:
 			insert_point = rng.randi_range(1, curve.point_count - 1)
-		d.add_point(Vector2(x, y), Vector2(0,0), Vector2(0,0), insert_point)
+		var p = Vector2(x, y)
+		var in_p = (curve.get_point_position(insert_point - 1) - p) / 1.5
+		var out_p = (curve.get_point_position(insert_point) - p) / 1.5
+		d.add_point(p, in_p, out_p, insert_point)
 		var bl = absf(desired_length - d.get_baked_length())
 		if best == null || bl < best_bl:
 			best = d
