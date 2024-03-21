@@ -1,13 +1,13 @@
 [gd_scene load_steps=3 format=3 uid="uid://d3l0j1xvohr6g"]
 
-[ext_resource type="Script" path="res://explosion.gd" id="1_3nyx2"]
+[ext_resource type="Script" path="res://explosion.gd" id="1_bkbxg"]
 
 [sub_resource type="Gradient" id="Gradient_k7l7f"]
 offsets = PackedFloat32Array(0, 0.486364, 1)
 colors = PackedColorArray(0.3, 0.2278, 0.072, 1, 0.80259, 0.305412, 1.92523e-07, 1, 1, 1, 0.392157, 1)
 
 [node name="BigExplosion" type="Node2D"]
-script = ExtResource("1_3nyx2")
+script = ExtResource("1_bkbxg")
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
 amount = 5000

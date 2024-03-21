@@ -95,7 +95,8 @@ func on_hit(damage : float):
 		spawn_children += 2
 	while spawn_children > 0:
 		spawn_children -= 1
-		get_parent().spawn_mob(id_for_spawn, offset, path)
+		var childMob : Mob = get_parent().spawn_mob(id_for_spawn, offset, path)
+		childMob.travelSpeed = self.travelSpeed
 		offset -= 30.0
 	
 	# Explode

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://d2hbtaulje8em"]
 
 [ext_resource type="Script" path="res://hud.gd" id="1_edgxy"]
-[ext_resource type="PackedScene" uid="uid://uiim2bkkgwug" path="res://card_template.tscn" id="2_yx255"]
+[ext_resource type="PackedScene" uid="uid://uiim2bkkgwug" path="res://Scenes/card_template.tscn" id="2_yx255"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_x5c2e"]
 

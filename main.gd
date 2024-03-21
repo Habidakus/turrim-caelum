@@ -254,7 +254,7 @@ func _on_mob_timer_timeout():
 		if increase != true:
 			pathArray.remove_at(0)
 		
-func spawn_mob(id, dist, path):
+func spawn_mob(id, dist, path) -> Mob:
 	var mob : Mob = mob_scene.instantiate()
 	mob.position = path.sample_baked(dist)
 	var speed_scale = rng.randf_range(0.8, 1.2)
@@ -264,6 +264,7 @@ func spawn_mob(id, dist, path):
 		rolling_mob_health_average = mob.hp + mob.armor
 	else:
 		rolling_mob_health_average = (rolling_mob_health_average * 20 + mob.hp + mob.armor) / 21.0
+	return mob
 
 func game_over():
 	$AudioStreamPlayer2D.play()
