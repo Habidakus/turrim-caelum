@@ -41,6 +41,7 @@ extends Node
 # - Add more curses
 # Bugs to fix:
 # - Add sound & VFX feedback when selecting upgrade card
+# - fix collision bug on larger enemies (or is it enemies at 45 degree angles?)
 
 var screen_size;
 var rng = RandomNumberGenerator.new()
