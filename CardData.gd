@@ -9,7 +9,8 @@ enum BoonType {
 	bulletLife = 4,
 	moreDamage = 5,
 	autospend = 6,
-	revealSooner = 7
+	revealSooner = 7,
+	curseAdvanceMonsters = 8,
 }
 
 @export_group("Text")
@@ -20,6 +21,9 @@ enum BoonType {
 @export var boonType : BoonType
 @export var boonMultiple : float
 
+func is_curse() -> bool:
+	return false
+	
 func is_possible(_player: Player, _cardData: CardData) -> bool:
 	return true
 

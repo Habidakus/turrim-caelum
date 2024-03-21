@@ -16,8 +16,6 @@ extends Node
 # Godot Tech to learn:
 # - settings screen
 # - local persistence
-# - more particle system
-# - controller support
 # - state machine (for use in which mode we're in: playing, scoreboard, info screen, etc...)
 #
 # Features to add:
@@ -40,9 +38,9 @@ extends Node
 #   - hailstorm
 #   - movement-based power attacks (move in circle, move in star pattern, etc...)
 #   - GIVE & TAKE, some advancements increase one stat while takng others away
+# - Add more curses
 # Bugs to fix:
 # - Add sound & VFX feedback when selecting upgrade card
-# - bullets should live for distance travelled, not time in the air
 
 var screen_size;
 var rng = RandomNumberGenerator.new()
@@ -68,6 +66,12 @@ var possible_cards = [
 	load("res://Data/lethalBullets_a1.tres"),
 	load("res://Data/autospend_once.tres"),
 	load("res://Data/revealFinalApproachSooner_a1.tres"),
+]
+
+var possible_curses = [
+	load("res://Data/curse_idAdvance_minor.tres"),
+	load("res://Data/curse_idAdvance_medium.tres"),
+	load("res://Data/curse_idAdvance_hard.tres"),
 ]
 
 signal increase_score(amount : int)
@@ -120,24 +124,29 @@ func get_show_path_dist() -> float:
 func get_mob_average_health() -> float:
 	return rolling_mob_health_average
 
+func advance_id(advanceAmount : float):
+	mobId = int(float(mobId) * advanceAmount)
+
 func add_path_point(start: Vector2, end: Vector2, desired_length: float, curve : Curve2D) -> Curve2D:
 	var best_bl = 0
 	var best : Curve2D = null
+	var buffer = max(20, 400 - mobId)
+	var maxPlacement : Vector2 = screen_size - Vector2(buffer, buffer);
 	for i in 50:
 		var tStart = start
 		if rng.randi() % 2 == 1:
 			tStart.x += 80;
 		else:
 			tStart.y += 80;
-		tStart.x = clamp(tStart.x, 20, screen_size.x - 20)
-		tStart.y = clamp(tStart.y, 20, screen_size.y - 20)
+		tStart.x = clamp(tStart.x, 20, maxPlacement.x)
+		tStart.y = clamp(tStart.y, 20, maxPlacement.y)
 		var tEnd = end
 		if rng.randi() % 2 == 1:
 			tEnd.x -= 80;
 		else:
 			tEnd.y -= 80;
-		tEnd.x = clamp(tEnd.x, 20, screen_size.x - 20)
-		tEnd.y = clamp(tEnd.y, 20, screen_size.y - 20)
+		tEnd.x = clamp(tEnd.x, 20, maxPlacement.x)
+		tEnd.y = clamp(tEnd.y, 20, maxPlacement.y)
 		var x = rng.randf_range(tStart.x, tEnd.x)
 		var y = rng.randf_range(tStart.y, tEnd.y)
 		var d : Curve2D = curve.duplicate()
@@ -189,6 +198,21 @@ func start_shopping():
 				cardB = card
 			elif cardC == null:
 				cardC = card
+				
+	# We might have advanced so much that we're running
+	# out of good cards, so throw a bad card into the mix.
+	if cardC == null:
+		possible_curses.shuffle()
+		for card in possible_curses:
+			card.initialize_for_purchase(player, card)
+			if card.is_possible(player, card):
+				if cardA == null:
+					cardA = card
+				elif cardB == null:
+					cardB = card
+				elif cardC == null:
+					cardC = card
+				
 	$HUD.spend_points(cardA, cardB, cardC, player)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

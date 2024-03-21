@@ -3,6 +3,7 @@ extends CanvasLayer
 @export var card_template_scene: PackedScene
 
 var activeCard = null
+var showingCards : bool = false
 	
 func find_card_viewport(card) -> SubViewport:
 	if card == null:
@@ -42,7 +43,51 @@ func _ready():
 	$PressAnyKey.hide()
 	$MoneyValue.hide()
 	$MoneyLabel.hide()
+	showingCards = false
 
+func _process(_delta):
+	if !showingCards:
+		return
+	if Input.is_action_just_pressed("move_right"):
+		# TODO: Card layout is currently B A C
+		if activeCard == $CardA:
+			_on_card_a_mouse_exited()
+			activeCard = $CardC
+		elif activeCard == $CardB:
+			_on_card_a_mouse_exited()
+			activeCard = $CardA
+		elif activeCard == $CardC:
+			_on_card_a_mouse_exited()
+			activeCard = $CardB
+		else:
+			activeCard = $CardB
+		var cardTemplate = find_card_template(activeCard)
+		if cardTemplate != null:
+			cardTemplate.mouse_hover(true)
+		else:
+			activeCard = null
+	elif Input.is_action_just_pressed("move_left"):
+		# TODO: Card layout is currently B A C
+		if activeCard == $CardA:
+			_on_card_a_mouse_exited()
+			activeCard = $CardB
+		elif activeCard == $CardB:
+			_on_card_a_mouse_exited()
+			activeCard = $CardC
+		elif activeCard == $CardC:
+			_on_card_a_mouse_exited()
+			activeCard = $CardA
+		else:
+			activeCard = $CardC
+		var cardTemplate = find_card_template(activeCard)
+		if cardTemplate != null:
+			cardTemplate.mouse_hover(true)
+		else:
+			activeCard = null
+	elif Input.is_action_just_pressed("pause"):
+		if activeCard != null:
+			activate_card()
+			
 func init_card(card, cardData: CardData, player : Player):
 	var cardTemplate = find_card_template(card)
 	if cardTemplate != null:
@@ -60,6 +105,7 @@ func spend_points(cardA : CardData, cardB : CardData, cardC : CardData, player :
 	$ScoreValue.show()
 	$GameOver.hide()
 	$PressAnyKey.hide()
+	showingCards = true
 
 func stop_shopping():
 	$CardA.hide()
@@ -70,6 +116,7 @@ func stop_shopping():
 	$ScoreValue.show()
 	$GameOver.hide()
 	$PressAnyKey.hide()
+	showingCards = false
 	
 func game_over():
 	$CardA.hide()
@@ -135,8 +182,12 @@ func _on_card_a_mouse_exited():
 
 func _on_card_a_gui_input(event):
 	if event is InputEventMouseButton:
-		if activeCard != null:
-			var cardTemplate = find_card_template(activeCard)
-			if cardTemplate != null:
-				cardTemplate.apply()
+		activate_card()
+
+func activate_card():
+	if activeCard != null:
+		var cardTemplate = find_card_template(activeCard)
+		if cardTemplate != null:
+			cardTemplate.apply()
+			cardTemplate.mouse_hover(false)
 			activeCard = null

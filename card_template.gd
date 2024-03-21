@@ -16,7 +16,10 @@ func init(_cardData : CardData, _player : Player):
 
 func mouse_hover(is_hovering : bool):
 	if is_hovering:
-		$Background.color = Color.LIGHT_BLUE
+		if cardData.is_curse():
+			$Background.color = Color.LIGHT_PINK
+		else:
+			$Background.color = Color.LIGHT_BLUE
 	else:
 		$Background.color = Color.WHITE
 
