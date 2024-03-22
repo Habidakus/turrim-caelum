@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://7b1rw0muei85"]
 
-[ext_resource type="Script" path="res://bullet.gd" id="1_gswnu"]
+[ext_resource type="Script" path="res://Scripts/bullet.gd" id="1_qusr1"]
 [ext_resource type="Texture2D" uid="uid://dfgm075882s7j" path="res://Graphics/Bullet01.png" id="2_cqy4h"]
 [ext_resource type="AudioStream" uid="uid://xf32ji65lqjv" path="res://Sound/sci-fi-energy-gun-39409.mp3" id="3_f0gcl"]
 
@@ -11,7 +11,7 @@ height = 14.0
 [node name="Bullet" type="Area2D"]
 collision_layer = 0
 collision_mask = 4
-script = ExtResource("1_gswnu")
+script = ExtResource("1_qusr1")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

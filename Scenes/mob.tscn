@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://d1jafpuwvy3d0"]
 
-[ext_resource type="Script" path="res://mob.gd" id="1_7i00h"]
+[ext_resource type="Script" path="res://Scripts/mob.gd" id="1_7i00h"]
 [ext_resource type="PackedScene" uid="uid://unyekg2bj1ix" path="res://Scenes/smallExplosion.tscn" id="2_p6cdx"]
 [ext_resource type="Shader" path="res://Graphics/mob.gdshader" id="3_3vebn"]
 [ext_resource type="PackedScene" uid="uid://dhr8o6o00bvcl" path="res://Scenes/pathParicle.tscn" id="3_7nkw0"]

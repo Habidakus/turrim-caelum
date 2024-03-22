@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://unyekg2bj1ix"]
 
-[ext_resource type="Script" path="res://explosion.gd" id="1_2incq"]
+[ext_resource type="Script" path="res://Scripts/explosion.gd" id="1_u7lxp"]
 [ext_resource type="AudioStream" uid="uid://28p4l4aujyyj" path="res://Sound/short-explosion-6055.mp3" id="2_s344c"]
 
 [sub_resource type="Gradient" id="Gradient_k7l7f"]
@@ -8,7 +8,7 @@ offsets = PackedFloat32Array(0, 0.486364, 1)
 colors = PackedColorArray(0, 0, 0.952941, 1, 0.80259, 0.305412, 1.92523e-07, 1, 1, 1, 0.392157, 1)
 
 [node name="SmallExplosion" type="Node2D"]
-script = ExtResource("1_2incq")
+script = ExtResource("1_u7lxp")
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="."]
 emitting = false
