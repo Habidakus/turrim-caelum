@@ -45,20 +45,17 @@ func _ready():
 
 func select_card(dir: int):
 	if dir == 0: # card was clicked on
-		if activeCard != null:
-			%HUD.activate_card(activeCard)
-		else:
-			print_debug("Clicked when no card active!")
+		activate_card()
 	elif dir == 1: # move card selection to the right
 		# TODO: Card layout is currently B A C
 		if activeCard == $CardA:
-			%HUD._on_card_a_mouse_exited()
+			_on_card_a_mouse_exited()
 			activeCard = $CardC
 		elif activeCard == $CardB:
-			%HUD._on_card_a_mouse_exited()
+			_on_card_a_mouse_exited()
 			activeCard = $CardA
 		elif activeCard == $CardC:
-			%HUD._on_card_a_mouse_exited()
+			_on_card_a_mouse_exited()
 			activeCard = $CardB
 		else:
 			activeCard = $CardB
