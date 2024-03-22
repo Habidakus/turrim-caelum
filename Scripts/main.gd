@@ -42,6 +42,7 @@ extends Node
 # Bugs to fix:
 # - Add sound & VFX feedback when selecting upgrade card
 # - fix collision bug on larger enemies (or is it enemies at 45 degree angles?)
+# - when mothers spawn children, lerp them to their start locations (so as not to land on player)
 
 var screen_size;
 var rng = RandomNumberGenerator.new()
@@ -54,7 +55,6 @@ var castle = null
 
 var pathArray : Array = []
 var currentPathIndex = 0
-var player_paused : bool = false
 var rolling_mob_health_average : float = 0
 
 var possible_cards = [
@@ -80,20 +80,13 @@ signal increase_score(amount : int)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$MobTimer.timeout.connect(_on_mob_timer_timeout)
-	$TitleTimer.timeout.connect(_on_title_timer_timeout)
-	get_tree().paused = true
-	player_paused = false
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	$TitleTimer.wait_time = 1
-	$TitleTimer.start()
 
 func start_game():
 	money = 0
 	spendable_money = 0
 	score = 0
 	mobId = 1
-	get_tree().paused = false
-	player_paused = false
 	rolling_mob_health_average = 0
 	
 	# Create the player
@@ -109,9 +102,6 @@ func start_game():
 	
 	pathArray = []
 	pathArray.append(generate_path(Vector2(0,0), castle.position))
-	
-	if OS.has_environment("USERNAME"):
-		print(OS.get_environment("USERNAME"))
 	
 	$MobTimer.start()
 	$HUD.set_score(0)
@@ -216,29 +206,6 @@ func start_shopping():
 				
 	$HUD.spend_points(cardA, cardB, cardC, player)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
-	if player != null:
-		if player_paused:
-			return
-		if player.autospend || Input.is_action_just_pressed("pause"):
-			if spendable_money > 0:
-				get_tree().paused = (get_tree().paused == false)
-				player_paused = get_tree().paused
-				if player_paused:
-					start_shopping()
-				else:
-					$HUD.stop_shopping()
-			return # gobble up the "Pause" press, so we don't accidently start the game
-	if get_tree().paused && $TitleTimer.is_stopped():
-		if Input.is_anything_pressed():
-			$HUD.start_game()
-			start_game()
-
-func _on_title_timer_timeout():
-	$HUD.show_restart()
-	$TitleTimer.stop()
-	
 func _on_mob_timer_timeout():
 	spawn_mob(mobId, 0, current_path())
 	mobId += 1
@@ -271,27 +238,22 @@ func game_over():
 	$MobTimer.stop()
 	player.queue_free()
 	castle.queue_free()
-	$HUD.game_over()
 	
 	for mob in get_tree().get_nodes_in_group("mob"):
 		mob.queue_free()
 	for bullet in get_tree().get_nodes_in_group("bullet"):
 		bullet.queue_free()
-	
-	get_tree().paused = true
-	player_paused = false
-	$TitleTimer.wait_time = 3
-	$TitleTimer.start()
+
+func player_can_spend_money():
+	return spendable_money > 0
+
+func player_bought_autospend():
+	return player.autospend
 
 func player_has_spent():
 	spendable_money -= 1
-	$HUD.set_money(spendable_money)
-	if spendable_money <= 0:
-		$HUD.stop_shopping()
-		get_tree().paused = false
-		player_paused = false
-	else:
-		start_shopping()
+	%HUD.set_money(spendable_money)
+	%GameStateMachine.switch_state("Playing_Action")
 	
 func _on_increase_score(amount):
 	money += amount

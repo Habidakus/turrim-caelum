@@ -6,13 +6,9 @@ extends Area2D
 func _ready():
 	process_mode = Node.PROCESS_MODE_PAUSABLE
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-
 func _on_area_entered(area):
 	if area in get_tree().get_nodes_in_group("mob"):
-		area.on_hit(5)
+		area.on_hit(100)
 	
 	# Explode
 	var particle = explosion_scene.instantiate()
@@ -21,5 +17,5 @@ func _on_area_entered(area):
 	particle.get_child(0).emitting = true
 	particle.get_child(0).one_shot = true
 	get_parent().add_child(particle);
-	get_parent().game_over()
+	get_parent().find_child("GameStateMachine").switch_state("Playing_GameOver")
 	self.queue_free()

@@ -3,7 +3,6 @@ extends CanvasLayer
 @export var card_template_scene: PackedScene
 
 var activeCard = null
-var showingCards : bool = false
 	
 func find_card_viewport(card) -> SubViewport:
 	if card == null:
@@ -36,58 +35,55 @@ func _ready():
 	$CardA.hide()
 	$CardB.hide()
 	$CardC.hide()
-	$GameTitle.show()
+	$GameTitle.hide()
 	$ScoreLabel.hide()
 	$ScoreValue.hide()
 	$GameOver.hide()
 	$PressAnyKey.hide()
 	$MoneyValue.hide()
 	$MoneyLabel.hide()
-	showingCards = false
 
-func _process(_delta):
-	if !showingCards:
-		return
-	if Input.is_action_just_pressed("move_right"):
-		# TODO: Card layout is currently B A C
-		if activeCard == $CardA:
-			_on_card_a_mouse_exited()
-			activeCard = $CardC
-		elif activeCard == $CardB:
-			_on_card_a_mouse_exited()
-			activeCard = $CardA
-		elif activeCard == $CardC:
-			_on_card_a_mouse_exited()
-			activeCard = $CardB
-		else:
-			activeCard = $CardB
-		var cardTemplate = find_card_template(activeCard)
-		if cardTemplate != null:
-			cardTemplate.mouse_hover(true)
-		else:
-			activeCard = null
-	elif Input.is_action_just_pressed("move_left"):
-		# TODO: Card layout is currently B A C
-		if activeCard == $CardA:
-			_on_card_a_mouse_exited()
-			activeCard = $CardB
-		elif activeCard == $CardB:
-			_on_card_a_mouse_exited()
-			activeCard = $CardC
-		elif activeCard == $CardC:
-			_on_card_a_mouse_exited()
-			activeCard = $CardA
-		else:
-			activeCard = $CardC
-		var cardTemplate = find_card_template(activeCard)
-		if cardTemplate != null:
-			cardTemplate.mouse_hover(true)
-		else:
-			activeCard = null
-	elif Input.is_action_just_pressed("pause"):
+func select_card(dir: int):
+	if dir == 0: # card was clicked on
 		if activeCard != null:
-			activate_card()
-			
+			%HUD.activate_card(activeCard)
+		else:
+			print_debug("Clicked when no card active!")
+	elif dir == 1: # move card selection to the right
+		# TODO: Card layout is currently B A C
+		if activeCard == $CardA:
+			%HUD._on_card_a_mouse_exited()
+			activeCard = $CardC
+		elif activeCard == $CardB:
+			%HUD._on_card_a_mouse_exited()
+			activeCard = $CardA
+		elif activeCard == $CardC:
+			%HUD._on_card_a_mouse_exited()
+			activeCard = $CardB
+		else:
+			activeCard = $CardB
+		var cardTemplate = find_card_template(activeCard)
+		if cardTemplate != null:
+			cardTemplate.mouse_hover(true)
+	elif dir == -1: # move card selection to the left
+		# TODO: Card layout is currently B A C
+		if activeCard == $CardA:
+			_on_card_a_mouse_exited()
+			activeCard = $CardB
+		elif activeCard == $CardB:
+			_on_card_a_mouse_exited()
+			activeCard = $CardC
+		elif activeCard == $CardC:
+			_on_card_a_mouse_exited()
+			activeCard = $CardA
+		else:
+			activeCard = $CardC
+		var cardTemplate = find_card_template(activeCard)
+		if cardTemplate != null:
+			cardTemplate.mouse_hover(true)
+	else:
+		print_debug("Illegal card selection value: ", dir)
+
 func init_card(card, cardData: CardData, player : Player):
 	var cardTemplate = find_card_template(card)
 	if cardTemplate != null:
@@ -97,53 +93,6 @@ func spend_points(cardA : CardData, cardB : CardData, cardC : CardData, player :
 	init_card($CardA, cardA, player)
 	init_card($CardB, cardB, player)
 	init_card($CardC, cardC, player)
-	$CardA.show()
-	$CardB.show()
-	$CardC.show()
-	$GameTitle.hide()
-	$ScoreLabel.show()
-	$ScoreValue.show()
-	$GameOver.hide()
-	$PressAnyKey.hide()
-	showingCards = true
-
-func stop_shopping():
-	$CardA.hide()
-	$CardB.hide()
-	$CardC.hide()
-	$GameTitle.hide()
-	$ScoreLabel.show()
-	$ScoreValue.show()
-	$GameOver.hide()
-	$PressAnyKey.hide()
-	showingCards = false
-	
-func game_over():
-	$CardA.hide()
-	$CardB.hide()
-	$CardC.hide()
-	$GameTitle.hide()
-	$ScoreLabel.show()
-	$ScoreValue.show()
-	$GameOver.show()
-	$PressAnyKey.hide()
-	$MoneyValue.hide()
-	$MoneyLabel.hide()
-
-func start_game():
-	$CardA.hide()
-	$CardB.hide()
-	$CardC.hide()
-	$GameTitle.hide()
-	$ScoreLabel.show()
-	$ScoreValue.show()
-	$GameOver.hide()
-	$PressAnyKey.hide()
-	$MoneyValue.hide()
-	$MoneyLabel.hide()
-
-func show_restart():
-	$PressAnyKey.show()
 
 func set_money(dollars : int):
 	if dollars > 0:
@@ -191,3 +140,45 @@ func activate_card():
 			cardTemplate.apply()
 			cardTemplate.mouse_hover(false)
 			activeCard = null
+
+# ----------------- STATE FUNCTIONS -----------------
+
+func show_title():
+	$GameTitle.show()
+
+func hide_title():
+	$GameTitle.hide()
+
+func show_main_menu():
+	$PressAnyKey.show()
+
+func hide_main_menu():
+	$PressAnyKey.hide()
+
+func show_game_over():
+	$ScoreLabel.show()
+	$ScoreValue.show()
+	$GameOver.show()
+
+func hide_game_over():
+	$ScoreLabel.hide()
+	$ScoreValue.hide()
+	$GameOver.hide()
+
+func show_game_card_selection():
+	$CardA.show()
+	$CardB.show()
+	$CardC.show()
+
+func hide_game_card_selection():
+	$CardA.hide()
+	$CardB.hide()
+	$CardC.hide()
+
+func show_game_action():
+	$ScoreLabel.show()
+	$ScoreValue.show()
+	
+func hide_game_action():
+	$ScoreLabel.hide()
+	$ScoreValue.hide()

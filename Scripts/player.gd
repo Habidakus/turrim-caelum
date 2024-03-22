@@ -75,4 +75,9 @@ func _on_area_entered(area):
 		particle.get_child(0).emitting = true
 		particle.get_child(0).one_shot = true
 		get_parent().add_child(particle)
-		get_parent().game_over()
+		
+		var gsm = get_parent().find_child("GameStateMachine")
+		if gsm != null:
+			gsm.switch_state("Playing_GameOver")
+		else:
+			print_debug("Game State Machine not found")
