@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://3nphprqd1it8"]
+[gd_scene load_steps=23 format=3 uid="uid://3nphprqd1it8"]
 
 [ext_resource type="PackedScene" uid="uid://cc4fq5x80sure" path="res://Scenes/player.tscn" id="1_eo6vi"]
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_jojh5"]
@@ -16,6 +16,7 @@
 [ext_resource type="Script" path="res://Scripts/GameState_Playing_GameOver.gd" id="14_sx1bj"]
 [ext_resource type="Script" path="res://Scripts/GameState_ShowPage_HowToPlay.gd" id="15_j06ph"]
 [ext_resource type="Script" path="res://Scripts/GameState_ShowPage_Credits.gd" id="16_yl58h"]
+[ext_resource type="Script" path="res://Scenes/GameState_ShowPage_HighScore.gd" id="17_54e7x"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_vua4k"]
 
@@ -85,5 +86,8 @@ script = ExtResource("15_j06ph")
 
 [node name="ShowPage_Credits" type="Node" parent="GameStateMachine"]
 script = ExtResource("16_yl58h")
+
+[node name="ShowPage_HighScore" type="Node" parent="GameStateMachine"]
+script = ExtResource("17_54e7x")
 
 [connection signal="increase_score" from="." to="." method="_on_increase_score"]

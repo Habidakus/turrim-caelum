@@ -241,7 +241,28 @@ toggle_mode = true
 button_group = ExtResource("3_xur4o")
 text = "Credits"
 
+[node name="Menu_Why" type="Button" parent="Menu"]
+layout_mode = 2
+size_flags_vertical = 4
+focus_next = NodePath("../Menu_PlayGame")
+focus_previous = NodePath("../Menu_HowToPlay")
+theme_override_font_sizes/font_size = 42
+toggle_mode = true
+button_group = ExtResource("3_xur4o")
+text = "Why"
+
+[node name="Menu_HighScore" type="Button" parent="Menu"]
+layout_mode = 2
+size_flags_vertical = 4
+focus_next = NodePath("../Menu_PlayGame")
+focus_previous = NodePath("../Menu_HowToPlay")
+theme_override_font_sizes/font_size = 42
+toggle_mode = true
+button_group = ExtResource("3_xur4o")
+text = "High Scores"
+
 [node name="HowToPlay" type="VBoxContainer" parent="."]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -294,6 +315,63 @@ theme_override_font_sizes/bold_font_size = 22
 bbcode_enabled = true
 fit_content = true
 
+[node name="HighScoreList" type="VBoxContainer" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Top_Space" type="RichTextLabel" parent="HighScoreList"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 26
+theme_override_font_sizes/bold_font_size = 22
+bbcode_enabled = true
+fit_content = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HighScoreList"]
+layout_mode = 2
+
+[node name="Left Space" type="RichTextLabel" parent="HighScoreList/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+
+[node name="High Score Label" type="RichTextLabel" parent="HighScoreList/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 36
+bbcode_enabled = true
+text = "[center]High Scores:[/center]"
+fit_content = true
+scroll_active = false
+
+[node name="Right Spacer" type="RichTextLabel" parent="HighScoreList/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+
+[node name="ListContainer" type="GridContainer" parent="HighScoreList"]
+layout_mode = 2
+columns = 2
+
+[node name="Bottom_Space" type="RichTextLabel" parent="HighScoreList"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 26
+theme_override_font_sizes/bold_font_size = 22
+bbcode_enabled = true
+fit_content = true
+
 [connection signal="gui_input" from="CardA" to="." method="_on_card_a_gui_input"]
 [connection signal="mouse_entered" from="CardA" to="." method="_on_card_a_mouse_entered"]
 [connection signal="mouse_exited" from="CardA" to="." method="_on_card_a_mouse_exited"]
@@ -306,3 +384,5 @@ fit_content = true
 [connection signal="pressed" from="Menu/Menu_PlayGame" to="." method="_on_menu_play_game_pressed"]
 [connection signal="pressed" from="Menu/Menu_HowToPlay" to="." method="_on_menu_how_to_play_pressed"]
 [connection signal="pressed" from="Menu/Menu_Credits" to="." method="_on_menu_credits_pressed"]
+[connection signal="pressed" from="Menu/Menu_Why" to="." method="_on_menu_why_pressed"]
+[connection signal="pressed" from="Menu/Menu_HighScore" to="." method="_on_menu_highscore_pressed"]

@@ -44,6 +44,7 @@ func _ready():
 	$Credits.hide()
 	$MoneyValue.hide()
 	$MoneyLabel.hide()
+	$HighScoreList.hide()
 
 func select_card(dir: int):
 	if dir == 0: # card was clicked on
@@ -170,7 +171,39 @@ func _on_menu_how_to_play_pressed():
 
 func _on_menu_credits_pressed():
 	%GameStateMachine.switch_state("ShowPage_Credits")
+
+func _on_menu_why_pressed():
+	pass # Replace with function body.
 	
+func _on_menu_highscore_pressed():
+	%GameStateMachine.switch_state("ShowPage_HighScore")
+	
+func populate_high_score(highScores : Array):
+	var children = $HighScoreList/ListContainer.get_children()
+	for child in children:
+		$HighScoreList/ListContainer.remove_child(child)
+	for entry in highScores:
+		var hscore : int = entry[0]
+		var scoreChild = RichTextLabel.new()
+		scoreChild.layout_mode = 2
+		scoreChild.size_flags_horizontal = 3
+		scoreChild.size_flags_vertical = 3
+		scoreChild.bbcode_enabled = true
+		scoreChild.text = str("[right][font_size=22]", hscore, "[/font_size][/right]")
+		scoreChild.fit_content = true
+		scoreChild.scroll_active = false
+		$HighScoreList/ListContainer.add_child(scoreChild)
+		var hname : String = entry[1]
+		var nameChild = RichTextLabel.new()
+		nameChild.layout_mode = 2
+		nameChild.size_flags_horizontal = 3
+		nameChild.size_flags_vertical = 3
+		nameChild.bbcode_enabled = true
+		nameChild.text = str("[left][font_size=22]", hname, "[/font_size][/left]")
+		nameChild.fit_content = true
+		nameChild.scroll_active = false
+		$HighScoreList/ListContainer.add_child(nameChild)
+
 # ----------------- STATE FUNCTIONS -----------------
 
 func show_title():
@@ -226,3 +259,9 @@ func show_page_how_to_play():
 
 func hide_page_how_to_play():
 	$HowToPlay.hide()
+
+func show_high_score():
+	$HighScoreList.show()
+
+func hide_high_score():
+	$HighScoreList.hide()

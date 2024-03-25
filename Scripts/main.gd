@@ -290,11 +290,21 @@ func _on_increase_score(amount):
 	score += amount
 	$HUD.set_score(score)
 
+func populate_high_score():
+	highscore_list.sort_custom(highscore_list_sorter)
+	var count = highscore_list.size()
+	if count > 12:
+		count = 12
+	var hud_high_score : Array = []
+	for entry in count:
+		hud_high_score.append(highscore_list[entry])
+	%HUD.populate_high_score(hud_high_score)
+
 func save_highscore():
 	var file = FileAccess.open(highscore_filepath, FileAccess.WRITE)
 	var count = highscore_list.size()
 	if count > 255:
-		count = 255		
+		count = 255
 	highscore_list.sort_custom(highscore_list_sorter)
 	file.store_8(count)
 	for entry in count:
