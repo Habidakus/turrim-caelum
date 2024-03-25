@@ -6,6 +6,7 @@ func enter_state():
 	$TitleTimer.timeout.connect(_on_title_timer_timeout)
 	$TitleTimer.wait_time = 2
 	$TitleTimer.start()
+	%HUD.get_parent().load_highscore()
 
 func exit_state():
 	%HUD.hide_title()

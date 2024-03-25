@@ -51,6 +51,9 @@ var mobId = 1
 var player : Player = null
 var castle = null
 
+var highscore_list : Array = []
+var highscore_filepath = "user://highscores.dat"
+
 var pathArray : Array = []
 var currentPathIndex = 0
 var rolling_mob_health_average : float = 0
@@ -231,11 +234,36 @@ func spawn_mob(id, dist, path) -> Mob:
 		rolling_mob_health_average = (rolling_mob_health_average * 20 + mob.hp + mob.armor) / 21.0
 	return mob
 
+# Note - unlike most compare() functions in other languages, this one is only "is lesser" and expects true or false return value
+func highscore_list_sorter(a, b):
+	# High score to the front
+	if a[0] < b[0]:
+		return false
+	elif a[0] > b[0]:
+		return true
+	# Tie-break on player's names
+	elif a[1] < b[1]:
+		return true
+	elif a[1] > b[1]:
+		return false
+	# otherwise equal
+	else:
+		return false
+
 func game_over():
 	$AudioStreamPlayer2D.play()
 	$MobTimer.stop()
 	player.queue_free()
 	castle.queue_free()
+	
+	var username = "Player One"
+	if OS.has_environment("USERNAME"):
+		username = OS.get_environment("USERNAME")
+	highscore_list.append([score, username])
+	highscore_list.sort_custom(highscore_list_sorter)
+	while highscore_list.size() > 255:
+		highscore_list.remove_at(highscore_list.size() - 1)
+	save_highscore()
 	
 	for mob in get_tree().get_nodes_in_group("mob"):
 		mob.queue_free()
@@ -261,3 +289,32 @@ func _on_increase_score(amount):
 		$HUD.set_money(spendable_money)
 	score += amount
 	$HUD.set_score(score)
+
+func save_highscore():
+	var file = FileAccess.open(highscore_filepath, FileAccess.WRITE)
+	var count = highscore_list.size()
+	if count > 255:
+		count = 255		
+	highscore_list.sort_custom(highscore_list_sorter)
+	file.store_8(count)
+	for entry in count:
+		var hscore : int = highscore_list[entry][0]
+		file.store_32(hscore)
+		var hname : String = highscore_list[entry][1]
+		file.store_pascal_string(hname)
+	file.flush()
+	file.close()
+
+func load_highscore():
+	if FileAccess.file_exists(highscore_filepath):
+		var file = FileAccess.open(highscore_filepath, FileAccess.READ)
+		highscore_list = []
+		var count : int = file.get_8()
+		for i in count:
+			var hscore : int = file.get_32()
+			var hname : String = file.get_pascal_string()
+			var entry : Array = [hscore, hname]
+			highscore_list.append(entry)
+		highscore_list.sort_custom(highscore_list_sorter)
+		file.flush()
+		file.close()

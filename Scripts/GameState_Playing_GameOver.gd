@@ -7,9 +7,6 @@ func enter_state():
 	$Timer.timeout.connect(_on_timer_timeout)
 	$Timer.wait_time = 2
 	$Timer.start()
-	
-	if OS.has_environment("USERNAME"):
-		print(OS.get_environment("USERNAME"))
 
 func exit_state():
 	%HUD.hide_game_over()
