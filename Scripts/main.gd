@@ -16,7 +16,6 @@ extends Node
 # Godot Tech to learn:
 # - settings screen
 # - local persistence
-# - state machine (for use in which mode we're in: playing, scoreboard, info screen, etc...)
 #
 # Features to add:
 # - game outro (score, unlocks, etc...)
@@ -29,8 +28,7 @@ extends Node
 #     - rocks that will block both enemy paths & blow up the player
 #     - walls (like rocks, but much longer)
 #     - hostile zones that would blow up the player but allow mobs to pass through
-# - how to play screen
-# - general info screen
+# - Quit game button
 # - display stats while in advancement selection screen (and on end screen)
 # - more advancements:
 #   - multi shot

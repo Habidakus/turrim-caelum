@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://d2hbtaulje8em"]
+[gd_scene load_steps=6 format=3 uid="uid://d2hbtaulje8em"]
 
 [ext_resource type="Script" path="res://Scripts/hud.gd" id="1_edgxy"]
 [ext_resource type="PackedScene" uid="uid://uiim2bkkgwug" path="res://Scenes/card_template.tscn" id="2_yx255"]
+[ext_resource type="ButtonGroup" uid="uid://q2m6lpuqqkyw" path="res://Scenes/menuButtons.tres" id="3_xur4o"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_x5c2e"]
 
@@ -13,17 +14,20 @@ script = ExtResource("1_edgxy")
 card_template_scene = ExtResource("2_yx255")
 
 [node name="ScoreLabel" type="Label" parent="."]
+visible = false
 offset_right = 40.0
 offset_bottom = 23.0
 text = "Score:"
 
 [node name="ScoreValue" type="Label" parent="."]
+visible = false
 offset_left = 48.0
 offset_right = 88.0
 offset_bottom = 26.0
 text = "9999"
 
 [node name="MoneyLabel" type="Label" parent="."]
+visible = false
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -35,6 +39,7 @@ text = "ENTER to upgrade:"
 horizontal_alignment = 2
 
 [node name="MoneyValue" type="Label" parent="."]
+visible = false
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -45,6 +50,7 @@ size_flags_horizontal = 4
 text = "9999"
 
 [node name="GameTitle" type="Label" parent="."]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -62,6 +68,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="GameOver" type="Label" parent="."]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -76,21 +83,8 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 84
 text = "Game Over"
 
-[node name="PressAnyKey" type="Label" parent="."]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -20.0
-offset_top = -23.0
-offset_right = 20.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_font_sizes/font_size = 24
-text = "(Press any key to start game)"
-
 [node name="CardA" type="TextureRect" parent="."]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -105,6 +99,7 @@ grow_vertical = 2
 texture = SubResource("ViewportTexture_x5c2e")
 
 [node name="CardC" type="TextureRect" parent="."]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -119,6 +114,7 @@ grow_vertical = 2
 texture = SubResource("ViewportTexture_7uxpj")
 
 [node name="CardB" type="TextureRect" parent="."]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -132,6 +128,172 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("ViewportTexture_7uxpj")
 
+[node name="Credits" type="VBoxContainer" parent="."]
+visible = false
+anchors_preset = -1
+anchor_left = 0.056
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+
+[node name="Top_Space" type="RichTextLabel" parent="Credits"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 26
+theme_override_font_sizes/bold_font_size = 22
+bbcode_enabled = true
+fit_content = true
+
+[node name="Programming" type="RichTextLabel" parent="Credits"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 26
+theme_override_font_sizes/bold_font_size = 22
+bbcode_enabled = true
+text = "[b]Programming[/b]: Jason Abbott"
+fit_content = true
+
+[node name="Design" type="RichTextLabel" parent="Credits"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 26
+theme_override_font_sizes/bold_font_size = 22
+bbcode_enabled = true
+text = "[b]Design[/b]: Jason Abbott"
+fit_content = true
+
+[node name="Design Help" type="RichTextLabel" parent="Credits"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 26
+theme_override_font_sizes/bold_font_size = 22
+bbcode_enabled = true
+text = "[b]Designers who actually know something about design and were very gratious and gave me feedback[/b]:
+[indent]Jesse Decker[/indent]
+[indent]Jeff Hamilton[/indent]
+[indent]Andy Kirton[/indent]"
+fit_content = true
+
+[node name="Art" type="RichTextLabel" parent="Credits"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 26
+theme_override_font_sizes/bold_font_size = 22
+bbcode_enabled = true
+text = "[b]Art[/b]: Jason Abbott"
+fit_content = true
+
+[node name="Sound" type="RichTextLabel" parent="Credits"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 26
+theme_override_font_sizes/bold_font_size = 22
+bbcode_enabled = true
+text = "[b]Sound[/b]: Free sounds from https://pixabay.com"
+fit_content = true
+
+[node name="Bottom_Space" type="RichTextLabel" parent="Credits"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 26
+theme_override_font_sizes/bold_font_size = 22
+bbcode_enabled = true
+fit_content = true
+
+[node name="Menu" type="VBoxContainer" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -125.0
+offset_top = -103.0
+offset_right = 125.0
+offset_bottom = 103.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Menu_PlayGame" type="Button" parent="Menu"]
+layout_mode = 2
+size_flags_vertical = 4
+focus_next = NodePath("../Menu_HowToPlay")
+focus_previous = NodePath("../Menu_Credits")
+theme_override_font_sizes/font_size = 42
+toggle_mode = true
+button_group = ExtResource("3_xur4o")
+text = "Play Now"
+
+[node name="Menu_HowToPlay" type="Button" parent="Menu"]
+layout_mode = 2
+size_flags_vertical = 4
+focus_next = NodePath("../Menu_Credits")
+focus_previous = NodePath("../Menu_PlayGame")
+theme_override_font_sizes/font_size = 42
+toggle_mode = true
+button_group = ExtResource("3_xur4o")
+text = "How to Play"
+
+[node name="Menu_Credits" type="Button" parent="Menu"]
+layout_mode = 2
+size_flags_vertical = 4
+focus_next = NodePath("../Menu_PlayGame")
+focus_previous = NodePath("../Menu_HowToPlay")
+theme_override_font_sizes/font_size = 42
+toggle_mode = true
+button_group = ExtResource("3_xur4o")
+text = "Credits"
+
+[node name="HowToPlay" type="VBoxContainer" parent="."]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 60.0
+offset_top = -14.0
+offset_right = -72.0
+offset_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Top_Space" type="RichTextLabel" parent="HowToPlay"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 26
+theme_override_font_sizes/bold_font_size = 22
+bbcode_enabled = true
+fit_content = true
+
+[node name="Text" type="RichTextLabel" parent="HowToPlay"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 22
+theme_override_font_sizes/bold_font_size = 22
+bbcode_enabled = true
+text = "Either use a controller or the WASD keys to move your ship around.
+
+The enemies will eventually get to the castle in the lower right corner, but they will always take some zigs and zags before getting there. When the enemies are on final approach to the castle, they will spin faster and leave a trail.
+
+Game ends when:
+[ul]an enemy collides with you[/ul]
+[ul]an enemy collides with your castle[/ul]
+[ul]you collide with your castle[/ul]
+
+Your ship is always going to be firing towards the closest enemy to you, but your bullets can only travel so far.
+
+Periodically you will earn upgrades (message will appear in the upper right hand corner). When you have breathing room hit ENTER (or the A button on a controller) and it will allow you to pick an upgrade.
+
+Enemies can sometimes come with various mutations:
+[ul] extra large ones take more than one hit to kill[/ul]
+[ul] faster enemy[/ul]
+[ul] armored enemies that shrug off damage[/ul]
+[ul] blinky ones that will split into multiple children when they die[/ul]
+Sometimes enemies can come with more than one mutation (or the same mutation several times)"
+fit_content = true
+
+[node name="Bottom_Space" type="RichTextLabel" parent="HowToPlay"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 26
+theme_override_font_sizes/bold_font_size = 22
+bbcode_enabled = true
+fit_content = true
+
 [connection signal="gui_input" from="CardA" to="." method="_on_card_a_gui_input"]
 [connection signal="mouse_entered" from="CardA" to="." method="_on_card_a_mouse_entered"]
 [connection signal="mouse_exited" from="CardA" to="." method="_on_card_a_mouse_exited"]
@@ -141,3 +303,6 @@ texture = SubResource("ViewportTexture_7uxpj")
 [connection signal="gui_input" from="CardB" to="." method="_on_card_a_gui_input"]
 [connection signal="mouse_entered" from="CardB" to="." method="_on_card_a_mouse_entered"]
 [connection signal="mouse_exited" from="CardB" to="." method="_on_card_a_mouse_exited"]
+[connection signal="pressed" from="Menu/Menu_PlayGame" to="." method="_on_menu_play_game_pressed"]
+[connection signal="pressed" from="Menu/Menu_HowToPlay" to="." method="_on_menu_how_to_play_pressed"]
+[connection signal="pressed" from="Menu/Menu_Credits" to="." method="_on_menu_credits_pressed"]

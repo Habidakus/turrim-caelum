@@ -13,6 +13,8 @@ func enter_state():
 
 func exit_state():
 	%HUD.hide_game_over()
+	for mob in get_tree().get_nodes_in_group("mob"):
+		mob.queue_free()
 	
 func _on_timer_timeout():
 	$Timer.stop()

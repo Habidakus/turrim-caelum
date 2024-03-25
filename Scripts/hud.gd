@@ -39,7 +39,9 @@ func _ready():
 	$ScoreLabel.hide()
 	$ScoreValue.hide()
 	$GameOver.hide()
-	$PressAnyKey.hide()
+	$Menu.hide()
+	$HowToPlay.hide()
+	$Credits.hide()
 	$MoneyValue.hide()
 	$MoneyLabel.hide()
 
@@ -138,6 +140,37 @@ func activate_card():
 			cardTemplate.mouse_hover(false)
 			activeCard = null
 
+func activate_menu():
+	if $Menu/Menu_PlayGame.has_focus():
+		_on_menu_play_game_pressed()
+	elif $Menu/Menu_HowToGame.has_focus():
+		_on_menu_how_to_play_pressed()
+	else:
+		_on_menu_credits_pressed()
+		
+func ensure_menu_has_focus():
+	if $Menu/Menu_PlayGame.has_focus():
+		pass
+	elif $Menu/Menu_HowToPlay.has_focus():
+		pass
+	elif $Menu/Menu_Credits.has_focus():
+		pass
+	else:
+		$Menu/Menu_PlayGame.grab_focus()
+
+func _on_menu_play_game_pressed():
+	%GameStateMachine.switch_state("Playing_Action")
+	# Note that we don't currently put this call to the start_game() function in
+	# the Playing_Action enter() function because that's also called when
+	# switching back form picking cards. #TODO: can be better
+	%HUD.get_parent().start_game()
+
+func _on_menu_how_to_play_pressed():
+	%GameStateMachine.switch_state("ShowPage_HowToPlay")
+
+func _on_menu_credits_pressed():
+	%GameStateMachine.switch_state("ShowPage_Credits")
+	
 # ----------------- STATE FUNCTIONS -----------------
 
 func show_title():
@@ -147,14 +180,16 @@ func hide_title():
 	$GameTitle.hide()
 
 func show_main_menu():
-	$PressAnyKey.show()
+	$Menu.show()
 
 func hide_main_menu():
-	$PressAnyKey.hide()
+	$Menu.hide()
 
 func show_game_over():
 	$ScoreLabel.show()
 	$ScoreValue.show()
+	$MoneyValue.hide()
+	$MoneyLabel.hide()
 	$GameOver.show()
 
 func hide_game_over():
@@ -179,3 +214,15 @@ func show_game_action():
 func hide_game_action():
 	$ScoreLabel.hide()
 	$ScoreValue.hide()
+
+func show_page_credits():
+	$Credits.show()
+
+func hide_page_credits():
+	$Credits.hide()
+	
+func show_page_how_to_play():
+	$HowToPlay.show()
+
+func hide_page_how_to_play():
+	$HowToPlay.hide()
