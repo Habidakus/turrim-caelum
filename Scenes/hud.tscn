@@ -261,6 +261,16 @@ toggle_mode = true
 button_group = ExtResource("3_xur4o")
 text = "High Scores"
 
+[node name="Menu_Quit" type="Button" parent="Menu"]
+layout_mode = 2
+size_flags_vertical = 4
+focus_next = NodePath("../Menu_PlayGame")
+focus_previous = NodePath("../Menu_HowToPlay")
+theme_override_font_sizes/font_size = 42
+toggle_mode = true
+button_group = ExtResource("3_xur4o")
+text = "Quit"
+
 [node name="HowToPlay" type="VBoxContainer" parent="."]
 visible = false
 anchors_preset = 15
@@ -372,6 +382,45 @@ theme_override_font_sizes/bold_font_size = 22
 bbcode_enabled = true
 fit_content = true
 
+[node name="ShowPage_Why" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Top_Space" type="RichTextLabel" parent="ShowPage_Why"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 26
+theme_override_font_sizes/bold_font_size = 22
+bbcode_enabled = true
+fit_content = true
+
+[node name="Text" type="RichTextLabel" parent="ShowPage_Why"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 22
+theme_override_font_sizes/bold_font_size = 22
+bbcode_enabled = true
+text = "This game was created, mostly, so that I could learn to use Godot.
+
+There isn't any great design effort here, and certainly no laudible art in this game. 
+Heck, even the coding isn't that interesting (although I do plan on making it available on GitHub).
+
+It's just here so that I can, soup to nuts, make a complete game in Godot.
+
+If you found any enjoyment in it, that's above and beyond any expectations on my part."
+fit_content = true
+
+[node name="Bottom_Space" type="RichTextLabel" parent="ShowPage_Why"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 26
+theme_override_font_sizes/bold_font_size = 22
+bbcode_enabled = true
+fit_content = true
+
 [connection signal="gui_input" from="CardA" to="." method="_on_card_a_gui_input"]
 [connection signal="mouse_entered" from="CardA" to="." method="_on_card_a_mouse_entered"]
 [connection signal="mouse_exited" from="CardA" to="." method="_on_card_a_mouse_exited"]
@@ -386,3 +435,4 @@ fit_content = true
 [connection signal="pressed" from="Menu/Menu_Credits" to="." method="_on_menu_credits_pressed"]
 [connection signal="pressed" from="Menu/Menu_Why" to="." method="_on_menu_why_pressed"]
 [connection signal="pressed" from="Menu/Menu_HighScore" to="." method="_on_menu_highscore_pressed"]
+[connection signal="pressed" from="Menu/Menu_Quit" to="." method="_on_menu_quit_pressed"]

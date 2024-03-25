@@ -15,11 +15,9 @@ extends Node
 #
 # Godot Tech to learn:
 # - settings screen
-# - local persistence
 #
 # Features to add:
 # - game outro (score, unlocks, etc...)
-# - high-score board
 # - barriers on the castle (unlocked via upgrades?)
 # - meta progression
 #   - permanently apply some upgrades
@@ -28,7 +26,6 @@ extends Node
 #     - rocks that will block both enemy paths & blow up the player
 #     - walls (like rocks, but much longer)
 #     - hostile zones that would blow up the player but allow mobs to pass through
-# - Quit game button
 # - display stats while in advancement selection screen (and on end screen)
 # - more advancements:
 #   - multi shot

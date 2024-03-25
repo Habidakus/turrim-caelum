@@ -45,6 +45,7 @@ func _ready():
 	$MoneyValue.hide()
 	$MoneyLabel.hide()
 	$HighScoreList.hide()
+	$ShowPage_Why.hide()
 
 func select_card(dir: int):
 	if dir == 0: # card was clicked on
@@ -158,25 +159,6 @@ func ensure_menu_has_focus():
 		pass
 	else:
 		$Menu/Menu_PlayGame.grab_focus()
-
-func _on_menu_play_game_pressed():
-	%GameStateMachine.switch_state("Playing_Action")
-	# Note that we don't currently put this call to the start_game() function in
-	# the Playing_Action enter() function because that's also called when
-	# switching back form picking cards. #TODO: can be better
-	%HUD.get_parent().start_game()
-
-func _on_menu_how_to_play_pressed():
-	%GameStateMachine.switch_state("ShowPage_HowToPlay")
-
-func _on_menu_credits_pressed():
-	%GameStateMachine.switch_state("ShowPage_Credits")
-
-func _on_menu_why_pressed():
-	pass # Replace with function body.
-	
-func _on_menu_highscore_pressed():
-	%GameStateMachine.switch_state("ShowPage_HighScore")
 	
 func populate_high_score(highScores : Array):
 	var children = $HighScoreList/ListContainer.get_children()
@@ -203,6 +185,28 @@ func populate_high_score(highScores : Array):
 		nameChild.fit_content = true
 		nameChild.scroll_active = false
 		$HighScoreList/ListContainer.add_child(nameChild)
+
+func _on_menu_play_game_pressed():
+	%GameStateMachine.switch_state("Playing_Action")
+	# Note that we don't currently put this call to the start_game() function in
+	# the Playing_Action enter() function because that's also called when
+	# switching back form picking cards. #TODO: can be better
+	%HUD.get_parent().start_game()
+
+func _on_menu_how_to_play_pressed():
+	%GameStateMachine.switch_state("ShowPage_HowToPlay")
+
+func _on_menu_credits_pressed():
+	%GameStateMachine.switch_state("ShowPage_Credits")
+
+func _on_menu_why_pressed():
+	%GameStateMachine.switch_state("ShowPage_Why")
+	
+func _on_menu_highscore_pressed():
+	%GameStateMachine.switch_state("ShowPage_HighScore")
+
+func _on_menu_quit_pressed():
+	get_tree().quit()
 
 # ----------------- STATE FUNCTIONS -----------------
 
@@ -265,3 +269,9 @@ func show_high_score():
 
 func hide_high_score():
 	$HighScoreList.hide()
+
+func show_page_why():
+	$ShowPage_Why.show()
+
+func hide_page_why():
+	$ShowPage_Why.hide()
