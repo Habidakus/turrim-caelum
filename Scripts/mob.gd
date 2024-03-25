@@ -3,6 +3,7 @@ extends Area2D
 class_name Mob
 
 var distance_travelled = 0.0
+var show_path_dist = 1.0
 var target
 var rotateSpeed
 var travelSpeed = 33.0
@@ -26,15 +27,24 @@ func _ready():
 	process_mode = Node.PROCESS_MODE_PAUSABLE
 	self.add_to_group("mob")
 
-func set_target(node : Area2D, rotSpd : float, id : int, p: Curve2D, dist):
+func set_target(node : Area2D, rotSpd : float, id : int, p: Curve2D, dist, pathGenerator):
 	id_for_spawn = id
 	var id_for_hp = id
-	path = p
-	pathLength = path.get_baked_length()
+	var swerve : int = 0
+	show_path_dist = pathGenerator.get_show_path_dist()
 	target = node.position;
 	distance_travelled = dist
 	rotateSpeed = rotSpd;
 	var mutatorA = 0
+	# THIRTEEN - swerve
+	while (id != 0) && (id % 13) == 0:
+		id = int(id / 13)
+		id_for_spawn = int(id_for_spawn / 13)
+		swerve += 1
+		if rotateSpeed > 0:
+			rotateSpeed *= -1.0
+		rotateSpeed *= 1.25
+		show_path_dist *= 0.75
 	# ELEVEN - armored
 	while (id != 0) && (id % 2) == 0:
 		id = int(id / 2)
@@ -51,7 +61,7 @@ func set_target(node : Area2D, rotSpd : float, id : int, p: Curve2D, dist):
 	while (id != 0) && (id % 5) == 0:
 		id = int(id / 5)
 		travelSpeed *= 2.0
-		rotateSpeed *= 2.0
+		rotateSpeed *= 1.5
 		score += 1
 	# THREE - children
 	while (id != 0) && (id % 3) == 0:
@@ -64,6 +74,11 @@ func set_target(node : Area2D, rotSpd : float, id : int, p: Curve2D, dist):
 	while (id_for_hp > 31):
 		id_for_hp -= 31
 		hp *= 1.1
+	if swerve > 0 && pathGenerator != null:
+		path = pathGenerator.request_unique_path(p.get_point_position(0), p.get_point_position(p.point_count - 1), 3 * swerve)
+	else:
+		path = p
+	pathLength = path.get_baked_length()
 	self.scale *= size
 	if mutatorA > 0:
 		$AnimatedSprite2D.material.set_shader_parameter("mutatorA", mutatorA)
@@ -88,6 +103,7 @@ func on_hit(damage : float):
 		var tween = get_tree().create_tween()
 		tween.tween_property(self, "scale", Vector2(0.5, 0.5), 0.1).set_trans(Tween.TRANS_BOUNCE)
 		tween.tween_property(self, "scale", Vector2(size, size), 0.1).set_trans(Tween.TRANS_BOUNCE)
+		distance_travelled -= 3.0
 		return
 	
 	var offset = distance_travelled - 20.0
@@ -118,9 +134,10 @@ func on_hit(damage : float):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	distance_travelled += delta * travelSpeed;
+	distance_travelled += delta * travelSpeed
+	
 	self.position = path.sample_baked(distance_travelled)
-	var show_path_dist = get_parent().get_show_path_dist()
+	
 	var close : float = (distance_travelled / pathLength) - show_path_dist
 	var spin : float = 25.0
 	if close > 0.05:

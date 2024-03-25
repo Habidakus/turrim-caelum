@@ -154,17 +154,20 @@ func add_path_point(start: Vector2, end: Vector2, desired_length: float, curve :
 			print_debug("x y = (", x, ", ", y, ")")
 	return best
 
+func request_unique_path(start: Vector2, end: Vector2, pointCount: int) -> Curve2D:
+	var c : Curve2D = Curve2D.new()
+	c.add_point(start)
+	c.add_point(end)
+	var totalPoints = pointCount + 4
+	for i in totalPoints:
+		var length : float = 1800.0 + (1200.0 * (i + 1.0) / totalPoints)
+		var n : Curve2D = add_path_point(start, end, length, c)
+		c = n
+		
+	return c
+	
 func generate_path(start: Vector2, end: Vector2) -> Curve2D:
-	var two_points : Curve2D = Curve2D.new()
-	two_points.add_point(start)
-	two_points.add_point(end)
-	
-	var three_points = add_path_point(start, end, 1800.0, two_points);
-	var four_points = add_path_point(start, end, 2200.0, three_points);
-	var five_points = add_path_point(start, end, 2600.0, four_points);
-	var six_points = add_path_point(start, end, 3000.0, five_points);
-	
-	return six_points
+	return request_unique_path(start, end, 4)
 
 func current_path() -> Curve2D:
 	if pathArray.size() == 1:
@@ -223,7 +226,7 @@ func spawn_mob(id, dist, path) -> Mob:
 	var mob : Mob = mob_scene.instantiate()
 	mob.position = path.sample_baked(dist)
 	var speed_scale = rng.randf_range(0.8, 1.2)
-	mob.set_target($Castle, speed_scale, id, path, dist)
+	mob.set_target($Castle, speed_scale, id, path, dist, self)
 	call_deferred("add_child", mob)
 	if rolling_mob_health_average == 0:
 		rolling_mob_health_average = mob.hp + mob.armor
