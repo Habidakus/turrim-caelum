@@ -54,6 +54,7 @@ var highscore_filepath = "user://highscores.dat"
 var pathArray : Array = []
 var currentPathIndex = 0
 var rolling_mob_health_average : float = 0
+var secondsPerMonster : float = 2.0
 
 var possible_cards = [
 	load("res://Data/fasterBullets_a1.tres"),
@@ -101,6 +102,7 @@ func start_game():
 	pathArray = []
 	pathArray.append(generate_path(Vector2(0,0), castle.position))
 	
+	$MobTimer.wait_time = secondsPerMonster
 	$MobTimer.start()
 	$HUD.set_score(0)
 

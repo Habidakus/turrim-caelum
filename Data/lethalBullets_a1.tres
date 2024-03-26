@@ -7,4 +7,4 @@ script = ExtResource("1_sxyl8")
 cardName = "Elephant Bullets"
 description = "These larger bullets do more damage to aliens."
 boonType = 4
-boonMultiple = 1.5
+boonMultiple = 1.4

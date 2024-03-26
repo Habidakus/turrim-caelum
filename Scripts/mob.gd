@@ -3,12 +3,14 @@ extends Area2D
 class_name Mob
 
 var distance_travelled = 0.0
+var childOffset_distance = -1.0
+var childOffset_time = -1.0
 var show_path_dist = 1.0
 var target
 var rotateSpeed
 var travelSpeed = 33.0
 var score = 1
-var hp : float = 10
+var hp : float = 20
 var armor : float = 0
 var size = 1.0
 var id_for_spawn = 0
@@ -45,6 +47,11 @@ func set_target(node : Area2D, rotSpd : float, id : int, p: Curve2D, dist, pathG
 			rotateSpeed *= -1.0
 		rotateSpeed *= 1.25
 		show_path_dist *= 0.75
+	while (id != 0) && (id % 17) == 0:
+		id = int(id / 17)
+		size *= 0.666
+		score += 1
+		armor += 5
 	# ELEVEN - armored
 	while (id != 0) && (id % 2) == 0:
 		id = int(id / 2)
@@ -53,7 +60,7 @@ func set_target(node : Area2D, rotSpd : float, id : int, p: Curve2D, dist, pathG
 	# SEVEN - super sized
 	while (id != 0) && (id % 7) == 0:
 		id = int(id / 7)
-		hp += 30
+		hp += 65
 		score += 1
 		size *= 1.3333
 		travelSpeed *= 0.9
@@ -62,7 +69,6 @@ func set_target(node : Area2D, rotSpd : float, id : int, p: Curve2D, dist, pathG
 		id = int(id / 5)
 		travelSpeed *= 2.0
 		rotateSpeed *= 1.5
-		score += 1
 	# THREE - children
 	while (id != 0) && (id % 3) == 0:
 		id = int(id / 3)
@@ -70,10 +76,8 @@ func set_target(node : Area2D, rotSpd : float, id : int, p: Curve2D, dist, pathG
 		spawn_children += 1
 		mutatorA = 1
 		travelSpeed *= 0.8
-		score += 1
-	while (id_for_hp > 31):
-		id_for_hp -= 31
-		hp *= 1.1
+	if id_for_hp >= 37:
+		hp *= pow(1.1, int(id_for_hp / 37))
 	if swerve > 0 && pathGenerator != null:
 		path = pathGenerator.request_unique_path(p.get_point_position(0), p.get_point_position(p.point_count - 1), 3 * swerve)
 	else:
@@ -107,13 +111,17 @@ func on_hit(damage : float):
 		return
 	
 	var offset = distance_travelled - 20.0
+	var time = 0.3333
 	if spawn_children > 0:
 		spawn_children += 2
 	while spawn_children > 0:
 		spawn_children -= 1
-		var childMob : Mob = get_parent().spawn_mob(id_for_spawn, offset, path)
+		var childMob : Mob = get_parent().spawn_mob(id_for_spawn, distance_travelled, path)
 		childMob.travelSpeed = self.travelSpeed
+		childMob.childOffset_distance = offset
+		childMob.childOffset_time = time
 		offset -= 30.0
+		time += 0.3333
 	
 	# Explode
 	var particle = explosion_scene.instantiate()
@@ -134,7 +142,12 @@ func on_hit(damage : float):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	distance_travelled += delta * travelSpeed
+	if childOffset_time > 0:
+		var diffPerSec : float = delta / childOffset_time
+		childOffset_time -= delta
+		distance_travelled = lerp(distance_travelled, childOffset_distance, sqrt(diffPerSec))
+	else:
+		distance_travelled += delta * travelSpeed
 	
 	self.position = path.sample_baked(distance_travelled)
 	
