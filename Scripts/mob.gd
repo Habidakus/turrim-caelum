@@ -8,9 +8,11 @@ var childOffset_time = -1.0
 var show_path_dist = 1.0
 var target
 var rotateSpeed
-var travelSpeed = 33.0
+var travelSpeed_low = 30.0
+var travelSpeed = travelSpeed_low
+var travelSpeed_high = 120.0
 var score = 1
-var hp : float = 20
+var hp : float = 18
 var armor : float = 0
 var size = 1.0
 var id_for_spawn = 0
@@ -29,10 +31,12 @@ func _ready():
 	process_mode = Node.PROCESS_MODE_PAUSABLE
 	self.add_to_group("mob")
 
-func set_target(node : Area2D, rotSpd : float, id : int, p: Curve2D, dist, pathGenerator):
+func set_target(node : Area2D, rotSpd : float, id : int, p: Curve2D, dist, pathGenerator, bonusScore):
 	id_for_spawn = id
+	travelSpeed = lerp(travelSpeed_low, travelSpeed_high, float(id - 50) / 500.0)
 	var id_for_hp = id
 	var swerve : int = 0
+	score += (bonusScore * 2)
 	show_path_dist = pathGenerator.get_show_path_dist()
 	target = node.position;
 	distance_travelled = dist
@@ -50,7 +54,9 @@ func set_target(node : Area2D, rotSpd : float, id : int, p: Curve2D, dist, pathG
 	while (id != 0) && (id % 17) == 0:
 		id = int(id / 17)
 		size *= 0.666
+		travelSpeed *= 1.1
 		score += 1
+		hp -= 5
 		armor += 5
 	# ELEVEN - armored
 	while (id != 0) && (id % 2) == 0:
@@ -67,7 +73,7 @@ func set_target(node : Area2D, rotSpd : float, id : int, p: Curve2D, dist, pathG
 	# FIVE - speedy
 	while (id != 0) && (id % 5) == 0:
 		id = int(id / 5)
-		travelSpeed *= 2.0
+		travelSpeed *= 1.8
 		rotateSpeed *= 1.5
 	# THREE - children
 	while (id != 0) && (id % 3) == 0:
@@ -76,8 +82,8 @@ func set_target(node : Area2D, rotSpd : float, id : int, p: Curve2D, dist, pathG
 		spawn_children += 1
 		mutatorA = 1
 		travelSpeed *= 0.8
-	if id_for_hp >= 37:
-		hp *= pow(1.1, int(id_for_hp / 37))
+	if id_for_hp >= 41:
+		hp *= pow(1.1, int(id_for_hp / 41))
 	if swerve > 0 && pathGenerator != null:
 		path = pathGenerator.request_unique_path(p.get_point_position(0), p.get_point_position(p.point_count - 1), 3 * swerve)
 	else:
@@ -116,7 +122,7 @@ func on_hit(damage : float):
 		spawn_children += 2
 	while spawn_children > 0:
 		spawn_children -= 1
-		var childMob : Mob = get_parent().spawn_mob(id_for_spawn, distance_travelled, path)
+		var childMob : Mob = get_parent().spawn_mob(id_for_spawn, distance_travelled, path, 0)
 		childMob.travelSpeed = self.travelSpeed
 		childMob.childOffset_distance = offset
 		childMob.childOffset_time = time

@@ -7,10 +7,10 @@ class_name Player
 @export var explosion_scene : PackedScene
 var screen_size;
 var showPathDist : float = 0.7;
-var rate_of_fire : float = 0.75;
-var bullet_range : float = 250.0;
-var bullet_speed : float = 200.0;
-var bullet_damage : float = 8.0;
+var rate_of_fire : float = 0.7;
+var bullet_range : float = 275.0;
+var bullet_speed : float = 215.0;
+var bullet_damage : float = 9.0;
 var next_shot
 var autospend : bool = false;
 

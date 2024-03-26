@@ -48,6 +48,9 @@ var mobId = 1
 var player : Player = null
 var castle = null
 
+var freeXp: int = 1
+var freeXpCounter : int = 0
+
 var highscore_list : Array = []
 var highscore_filepath = "user://highscores.dat"
 
@@ -82,11 +85,14 @@ func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
 func start_game():
+	rng.seed = Time.get_ticks_msec()
 	money = 0
 	spendable_money = 0
 	score = 0
 	mobId = 1
 	rolling_mob_health_average = 0
+	freeXp = 1
+	freeXpCounter = 0
 	
 	# Create the player
 	player = player_scene.instantiate()
@@ -210,10 +216,18 @@ func start_shopping():
 	$HUD.spend_points(cardA, cardB, cardC, player)
 
 func _on_mob_timer_timeout():
-	spawn_mob(mobId, 0, current_path())
-	mobId += 1
+	var bonusScore = 0
+	freeXpCounter += 1
+	if freeXpCounter % freeXp == 0:
+		bonusScore = 1
+		freeXpCounter = 0
+		freeXp += 1
 	
+	spawn_mob(mobId, 0, current_path(), bonusScore)
+	mobId += 1
+		
 	if mobId % 11 == 0:
+		$MobTimer.wait_time = lerp(secondsPerMonster, secondsPerMonster / 5.0, (mobId - 50) / 500.0)
 		var increase = (mobId % 121 == 0)
 		var start = Vector2(0,0)
 		if rng.randi() % 2 == 1:
@@ -224,11 +238,11 @@ func _on_mob_timer_timeout():
 		if increase != true:
 			pathArray.remove_at(0)
 		
-func spawn_mob(id, dist, path) -> Mob:
+func spawn_mob(id, dist, path, bonusScore : int) -> Mob:
 	var mob : Mob = mob_scene.instantiate()
 	mob.position = path.sample_baked(dist)
 	var speed_scale = rng.randf_range(0.8, 1.2)
-	mob.set_target($Castle, speed_scale, id, path, dist, self)
+	mob.set_target($Castle, speed_scale, id, path, dist, self, bonusScore)
 	call_deferred("add_child", mob)
 	if rolling_mob_health_average == 0:
 		rolling_mob_health_average = mob.hp + mob.armor
