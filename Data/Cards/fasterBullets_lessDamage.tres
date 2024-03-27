@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dncxuxi5ptjiu"]
+
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_fasterBullets_lessDamage.gd" id="1_eau56"]
+
+[resource]
+script = ExtResource("1_eau56")
+cardName = "Tiny Aerodynamic Bullets"
+description = "Bullets travel much faster, but do less damage:
+"
+boonType = 1
+boonMultiple = 1.5

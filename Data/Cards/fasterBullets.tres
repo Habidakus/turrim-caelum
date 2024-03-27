@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_ufkfv")
 cardName = "Gyrojet Bullets"
-description = "Gyrojet backing means bullets fly faster: 
-+ 25% faster bullets"
+description = "Your bullets move faster:
+"
 boonType = 1
 boonMultiple = 1.25

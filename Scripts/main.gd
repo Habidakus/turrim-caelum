@@ -60,13 +60,13 @@ var rolling_mob_health_average : float = 0
 var secondsPerMonster : float = 2.0
 
 var possible_cards = [
-	load("res://Data/Cards/fasterBullets_a1.tres"),
-	load("res://Data/Cards/fasterBullets_a2.tres"),
+	load("res://Data/Cards/fasterBullets.tres"),
+	load("res://Data/Cards/fasterBullets_lessDamage.tres"),
 	load("res://Data/Cards/fasterPlayer_a1.tres"),
 	load("res://Data/Cards/fasterPlayer_a2.tres"),
 	load("res://Data/Cards/fasterFireRate_a1.tres"),
 	load("res://Data/Cards/longLivedBullets_a1.tres"),
-	load("res://Data/Cards/lethalBullets_a1.tres"),
+	load("res://Data/Cards/lethalBullets.tres"),
 	load("res://Data/Cards/autospend_once.tres"),
 	load("res://Data/Cards/revealFinalApproachSooner_a1.tres"),
 ]
@@ -83,6 +83,13 @@ signal increase_score(amount : int)
 func _ready():
 	$MobTimer.timeout.connect(_on_mob_timer_timeout)
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	
+	for card in possible_cards.size():
+		if possible_cards[card] == null:
+			print_debug("BAD CARD (#", card ,")")
+	for card in possible_curses.size():
+		if possible_curses[card] == null:
+			print_debug("BAD CURSE (#", card ,")")
 
 func start_game():
 	rng.seed = Time.get_ticks_msec()

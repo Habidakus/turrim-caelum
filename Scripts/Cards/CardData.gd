@@ -38,3 +38,26 @@ func get_multiple(_player: Player, _cardData: CardData) -> float:
 
 func apply_card(_player: Player):
 	print_debug("CARD ", cardName, " failed to implement apply_card")
+
+# --------------------- library functions ----------------------------------
+
+func get_damage_we_will_add(player: Player, cardData: CardData) -> float:
+	var multiple = cardData.get_multiple(player, cardData)
+	var straight_add = 10.0 * multiple * multiple
+	var scale_existing = player.bullet_damage * (sqrt(multiple) - 1.0)
+	return max(straight_add, scale_existing)
+
+func get_damage_we_will_remove(player: Player, cardData: CardData) -> float:
+	var multiple = sqrt(cardData.get_multiple(player, cardData))
+	var straight_remove = 10.0 * multiple * multiple
+	var scale_existing = player.bullet_damage * (sqrt(multiple) - 1.0)
+	return min(straight_remove, scale_existing)
+
+func get_delta_increased_rate_of_fire_per_minute(cardData: CardData) -> float:
+	return (60 * (cardData.boonMultiple - 1))
+
+func get_delta_decreased_rate_of_fire_per_minute(cardData: CardData) -> float:
+	return (60 * (sqrt(cardData.boonMultiple) - 1))
+
+func get_bullet_speed_we_will_add(player: Player, cardData: CardData) -> float:
+	return (get_multiple(player, cardData) - 1.0) * player.bullet_speed

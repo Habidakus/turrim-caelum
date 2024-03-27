@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://bi28m2mix1dfx"]
+
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_lethalBullets_slowerRate.gd" id="1_djvh1"]
+
+[resource]
+script = ExtResource("1_djvh1")
+cardName = "Elephant Bullets"
+description = "These larger bullets do more damage to aliens, but at a slower firing rate:
+"
+boonType = 4
+boonMultiple = 1.4

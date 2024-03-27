@@ -7,7 +7,7 @@ func is_possible(_player: Player, _cardData: CardData) -> bool:
 
 func initialize_for_purchase(player: Player, cardData: CardData):
 	var currentBulletsPerMinute = 60 / player.rate_of_fire
-	newBulletsPerMinute = (60 * (cardData.boonMultiple - 1) + currentBulletsPerMinute)
+	newBulletsPerMinute = get_delta_increased_rate_of_fire_per_minute(cardData) + currentBulletsPerMinute
 
 func get_description(_player: Player, _cardData: CardData) -> String:
 	return str(description, "Increase to ", int(round(newBulletsPerMinute)), " bullets/minute")
