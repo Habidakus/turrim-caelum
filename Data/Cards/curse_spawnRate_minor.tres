@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://f703by4mu00g"]
+
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_curse_idAdvance.gd" id="1_ltmbp"]
+
+[resource]
+script = ExtResource("1_ltmbp")
+cardName = "Harder Enemy"
+description = "Monsters get more difficult."
+boonType = 8
+boonMultiple = 1.5

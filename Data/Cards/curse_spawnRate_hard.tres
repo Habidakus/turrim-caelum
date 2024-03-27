@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dk56drmntw85x"]
+
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_curse_spawnRate.gd" id="1_5ttjc"]
+
+[resource]
+script = ExtResource("1_5ttjc")
+cardName = "Faster Spawn Rates"
+description = "Monsters spawn so much faster.
+Oh dear."
+boonType = 9
+boonMultiple = 2.0

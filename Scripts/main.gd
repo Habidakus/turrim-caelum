@@ -44,7 +44,8 @@ var rng = RandomNumberGenerator.new()
 var money = 0
 var spendable_money : int = 0
 var score = 0
-var mobId = 1
+var mobId : int = 1
+var monster_spawnrate_increase : int = 0
 var player : Player = null
 var castle = null
 
@@ -78,6 +79,9 @@ var possible_curses = [
 	load("res://Data/Cards/curse_idAdvance_minor.tres"),
 	load("res://Data/Cards/curse_idAdvance_medium.tres"),
 	load("res://Data/Cards/curse_idAdvance_hard.tres"),
+	load("res://Data/Cards/curse_spawnRate_minor.tres"),
+	load("res://Data/Cards/curse_spawnRate_medium.tres"),
+	load("res://Data/Cards/curse_spawnRate_hard.tres"),
 ]
 
 signal increase_score(amount : int)
@@ -100,6 +104,7 @@ func start_game():
 	spendable_money = 0
 	score = 0
 	mobId = 1
+	monster_spawnrate_increase = 0
 	rolling_mob_health_average = 0
 	freeXp = 1
 	freeXpCounter = 0
@@ -132,7 +137,12 @@ func get_mob_average_health() -> float:
 	return rolling_mob_health_average
 
 func advance_id(advanceAmount : float):
-	mobId = int(float(mobId) * advanceAmount)
+	var increase : float = float(min(200, mobId)) * (advanceAmount - 1.0)
+	mobId += increase
+
+func advance_spawnrate(advanceAmount : float):
+	var increase : float = float(min(100, mobId)) * (advanceAmount - 1.0)
+	monster_spawnrate_increase += increase
 
 func add_path_point(start: Vector2, end: Vector2, desired_length: float, curve : Curve2D) -> Curve2D:
 	var best_bl = 0
@@ -235,9 +245,10 @@ func _on_mob_timer_timeout():
 	
 	spawn_mob(mobId, 0, current_path(), bonusScore)
 	mobId += 1
-		
+	
+	monster_spawnrate_increase += 1
 	if mobId % 11 == 0:
-		$MobTimer.wait_time = lerp(secondsPerMonster, secondsPerMonster / 5.0, (mobId - 50) / 500.0)
+		$MobTimer.wait_time = lerp(secondsPerMonster, secondsPerMonster / 5.0, (monster_spawnrate_increase - 50) / 850.0)
 		var increase = (mobId % 121 == 0)
 		var start = Vector2(0,0)
 		if rng.randi() % 2 == 1:
