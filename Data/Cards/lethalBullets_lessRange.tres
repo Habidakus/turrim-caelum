@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://crehy2rx0wqb6"]
+
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_lethalBullets_lessRange.gd" id="1_3qp7d"]
+
+[resource]
+script = ExtResource("1_3qp7d")
+cardName = "High Explosive Shells"
+description = "These larger bullets do more damage to aliens, but at a reduced range:
+"
+boonType = 4
+boonMultiple = 1.4

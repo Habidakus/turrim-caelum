@@ -4,7 +4,8 @@
 
 [resource]
 script = ExtResource("1_gxpha")
-cardName = "High Octane Fuel"
-description = "High Octane Fuel makes for faster flying: +50% player speed"
+cardName = "Triple Fuel Injection"
+description = "Player ship moves faster:
+"
 boonType = 0
 boonMultiple = 1.5

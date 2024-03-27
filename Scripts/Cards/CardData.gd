@@ -66,3 +66,5 @@ func get_bullet_speed_we_will_remove(player: Player, cardData: CardData) -> floa
 	
 func get_increase_to_bullet_range(player: Player, cardData: CardData) -> float:
 	return (get_multiple(player, cardData) - 1.0) * player.bullet_range
+func get_decrease_to_bullet_range(player: Player, cardData: CardData) -> float:
+	return (sqrt(get_multiple(player, cardData)) - 1.0) * player.bullet_range

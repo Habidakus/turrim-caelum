@@ -69,6 +69,7 @@ var possible_cards = [
 	load("res://Data/Cards/fasterPlayer_a2.tres"),
 	load("res://Data/Cards/fasterFireRate_a1.tres"),
 	load("res://Data/Cards/lethalBullets.tres"),
+	load("res://Data/Cards/lethalBullets_lessRange.tres"),
 	load("res://Data/Cards/lethalBullets_slowerRate.tres"),
 	load("res://Data/Cards/revealFinalApproachSooner_a1.tres"),
 ]

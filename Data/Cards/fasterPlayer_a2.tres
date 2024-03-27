@@ -4,7 +4,8 @@
 
 [resource]
 script = ExtResource("1_j2mti")
-cardName = "Pure Fuel"
-description = "Nothing but the best for our pilots: +50% more speed"
+cardName = "Rocket Fuel"
+description = "Nothing but the best for our pilots:
+"
 boonType = 0
-boonMultiple = 1.5
+boonMultiple = 1.25
