@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=2 format=3 uid="uid://dncxuxi5ptjiu"]
 
-[ext_resource type="Script" path="res://Scripts/cardData_fasterBullets.gd" id="1_ywrvf"]
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_fasterBullets.gd" id="1_ywrvf"]
 
 [resource]
 script = ExtResource("1_ywrvf")

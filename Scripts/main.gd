@@ -60,21 +60,21 @@ var rolling_mob_health_average : float = 0
 var secondsPerMonster : float = 2.0
 
 var possible_cards = [
-	load("res://Data/fasterBullets_a1.tres"),
-	load("res://Data/fasterBullets_a2.tres"),
-	load("res://Data/fasterPlayer_a1.tres"),
-	load("res://Data/fasterPlayer_a2.tres"),
-	load("res://Data/fasterFireRate_a1.tres"),
-	load("res://Data/longLivedBullets_a1.tres"),
-	load("res://Data/lethalBullets_a1.tres"),
-	load("res://Data/autospend_once.tres"),
-	load("res://Data/revealFinalApproachSooner_a1.tres"),
+	load("res://Data/Cards/fasterBullets_a1.tres"),
+	load("res://Data/Cards/fasterBullets_a2.tres"),
+	load("res://Data/Cards/fasterPlayer_a1.tres"),
+	load("res://Data/Cards/fasterPlayer_a2.tres"),
+	load("res://Data/Cards/fasterFireRate_a1.tres"),
+	load("res://Data/Cards/longLivedBullets_a1.tres"),
+	load("res://Data/Cards/lethalBullets_a1.tres"),
+	load("res://Data/Cards/autospend_once.tres"),
+	load("res://Data/Cards/revealFinalApproachSooner_a1.tres"),
 ]
 
 var possible_curses = [
-	load("res://Data/curse_idAdvance_minor.tres"),
-	load("res://Data/curse_idAdvance_medium.tres"),
-	load("res://Data/curse_idAdvance_hard.tres"),
+	load("res://Data/Cards/curse_idAdvance_minor.tres"),
+	load("res://Data/Cards/curse_idAdvance_medium.tres"),
+	load("res://Data/Cards/curse_idAdvance_hard.tres"),
 ]
 
 signal increase_score(amount : int)
