@@ -8,7 +8,7 @@ void fragment() {
 	{
 		if (COLOR.a > 0.0)
 		{
-			float v = abs(sin(TIME * mutatorA * mutatorA * 3.0));
+			float v = abs(sin(TIME * mutatorA * mutatorA * 2.0));
 			COLOR.r = mix(COLOR.r, 1, v);
 		}
 	}

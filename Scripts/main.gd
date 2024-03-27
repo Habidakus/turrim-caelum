@@ -32,12 +32,10 @@ extends Node
 #   - power shot
 #   - hailstorm
 #   - movement-based power attacks (move in circle, move in star pattern, etc...)
-#   - GIVE & TAKE, some advancements increase one stat while takng others away
 # - Add more curses
 # Bugs to fix:
 # - Add sound & VFX feedback when selecting upgrade card
 # - fix collision bug on larger enemies (or is it enemies at 45 degree angles?)
-# - when mothers spawn children, lerp them to their start locations (so as not to land on player)
 
 var screen_size;
 var rng = RandomNumberGenerator.new()
@@ -138,11 +136,11 @@ func get_mob_average_health() -> float:
 
 func advance_id(advanceAmount : float):
 	var increase : float = float(min(200, mobId)) * (advanceAmount - 1.0)
-	mobId += increase
+	mobId += int(round(increase))
 
 func advance_spawnrate(advanceAmount : float):
 	var increase : float = float(min(100, mobId)) * (advanceAmount - 1.0)
-	monster_spawnrate_increase += increase
+	monster_spawnrate_increase += int(round(increase))
 
 func add_path_point(start: Vector2, end: Vector2, desired_length: float, curve : Curve2D) -> Curve2D:
 	var best_bl = 0
