@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=2 format=3 uid="uid://dg1jy743y60wc"]
 
-[ext_resource type="Script" path="res://Data/cardData_fasterRateOfFire.gd" id="1_omglu"]
+[ext_resource type="Script" path="res://Scripts/cardData_fasterRateOfFire.gd" id="1_omglu"]
 
 [resource]
 script = ExtResource("1_omglu")
