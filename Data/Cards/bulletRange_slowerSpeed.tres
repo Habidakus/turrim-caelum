@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dfmx2thldr33w"]
+
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_bulletRange_slowerSpeed.gd" id="1_oh6nw"]
+
+[resource]
+script = ExtResource("1_oh6nw")
+cardName = "Gyrojet Bullets"
+description = "Bullets fly slower, but farther:
+"
+boonType = 3
+boonMultiple = 1.5

@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_ufkfv")
-cardName = "Gyrojet Bullets"
+cardName = "Mag Acceleration Barrel"
 description = "Your bullets move faster:
 "
 boonType = 1

@@ -1,7 +1,5 @@
 extends CardData
 
-var newBulletsPerMinute;
-
 func get_description(player: Player, cardData: CardData) -> String:
 	var new_speed : float = player.bullet_speed + get_bullet_speed_we_will_add(player, cardData)
 	return str(description, "Bullet speed increase from ", int(round(player.bullet_speed)), " to ", int(round(new_speed)))

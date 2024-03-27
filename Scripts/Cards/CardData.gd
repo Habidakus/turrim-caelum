@@ -61,3 +61,8 @@ func get_delta_decreased_rate_of_fire_per_minute(cardData: CardData) -> float:
 
 func get_bullet_speed_we_will_add(player: Player, cardData: CardData) -> float:
 	return (get_multiple(player, cardData) - 1.0) * player.bullet_speed
+func get_bullet_speed_we_will_remove(player: Player, cardData: CardData) -> float:
+	return (sqrt(get_multiple(player, cardData)) - 1.0) * player.bullet_speed
+	
+func get_increase_to_bullet_range(player: Player, cardData: CardData) -> float:
+	return (get_multiple(player, cardData) - 1.0) * player.bullet_range

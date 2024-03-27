@@ -60,14 +60,16 @@ var rolling_mob_health_average : float = 0
 var secondsPerMonster : float = 2.0
 
 var possible_cards = [
+	load("res://Data/Cards/autospend_once.tres"),
+	load("res://Data/Cards/bulletRange.tres"),
+	load("res://Data/Cards/bulletRange_slowerSpeed.tres"),
 	load("res://Data/Cards/fasterBullets.tres"),
 	load("res://Data/Cards/fasterBullets_lessDamage.tres"),
 	load("res://Data/Cards/fasterPlayer_a1.tres"),
 	load("res://Data/Cards/fasterPlayer_a2.tres"),
 	load("res://Data/Cards/fasterFireRate_a1.tres"),
-	load("res://Data/Cards/longLivedBullets_a1.tres"),
 	load("res://Data/Cards/lethalBullets.tres"),
-	load("res://Data/Cards/autospend_once.tres"),
+	load("res://Data/Cards/lethalBullets_slowerRate.tres"),
 	load("res://Data/Cards/revealFinalApproachSooner_a1.tres"),
 ]
 

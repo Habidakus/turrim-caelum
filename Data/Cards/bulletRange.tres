@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://bbouy78p4kusb"]
+
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_bulletRange.gd" id="1_fdi3i"]
+
+[resource]
+script = ExtResource("1_fdi3i")
+cardName = "Rifled Barrel"
+description = "Bullets fly farther:
+"
+boonType = 3
+boonMultiple = 1.25
