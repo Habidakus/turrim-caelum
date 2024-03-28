@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://unyekg2bj1ix" path="res://Scenes/smallExplosion.tscn" id="2_p6cdx"]
 [ext_resource type="Shader" path="res://Graphics/mob.gdshader" id="3_3vebn"]
 [ext_resource type="PackedScene" uid="uid://dhr8o6o00bvcl" path="res://Scenes/pathParicle.tscn" id="3_7nkw0"]
-[ext_resource type="SpriteFrames" uid="uid://bd27qr2v2wm4s" path="res://Graphics/EnemySpriteFrames.tres" id="4_ova30"]
+[ext_resource type="SpriteFrames" uid="uid://bd27qr2v2wm4s" path="res://Graphics/EnemyASpriteFrames.tres" id="5_mc1ea"]
 [ext_resource type="AudioStream" uid="uid://c677p3ptk387h" path="res://Sound/impact-fx-41103.mp3" id="6_vxse1"]
 [ext_resource type="AudioStream" uid="uid://qjmpoob7yvl3" path="res://Sound/22-caliber-with-ricochet-39679.mp3" id="7_mghvi"]
 
@@ -26,7 +26,7 @@ metadata/_edit_group_ = true
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_hlyll")
 scale = Vector2(0.25, 0.25)
-sprite_frames = ExtResource("4_ova30")
+sprite_frames = ExtResource("5_mc1ea")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_x5ls6")

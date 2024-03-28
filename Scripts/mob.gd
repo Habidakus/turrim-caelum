@@ -20,6 +20,7 @@ var spawn_children = 0
 var path : Curve2D = null
 var pathLength;
 var pathParticles : Array = []
+var alternateEnemyFrames = load("res://Graphics/EnemyBSpriteFrames.tres")
 @export var explosion_scene : PackedScene
 @export var path_particle_scene : PackedScene
 @onready var animationSprite = $AnimatedSprite2D
@@ -90,6 +91,8 @@ func set_target(node : Area2D, rotSpd : float, id : int, p: Curve2D, dist, pathG
 		path = p
 	pathLength = path.get_baked_length()
 	self.scale *= size
+	if armor > 0:
+		$AnimatedSprite2D.sprite_frames = alternateEnemyFrames
 	if mutatorA > 0:
 		$AnimatedSprite2D.material.set_shader_parameter("mutatorA", mutatorA)
 	else:
