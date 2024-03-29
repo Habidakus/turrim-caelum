@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://3nphprqd1it8"]
+[gd_scene load_steps=25 format=3 uid="uid://3nphprqd1it8"]
 
 [ext_resource type="PackedScene" uid="uid://cc4fq5x80sure" path="res://Scenes/player.tscn" id="1_eo6vi"]
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_jojh5"]
@@ -18,6 +18,7 @@
 [ext_resource type="Script" path="res://Scripts/GameState/GameState_ShowPage_Credits.gd" id="16_yl58h"]
 [ext_resource type="Script" path="res://Scripts/GameState/GameState_ShowPage_HighScore.gd" id="17_54e7x"]
 [ext_resource type="Script" path="res://Scripts/GameState/GameState_ShowPage_Why.gd" id="18_38mt6"]
+[ext_resource type="Script" path="res://Scripts/Maps/Map_Basic.gd" id="18_kj1r7"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_vua4k"]
 
@@ -39,7 +40,6 @@ shader_parameter/noiseY = SubResource("NoiseTexture2D_ld3ie")
 script = ExtResource("1_jojh5")
 mob_scene = ExtResource("2_jwed4")
 player_scene = ExtResource("1_eo6vi")
-castle_scene = ExtResource("4_132h1")
 
 [node name="Background" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_qn386")
@@ -93,5 +93,11 @@ script = ExtResource("17_54e7x")
 
 [node name="ShowPage_Why" type="Node" parent="GameStateMachine"]
 script = ExtResource("18_38mt6")
+
+[node name="Maps" type="Node" parent="."]
+
+[node name="Map_Basic" type="Node" parent="Maps"]
+script = ExtResource("18_kj1r7")
+castle_scene = ExtResource("4_132h1")
 
 [connection signal="increase_score" from="." to="." method="_on_increase_score"]

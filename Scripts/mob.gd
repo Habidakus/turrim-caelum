@@ -6,7 +6,7 @@ var distance_travelled = 0.0
 var childOffset_distance = -1.0
 var childOffset_time = -1.0
 var show_path_dist = 1.0
-var target
+var final_target : Node2D = null
 var rotateSpeed
 var travelSpeed_low = 30.0
 var travelSpeed = travelSpeed_low
@@ -32,14 +32,15 @@ func _ready():
 	process_mode = Node.PROCESS_MODE_PAUSABLE
 	self.add_to_group("mob")
 
-func set_target(node : Area2D, rotSpd : float, id : int, p: Curve2D, dist, pathGenerator, bonusScore):
+func set_target(target : Node2D, rotSpd : float, id : int, p: Curve2D, dist, pathGenerator : Map, player : Player, bonusScore, rng : RandomNumberGenerator):
 	id_for_spawn = id
 	travelSpeed = lerp(travelSpeed_low, travelSpeed_high, float(id - 50) / 500.0)
 	var id_for_hp = id
+	var id_for_map = id
 	var swerve : int = 0
 	score += (bonusScore * 2)
-	show_path_dist = pathGenerator.get_show_path_dist()
-	target = node.position;
+	show_path_dist = player.showPathDist
+	final_target = target;
 	distance_travelled = dist
 	rotateSpeed = rotSpd;
 	var mutatorA = 0
@@ -86,7 +87,7 @@ func set_target(node : Area2D, rotSpd : float, id : int, p: Curve2D, dist, pathG
 	if id_for_hp >= 41:
 		hp *= pow(1.1, int(id_for_hp / 41))
 	if swerve > 0 && pathGenerator != null:
-		path = pathGenerator.request_unique_path(p.get_point_position(0), p.get_point_position(p.point_count - 1), 3 * swerve)
+		path = pathGenerator.request_unique_path(p.get_point_position(0), p.get_point_position(p.point_count - 1), 3 * swerve, id_for_map, rng)
 	else:
 		path = p
 	pathLength = path.get_baked_length()

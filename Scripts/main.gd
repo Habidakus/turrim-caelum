@@ -9,7 +9,6 @@ extends Node
 
 @export var mob_scene: PackedScene
 @export var player_scene: PackedScene
-@export var castle_scene: PackedScene
 
 # TODO List:
 #
@@ -43,20 +42,17 @@ var money = 0
 var spendable_money : int = 0
 var score = 0
 var mobId : int = 1
+var secondsPerMonster : float = 2.0
 var monster_spawnrate_increase : int = 0
+var rolling_mob_health_average : float = 0
 var player : Player = null
-var castle = null
+var map : Map = null
 
 var freeXp: int = 1
 var freeXpCounter : int = 0
 
 var highscore_list : Array = []
 var highscore_filepath = "user://highscores.dat"
-
-var pathArray : Array = []
-var currentPathIndex = 0
-var rolling_mob_health_average : float = 0
-var secondsPerMonster : float = 2.0
 
 var possible_cards = [
 	load("res://Data/Cards/autospend_once.tres"),
@@ -113,13 +109,8 @@ func start_game():
 	screen_size = player.get_viewport_rect().size
 	player.position = screen_size / 2.0
 	
-	# Create the castle
-	castle = castle_scene.instantiate()
-	add_child(castle)
-	castle.position = screen_size - Vector2(20,20)
-	
-	pathArray = []
-	pathArray.append(generate_path(Vector2(0,0), castle.position))
+	map = $Maps/Map_Basic
+	map.start_game(rng)
 	
 	$MobTimer.wait_time = secondsPerMonster
 	$MobTimer.start()
@@ -142,65 +133,8 @@ func advance_spawnrate(advanceAmount : float):
 	var increase : float = float(min(100, mobId)) * (advanceAmount - 1.0)
 	monster_spawnrate_increase += int(round(increase))
 
-func add_path_point(start: Vector2, end: Vector2, desired_length: float, curve : Curve2D) -> Curve2D:
-	var best_bl = 0
-	var best : Curve2D = null
-	var buffer = max(20, 400 - mobId)
-	var maxPlacement : Vector2 = screen_size - Vector2(buffer, buffer);
-	for i in 50:
-		var tStart = start
-		if rng.randi() % 2 == 1:
-			tStart.x += 80;
-		else:
-			tStart.y += 80;
-		tStart.x = clamp(tStart.x, 20, maxPlacement.x)
-		tStart.y = clamp(tStart.y, 20, maxPlacement.y)
-		var tEnd = end
-		if rng.randi() % 2 == 1:
-			tEnd.x -= 80;
-		else:
-			tEnd.y -= 80;
-		tEnd.x = clamp(tEnd.x, 20, maxPlacement.x)
-		tEnd.y = clamp(tEnd.y, 20, maxPlacement.y)
-		var x = rng.randf_range(tStart.x, tEnd.x)
-		var y = rng.randf_range(tStart.y, tEnd.y)
-		var d : Curve2D = curve.duplicate()
-		var insert_point = 1
-		if curve.point_count > 2:
-			insert_point = rng.randi_range(1, curve.point_count - 1)
-		var p = Vector2(x, y)
-		var in_p = (curve.get_point_position(insert_point - 1) - p) / 1.5
-		var out_p = (curve.get_point_position(insert_point) - p) / 1.5
-		d.add_point(p, in_p, out_p, insert_point)
-		var bl = absf(desired_length - d.get_baked_length())
-		if best == null || bl < best_bl:
-			best = d
-			best_bl = bl
-		if x < 0 || y < 0 || x > screen_size.x || y > screen_size.y:
-			print_debug("x y = (", x, ", ", y, ")")
-	return best
-
-func request_unique_path(start: Vector2, end: Vector2, pointCount: int) -> Curve2D:
-	var c : Curve2D = Curve2D.new()
-	c.add_point(start)
-	c.add_point(end)
-	var totalPoints = pointCount + 4
-	for i in totalPoints:
-		var length : float = 1800.0 + (1200.0 * (i + 1.0) / totalPoints)
-		var n : Curve2D = add_path_point(start, end, length, c)
-		c = n
-		
-	return c
-	
-func generate_path(start: Vector2, end: Vector2) -> Curve2D:
-	return request_unique_path(start, end, 4)
-
 func current_path() -> Curve2D:
-	if pathArray.size() == 1:
-		return pathArray[0]
-	else:
-		currentPathIndex += 1
-		return pathArray[currentPathIndex % pathArray.size()]
+	return map.current_path()
 
 func start_shopping():
 	possible_cards.shuffle()
@@ -242,26 +176,21 @@ func _on_mob_timer_timeout():
 		freeXp += 1
 	
 	spawn_mob(mobId, 0, current_path(), bonusScore)
+	map.on_mob_spawn(mobId, rng)
 	mobId += 1
 	
+	$MobTimer.wait_time = lerp(secondsPerMonster, secondsPerMonster / 5.0, (monster_spawnrate_increase - 50) / 850.0)
 	monster_spawnrate_increase += 1
-	if mobId % 11 == 0:
-		$MobTimer.wait_time = lerp(secondsPerMonster, secondsPerMonster / 5.0, (monster_spawnrate_increase - 50) / 850.0)
-		var increase = (mobId % 121 == 0)
-		var start = Vector2(0,0)
-		if rng.randi() % 2 == 1:
-			start.x = rng.randi_range(0, screen_size.x)
-		else:
-			start.y = rng.randi_range(0, screen_size.y)
-		pathArray.append(generate_path(start, castle.position))
-		if increase != true:
-			pathArray.remove_at(0)
-		
+
 func spawn_mob(id, dist, path, bonusScore : int) -> Mob:
 	var mob : Mob = mob_scene.instantiate()
 	mob.position = path.sample_baked(dist)
 	var speed_scale = rng.randf_range(0.8, 1.2)
-	mob.set_target($Castle, speed_scale, id, path, dist, self, bonusScore)
+	var final_target : Node2D = player
+	if map.has_castle():
+		final_target = map.get_castle() 
+		
+	mob.set_target(final_target, speed_scale, id, path, dist, map, player, bonusScore, rng)
 	call_deferred("add_child", mob)
 	if rolling_mob_health_average == 0:
 		rolling_mob_health_average = mob.hp + mob.armor
@@ -288,8 +217,8 @@ func highscore_list_sorter(a, b):
 func game_over():
 	$AudioStreamPlayer2D.play()
 	$MobTimer.stop()
+	map.game_over()
 	player.queue_free()
-	castle.queue_free()
 	
 	var username = "Player One"
 	if OS.has_environment("USERNAME"):
