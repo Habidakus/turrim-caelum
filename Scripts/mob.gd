@@ -128,6 +128,7 @@ func on_hit(damage : float):
 		spawn_children -= 1
 		var childMob : Mob = get_parent().spawn_mob(id_for_spawn, distance_travelled, path, 0)
 		childMob.travelSpeed = self.travelSpeed
+		childMob.position = self.position
 		childMob.childOffset_distance = offset
 		childMob.childOffset_time = time
 		offset -= 30.0
@@ -152,15 +153,27 @@ func on_hit(damage : float):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if childOffset_time > 0:
-		var diffPerSec : float = delta / childOffset_time
-		childOffset_time -= delta
-		distance_travelled = lerp(distance_travelled, childOffset_distance, sqrt(diffPerSec))
+
+	if distance_travelled < pathLength:
+		if childOffset_time > 0:
+			var diffPerSec : float = delta / childOffset_time
+			childOffset_time -= delta
+			distance_travelled = lerp(distance_travelled, childOffset_distance, sqrt(diffPerSec))
+		else:
+			distance_travelled += delta * travelSpeed
+		self.position = path.sample_baked(distance_travelled)
 	else:
-		distance_travelled += delta * travelSpeed
-	
-	self.position = path.sample_baked(distance_travelled)
-	
+		var targetApproach : float = delta
+		var dir : Vector2 = (final_target.position - self.position).normalized()
+		if childOffset_time > 0:
+			childOffset_time -= delta
+			targetApproach = 0 - childOffset_time
+		if targetApproach > 0:
+			self.position += dir * travelSpeed * targetApproach
+		else:
+			var diffPerSec : float = targetApproach / childOffset_time
+			self.position += dir * travelSpeed * lerp(0.0, targetApproach, sqrt(diffPerSec))
+		
 	var close : float = (distance_travelled / pathLength) - show_path_dist
 	var spin : float = 25.0
 	if close > 0.05:
@@ -169,7 +182,7 @@ func _process(delta):
 			var particle = path_particle_scene.instantiate()
 			particle.amount = 50 * amount
 			if close > 0.15:
-				var hue = (close - 0.15) / 0.15
+				var hue = (close - 0.30) / 0.30
 				if hue > 1:
 					hue = 1
 				var r = lerp(particle.color.r, Color.RED.r, hue) 

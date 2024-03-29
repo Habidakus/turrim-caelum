@@ -21,6 +21,8 @@ extends Node
 # - meta progression
 #   - permanently apply some upgrades
 #   - more maps:
+#     - screen to select which map to play on
+#     - add map name to high score list
 #     - maps that start with mob ID at larger numbers 
 #     - rocks that will block both enemy paths & blow up the player
 #     - walls (like rocks, but much longer)
@@ -31,10 +33,15 @@ extends Node
 #   - power shot
 #   - hailstorm
 #   - movement-based power attacks (move in circle, move in star pattern, etc...)
+# - create game abstraction for power-up cards so that we can better reject them
 # - Add more curses
+#   - tchokies (GNDN flavour cards)
+#   - castle wandering for castle levels
 # Bugs to fix:
 # - Add sound & VFX feedback when selecting upgrade card
 # - fix collision bug on larger enemies (or is it enemies at 45 degree angles?)
+# - fix child retreat when on approach to final_target and no longer on path
+# - sometime mobs on final_target approach don't explode and just vanish???
 
 var screen_size;
 var rng = RandomNumberGenerator.new()
@@ -109,7 +116,7 @@ func start_game():
 	screen_size = player.get_viewport_rect().size
 	player.position = screen_size / 2.0
 	
-	map = $Maps/Map_Basic
+	map = $Maps/Map_BasicNoCastle
 	map.start_game(rng)
 	
 	$MobTimer.wait_time = secondsPerMonster

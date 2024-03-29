@@ -20,7 +20,7 @@ func get_castle() -> Area2D:
 	print_debug("Map ", self, " did not implement get_castle()")
 	return null
 
-func request_unique_path(start: Vector2, end: Vector2, pointCount: int, mobId: int, rng: RandomNumberGenerator) -> Curve2D:
+func request_unique_path(_start: Vector2, _end: Vector2, _pointCount: int, _mobId: int, _rng: RandomNumberGenerator) -> Curve2D:
 	print_debug("Map ", self, " did not implement request_unique_path()")
 	return null
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://3nphprqd1it8"]
+[gd_scene load_steps=26 format=3 uid="uid://3nphprqd1it8"]
 
 [ext_resource type="PackedScene" uid="uid://cc4fq5x80sure" path="res://Scenes/player.tscn" id="1_eo6vi"]
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_jojh5"]
@@ -18,7 +18,8 @@
 [ext_resource type="Script" path="res://Scripts/GameState/GameState_ShowPage_Credits.gd" id="16_yl58h"]
 [ext_resource type="Script" path="res://Scripts/GameState/GameState_ShowPage_HighScore.gd" id="17_54e7x"]
 [ext_resource type="Script" path="res://Scripts/GameState/GameState_ShowPage_Why.gd" id="18_38mt6"]
-[ext_resource type="Script" path="res://Scripts/Maps/Map_Basic.gd" id="18_kj1r7"]
+[ext_resource type="Script" path="res://Scripts/Maps/Map_BasicCastle.gd" id="18_kj1r7"]
+[ext_resource type="Script" path="res://Scripts/Maps/Map_BasicNoCastle.gd" id="20_vnfb1"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_vua4k"]
 
@@ -96,8 +97,11 @@ script = ExtResource("18_38mt6")
 
 [node name="Maps" type="Node" parent="."]
 
-[node name="Map_Basic" type="Node" parent="Maps"]
+[node name="Map_BasicCastle" type="Node" parent="Maps"]
 script = ExtResource("18_kj1r7")
 castle_scene = ExtResource("4_132h1")
+
+[node name="Map_BasicNoCastle" type="Node" parent="Maps"]
+script = ExtResource("20_vnfb1")
 
 [connection signal="increase_score" from="." to="." method="_on_increase_score"]
