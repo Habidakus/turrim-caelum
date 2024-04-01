@@ -16,6 +16,12 @@ func _on_area_entered(area):
 	particle.rotation = self.rotation
 	particle.get_child(0).emitting = true
 	particle.get_child(0).one_shot = true
-	get_parent().add_child(particle);
-	get_parent().find_child("GameStateMachine").switch_state("Playing_GameOver")
+	# TODO: This is rediculous, either use a signal, or find a better way to find Main
+	var main = get_parent().get_parent().get_parent()
+	main.add_child(particle);
+	var gsm = main.find_child("GameStateMachine")
+	if gsm != null:
+		gsm.switch_state("Playing_GameOver")
+	else:
+		print_debug("Game State Machine not found under ", main)
 	self.queue_free()

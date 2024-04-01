@@ -174,8 +174,6 @@ func set_child_vector(parent: Mob, regressPoint: Vector2, regressTime: float):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	
-	var startPos = self.position
 	if childOffset_regressTime > 0 && childOffset_regressTime < delta:
 		# The impact has finally warn off, set the child to their regress point
 		if childOffset_regressDist >= 0.0:
