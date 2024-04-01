@@ -7,22 +7,35 @@ class_name Player
 @export var explosion_scene : PackedScene
 var screen_size;
 var showPathDist : float = 0.7;
-var rate_of_fire : float = 0.7;
+var bulletsPerSecond : float = 1.0 / 0.7;
 var bullet_range : float = 275.0;
 var bullet_speed : float = 215.0;
 var bullet_damage : float = 9.0;
 var next_shot
 var autospend : bool = false;
+var tchotchke : bool = false;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_viewport_rect().size
-	next_shot = rate_of_fire
+	next_shot = 1.0 / bulletsPerSecond
 	process_mode = Node.PROCESS_MODE_PAUSABLE
 
 func get_screen_size():
 	return screen_size
-	
+
+func create_player_worth() -> PlayerWorth:
+	var worth : PlayerWorth = PlayerWorth.new()
+	worth.shipSpeed = speed
+	worth.bulletsPerSecond = bulletsPerSecond
+	worth.bulletRange = bullet_range
+	worth.bulletSpeed = bullet_speed
+	worth.bulletDamage = bullet_damage
+	worth.autospendCount = 1 if autospend else 0
+	worth.tchotchkeCount = 1 if tchotchke else 0
+	worth.showPathDist = showPathDist
+	return worth
+
 #func _draw():
 	#draw_line(Vector2.ZERO, to_local(draw_target), Color.RED, 5, true)
 
@@ -58,7 +71,7 @@ func _process(delta):
 	if closestMob != null:
 		rotation = (closestMob.position - self.position).angle() + PI / 2.0
 		if next_shot <= 0:
-				next_shot = rate_of_fire
+				next_shot = 1.0 / bulletsPerSecond
 				var bullet = bullet_scene.instantiate()
 				var lifespan = bullet_range / bullet_speed;
 				bullet.init(self.position, lifespan, bullet_speed, closestMob, bullet_damage)

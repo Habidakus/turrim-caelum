@@ -12,7 +12,7 @@ func init(_cardData : CardData, _player : Player):
 	player = _player
 	cardData = _cardData
 	$Label.text = cardData.cardName
-	$Description.text = cardData.get_description(_player, _cardData)
+	$Description.text = cardData.get_description(player.create_player_worth())
 
 func mouse_hover(is_hovering : bool):
 	if is_hovering:

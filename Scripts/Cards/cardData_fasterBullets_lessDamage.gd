@@ -1,16 +1,21 @@
 extends CardData
 
-func get_description(player: Player, cardData: CardData) -> String:
-	var new_speed : float = player.bullet_speed + get_bullet_speed_we_will_add(player, cardData)
-	var new_damage: float = player.bullet_damage - get_damage_we_will_remove(player, cardData)
-	return str(description, "Bullet speed increase from ", int(round(player.bullet_speed)), " to ", int(round(new_speed)), ", bullet damage decreased from ", int(round(player.bullet_damage)), " to ", int(round(new_damage)))
-	
-func is_possible(player: Player, cardData: CardData) -> bool:
-	var damageOk : bool = player.bullet_damage - get_damage_we_will_remove(player, cardData) < 1.1 * player.get_parent().get_mob_average_health()
-	var new_speed : float = player.bullet_speed + get_bullet_speed_we_will_add(player, cardData)
-	var speedOk : bool = new_speed > player.speed && new_speed <= 1000.0
-	return damageOk && speedOk
+var increaseToBulletSpeed : float
+var decreaseToBulletDamage : float
+
+func initialize_for_purchase(worth : PlayerWorth):
+	increaseToBulletSpeed = get_bullet_speed_we_will_add(worth)
+	worth.bulletSpeed += increaseToBulletSpeed
+	decreaseToBulletDamage = get_damage_we_will_remove(worth)
+	worth.bulletDamage -= decreaseToBulletDamage
+
+func get_description(worth : PlayerWorth) -> String:
+	var newSpeed : float = worth.bulletSpeed + increaseToBulletSpeed
+	var newDamage: float = worth.bulletDamage - decreaseToBulletDamage
+	var speedText : String = str("Bullet speed increase from ", int(round(worth.bulletSpeed)), " to ", int(round(newSpeed)))
+	var damageText : String = str("bullet damage decreased from ", int(round(worth.bulletDamage)), " to ", int(round(newDamage)))
+	return str(description, speedText, ", ", damageText)
 
 func apply_card(player: Player):
-	player.bullet_speed += get_bullet_speed_we_will_add(player, self)
-	player.bullet_damage -= get_damage_we_will_remove(player, self)
+	player.bullet_speed += increaseToBulletSpeed
+	player.bullet_damage -= decreaseToBulletDamage

@@ -33,7 +33,6 @@ extends Node
 #   - power shot
 #   - hailstorm
 #   - movement-based power attacks (move in circle, move in star pattern, etc...)
-# - create game abstraction for power-up cards so that we can better reject them
 # - Add more curses
 #   - tchokies (GNDN flavour cards)
 #   - castle wandering for castle levels
@@ -41,6 +40,7 @@ extends Node
 # - Add sound & VFX feedback when selecting upgrade card
 # - fix collision bug on larger enemies (or is it enemies at 45 degree angles?)
 # - sometime mobs on final_target approach don't explode and just vanish???
+# - should be red trail only once the mob leaves the path, teal trail while on path
 
 var screen_size;
 var rng = RandomNumberGenerator.new()
@@ -50,12 +50,15 @@ var score = 0
 var mobId : int = 1
 var secondsPerMonster : float = 2.0
 var monster_spawnrate_increase : int = 0
-var rolling_mob_health_average : float = 0
 var player : Player = null
 var map : Map = null
 
 var freeXp: int = 1
 var freeXpCounter : int = 0
+
+var rollingMobHealthAverage : float = 0
+var lastTwentyCreatures = []
+var ltcWriteIndex : int = 0
 
 var highscore_list : Array = []
 var highscore_filepath = "user://highscores.dat"
@@ -105,7 +108,9 @@ func start_game():
 	score = 0
 	mobId = 1
 	monster_spawnrate_increase = 0
-	rolling_mob_health_average = 0
+	rollingMobHealthAverage = 0
+	lastTwentyCreatures = []
+	ltcWriteIndex = 0
 	freeXp = 1
 	freeXpCounter = 0
 	
@@ -129,7 +134,7 @@ func get_show_path_dist() -> float:
 		return 0.7
 
 func get_mob_average_health() -> float:
-	return rolling_mob_health_average
+	return rollingMobHealthAverage
 
 func advance_id(advanceAmount : float):
 	var increase : float = float(min(200, mobId)) * (advanceAmount - 1.0)
@@ -148,8 +153,9 @@ func start_shopping():
 	var cardB : CardData = null
 	var cardC : CardData = null
 	for card in possible_cards:
-		card.initialize_for_purchase(player, card)
-		if card.is_possible(player, card):
+		var worth : PlayerWorth = player.create_player_worth()
+		card.initialize_for_purchase(worth)
+		if worth.is_player_possible(rollingMobHealthAverage, lastTwentyCreatures, card):
 			if cardA == null:
 				cardA = card
 			elif cardB == null:
@@ -162,16 +168,20 @@ func start_shopping():
 	if cardC == null:
 		possible_curses.shuffle()
 		for card in possible_curses:
-			card.initialize_for_purchase(player, card)
-			if card.is_possible(player, card):
+			var worth : PlayerWorth = player.create_player_worth()
+			card.initialize_for_purchase(worth)
+			if worth.is_world_possible(card):
 				if cardA == null:
 					cardA = card
 				elif cardB == null:
 					cardB = card
 				elif cardC == null:
 					cardC = card
-				
-	$HUD.spend_points(cardA, cardB, cardC, player)
+	
+	if cardC != null:
+		$HUD.spend_points(cardA, cardB, cardC, player)
+	else:
+		print_debug("Failed to find enough cards")
 
 func _on_mob_timer_timeout():
 	var bonusScore = 0
@@ -198,10 +208,17 @@ func spawn_mob(id, dist, path, bonusScore : int) -> Mob:
 		
 	mob.set_target(final_target, speed_scale, id, path, dist, map, player, bonusScore, rng)
 	call_deferred("add_child", mob)
-	if rolling_mob_health_average == 0:
-		rolling_mob_health_average = mob.hp + mob.armor
+	if rollingMobHealthAverage == 0:
+		rollingMobHealthAverage = mob.hp + mob.armor
 	else:
-		rolling_mob_health_average = (rolling_mob_health_average * 20 + mob.hp + mob.armor) / 21.0
+		rollingMobHealthAverage = (rollingMobHealthAverage * 20 + mob.hp + mob.armor) / 21.0
+	var lastCreatureSummed = [Time.get_unix_time_from_system(), mob.hp, mob.armor]
+	if lastTwentyCreatures.size() >= 20:
+		lastTwentyCreatures[ltcWriteIndex] = lastCreatureSummed
+		ltcWriteIndex = (ltcWriteIndex + 1) % lastTwentyCreatures.size()
+	else:
+		lastTwentyCreatures.append(lastCreatureSummed)
+		ltcWriteIndex = 0
 	return mob
 
 # Note - unlike most compare() functions in other languages, this one is only "is lesser" and expects true or false return value

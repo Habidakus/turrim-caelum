@@ -1,11 +1,14 @@
 extends CardData
 
-func get_description(player: Player, cardData: CardData) -> String:
-	var new_damage: float = player.bullet_damage + get_damage_we_will_add(player, cardData)
-	return str(description, "Bullet damage increased from ", int(round(player.bullet_damage)), " to ", int(round(new_damage)))
+var increaseToBulletDamage : float
 
-func is_possible(player: Player, cardData: CardData) -> bool:
-	return player.bullet_damage + get_damage_we_will_add(player, cardData) < 1.1 * player.get_parent().get_mob_average_health()
+func initialize_for_purchase(worth : PlayerWorth):
+	increaseToBulletDamage = get_damage_we_will_add(worth)
+	worth.bulletDamage += increaseToBulletDamage
+	
+func get_description(worth : PlayerWorth) -> String:
+	var newDamage: float = worth.bulletDamage + increaseToBulletDamage
+	return str(description, "Bullet damage increased from ", int(round(worth.bulletDamage)), " to ", int(round(newDamage)))
 
 func apply_card(player: Player):
-	player.bullet_damage += get_damage_we_will_add(player, self)
+	player.bullet_damage += increaseToBulletDamage

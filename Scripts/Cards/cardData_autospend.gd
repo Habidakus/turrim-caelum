@@ -1,7 +1,7 @@
 extends CardData
 
-func is_possible(player: Player, _cardData: CardData) -> bool:
-	return player.autospend == false
+func initialize_for_purchase(worth : PlayerWorth):
+	worth.autospendCount += 1
 	
 func apply_card(player: Player):
 	player.autospend = true
