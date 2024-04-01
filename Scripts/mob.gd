@@ -3,8 +3,9 @@ extends Area2D
 class_name Mob
 
 var distance_travelled = 0.0
-var childOffset_distance = -1.0
-var childOffset_time = -1.0
+var childOffset_regressDist = -1.0
+var childOffset_regressPoint = Vector2.ZERO
+var childOffset_regressTime = -1.0
 var show_path_dist = 1.0
 var final_target : Node2D = null
 var rotateSpeed
@@ -16,7 +17,7 @@ var hp : float = 18
 var armor : float = 0
 var size = 1.0
 var id_for_spawn = 0
-var spawn_children = 0
+var spawn_children : int = 0
 var path : Curve2D = null
 var pathLength;
 var pathParticles : Array = []
@@ -120,18 +121,19 @@ func on_hit(damage : float):
 		distance_travelled -= 3.0
 		return
 	
-	var offset = distance_travelled - 20.0
+	var regressDist = distance_travelled - 20.0
 	var time = 0.3333
 	if spawn_children > 0:
 		spawn_children += 2
 	while spawn_children > 0:
 		spawn_children -= 1
 		var childMob : Mob = get_parent().spawn_mob(id_for_spawn, distance_travelled, path, 0)
-		childMob.travelSpeed = self.travelSpeed
-		childMob.position = self.position
-		childMob.childOffset_distance = offset
-		childMob.childOffset_time = time
-		offset -= 30.0
+		if regressDist < pathLength:
+			childMob.set_child_path(self, regressDist, time)
+		else:
+			var regressionVector : Vector2 = (self.position - final_target.position).normalized() * (distance_travelled - regressDist);
+			childMob.set_child_vector(self, self.position + regressionVector, time)
+		regressDist -= 30.0
 		time += 0.3333
 	
 	# Explode
@@ -151,47 +153,76 @@ func on_hit(damage : float):
 	# Remove Self
 	self.queue_free()
 
+# If this mob is a child of a just destroyed parent, set their child regression point
+func set_child_path(parent: Mob, regressDist: float, regressTime: float):
+	assert(regressDist < pathLength)
+	travelSpeed = parent.travelSpeed
+	position = parent.position
+	rotation = parent.rotation
+	childOffset_regressTime = regressTime
+	childOffset_regressDist = max(0.0, regressDist)
+	childOffset_regressPoint = Vector2.ZERO
+
+# If this mob is a child of a just destroyed parent, set their child regression point
+func set_child_vector(parent: Mob, regressPoint: Vector2, regressTime: float):
+	travelSpeed = parent.travelSpeed
+	position = parent.position
+	rotation = parent.rotation
+	childOffset_regressTime = regressTime
+	childOffset_regressPoint = regressPoint
+	childOffset_regressDist = -1
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-
-	if distance_travelled < pathLength:
-		if childOffset_time > 0:
-			var diffPerSec : float = delta / childOffset_time
-			childOffset_time -= delta
-			distance_travelled = lerp(distance_travelled, childOffset_distance, sqrt(diffPerSec))
+	
+	var startPos = self.position
+	if childOffset_regressTime > 0 && childOffset_regressTime < delta:
+		# The impact has finally warn off, set the child to their regress point
+		if childOffset_regressDist >= 0.0:
+			self.position = path.sample_baked(childOffset_regressDist)
+			distance_travelled = childOffset_regressDist
 		else:
-			distance_travelled += delta * travelSpeed
+			self.position = childOffset_regressPoint
+		childOffset_regressTime = 0
+		childOffset_regressPoint = Vector2.ZERO
+		childOffset_regressDist = -1
+	elif childOffset_regressTime > 0:
+		# Child is still travelling backwards after mother was blown up
+		var diffPerSec : float = delta / childOffset_regressTime
+		childOffset_regressTime -= delta
+		if childOffset_regressDist >= 0.0:
+			distance_travelled = lerp(distance_travelled, childOffset_regressDist, sqrt(diffPerSec))
+			self.position = path.sample_baked(distance_travelled)
+		else:
+			self.position = Vector2(lerp(self.position.x, childOffset_regressPoint.x, sqrt(diffPerSec)), lerp(self.position.y, childOffset_regressPoint.y, sqrt(diffPerSec)))
+			self.position = lerp(self.position, childOffset_regressPoint, sqrt(diffPerSec))
+	elif distance_travelled < pathLength:
+		# Mob is travelling along the pre-defined path
+		distance_travelled += delta * travelSpeed
 		self.position = path.sample_baked(distance_travelled)
 	else:
-		var targetApproach : float = delta
+		# Mob has travelled past the end of the path, and should zero in on the final target
+		distance_travelled += delta * travelSpeed
 		var dir : Vector2 = (final_target.position - self.position).normalized()
-		if childOffset_time > 0:
-			childOffset_time -= delta
-			targetApproach = 0 - childOffset_time
-		if targetApproach > 0:
-			self.position += dir * travelSpeed * targetApproach
-		else:
-			var diffPerSec : float = targetApproach / childOffset_time
-			self.position += dir * travelSpeed * lerp(0.0, targetApproach, sqrt(diffPerSec))
-		
-	var close : float = (distance_travelled / pathLength) - show_path_dist
+		self.position += dir * travelSpeed * delta
+	
+	var frac : float = distance_travelled / pathLength
+	if frac > 1:
+		frac = 1
+	var close : float = frac - show_path_dist
 	var spin : float = 25.0
 	if close > 0.05:
 		var amount = close / 0.05
 		if int(amount) - 1 > pathParticles.size():
 			var particle = path_particle_scene.instantiate()
-			particle.amount = 50 * amount
-			if close > 0.15:
-				var hue = (close - 0.30) / 0.30
-				if hue > 1:
-					hue = 1
-				var r = lerp(particle.color.r, Color.RED.r, hue) 
-				var b = lerp(particle.color.b, Color.RED.b, hue) 
-				var g = lerp(particle.color.g, Color.RED.g, hue)
-				particle.color.r = r
-				particle.color.b = b
-				particle.color.g = g
+			particle.amount = min(500, 25 * amount)
+			var r = lerp(particle.color.r, Color.RED.r, frac) 
+			var b = lerp(particle.color.b, Color.RED.b, frac) 
+			var g = lerp(particle.color.g, Color.RED.g, frac)
+			particle.color.r = r
+			particle.color.b = b
+			particle.color.g = g
 			pathParticles.append(particle)
 			add_child(particle)
-		spin *= lerp(1, 10, close / (1.0 - show_path_dist))
+		spin *= lerp(1, 5, close / (1.0 - show_path_dist))
 	self.rotation_degrees += delta * spin * rotateSpeed

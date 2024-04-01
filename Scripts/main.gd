@@ -40,7 +40,6 @@ extends Node
 # Bugs to fix:
 # - Add sound & VFX feedback when selecting upgrade card
 # - fix collision bug on larger enemies (or is it enemies at 45 degree angles?)
-# - fix child retreat when on approach to final_target and no longer on path
 # - sometime mobs on final_target approach don't explode and just vanish???
 
 var screen_size;
