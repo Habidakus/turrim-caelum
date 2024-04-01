@@ -204,9 +204,11 @@ func _process(delta):
 		var dir : Vector2 = (final_target.position - self.position).normalized()
 		self.position += dir * travelSpeed * delta
 	
+	var hue = 0
 	var frac : float = distance_travelled / pathLength
 	if frac > 1:
 		frac = 1
+		hue = 1
 	var close : float = frac - show_path_dist
 	var spin : float = 25.0
 	if close > 0.05:
@@ -214,9 +216,9 @@ func _process(delta):
 		if int(amount) - 1 > pathParticles.size():
 			var particle = path_particle_scene.instantiate()
 			particle.amount = min(500, 25 * amount)
-			var r = lerp(particle.color.r, Color.RED.r, frac) 
-			var b = lerp(particle.color.b, Color.RED.b, frac) 
-			var g = lerp(particle.color.g, Color.RED.g, frac)
+			var r = lerp(particle.color.r, Color.RED.r, hue) 
+			var b = lerp(particle.color.b, Color.RED.b, hue) 
+			var g = lerp(particle.color.g, Color.RED.g, hue)
 			particle.color.r = r
 			particle.color.b = b
 			particle.color.g = g

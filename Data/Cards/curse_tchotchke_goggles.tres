@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://jhelysi5du4x"]
+
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_curse_tchotchke.gd" id="1_b78as"]
+
+[resource]
+script = ExtResource("1_b78as")
+cardName = "Custom Goggles"
+description = "All the other pilots will be envious of these goggles."
+boonType = 10
+boonMultiple = 1.0

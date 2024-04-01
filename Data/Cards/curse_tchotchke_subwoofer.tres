@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://c2xdkdltoq7rq"]
+
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_curse_tchotchke.gd" id="1_7xme0"]
+
+[resource]
+script = ExtResource("1_7xme0")
+cardName = "Sub-woofer"
+description = "The deepest, most rumbliest, sub-woofer for all the best accustic accompaniment as you fight these invaders."
+boonType = 10
+boonMultiple = 1.0

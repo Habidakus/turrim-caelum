@@ -14,33 +14,33 @@ var showPathDist : float
 func is_world_possible(_cardData : CardData) -> bool:
 	return true
 
-func is_player_possible(averageMobHealth : float, lastTwentyCreatures, cardData : CardData) -> bool:
+func is_player_possible(_averageMobHealth : float, lastTwentyCreatures, _cardData : CardData) -> bool:
 	if showPathDist <= 0.5:
-		#print(self, " Rejecting ", cardData.cardName, " because of short show path (", showPathDist, ")")
+		#print("Rejecting ", cardData.cardName, " because of short show path (", showPathDist, ")")
 		return false
 	if bulletsPerSecond > 5.0:
-		#print(self, " Rejecting ", cardData.cardName, " because of too many bullets per minute (", 60.0 * bulletsPerSecond, ")")
+		#print("Rejecting ", cardData.cardName, " because of too many bullets per minute (", 60.0 * bulletsPerSecond, ")")
 		return false
 	#if bulletDamage > 1.1 * averageMobHealth:
-		#print(self, " Rejecting ", cardData.cardName, " because of bullet damage (", bulletDamage, ") is greater than mob health (", 1.1 * averageMobHealth, ")")
+		#print("Rejecting ", cardData.cardName, " because of bullet damage (", bulletDamage, ") is greater than mob health (", 1.1 * averageMobHealth, ")")
 		#return false
 	if bulletRange > 512.0:
-		#print(self, " Rejecting ", cardData.cardName, " because of bullet range too great (", bulletRange, ")")
+		#print("Rejecting ", cardData.cardName, " because of bullet range too great (", bulletRange, ")")
 		return false
 	if shipSpeed > 800.0:
-		#print(self, " Rejecting ", cardData.cardName, " because of ship speed too great (", shipSpeed, ")")
+		#print("Rejecting ", cardData.cardName, " because of ship speed too great (", shipSpeed, ")")
 		return false
 	if bulletSpeed > 950.0:
-		#print(self, " Rejecting ", cardData.cardName, " because of bullet speed too great (", bulletSpeed, ")")
+		#print("Rejecting ", cardData.cardName, " because of bullet speed too great (", bulletSpeed, ")")
 		return false
 	if shipSpeed >= bulletSpeed:
-		#print(self, " Rejecting ", cardData.cardName, " because of ship speed (", shipSpeed, ") greater than bullet speed (", bulletSpeed, ")")
+		#print("Rejecting ", cardData.cardName, " because of ship speed (", shipSpeed, ") greater than bullet speed (", bulletSpeed, ")")
 		return false
 	if autospendCount > 1:
-		#print(self, " Rejecting ", cardData.cardName, " because we already have autospend")
+		#print("Rejecting ", cardData.cardName, " because we already have autospend")
 		return false
 	if tchotchkeCount > 1:
-		print(self, " Rejecting ", cardData.cardName, " because we already have tchotchke")
+		#print("Rejecting ", cardData.cardName, " because we already have tchotchke")
 		return false
 	
 	var earliest = 0
@@ -69,7 +69,7 @@ func is_player_possible(averageMobHealth : float, lastTwentyCreatures, cardData 
 		var timeSpanOfLastTwentyBeasts : float = creatureCount * (latest - earliest) / (creatureCount - 1.0)
 		if playerCanDamageAllMobs:
 			if timeNeededToKillWithPerfectShots < timeSpanOfLastTwentyBeasts:
-				print(cardData.cardName, " needs ", int(round(timeNeededToKillWithPerfectShots)), " seconds to kill the beasts generated in the last ", int(round(timeSpanOfLastTwentyBeasts)))
+				#print(cardData.cardName, " needs ", int(round(timeNeededToKillWithPerfectShots)), " seconds to kill the beasts generated in the last ", int(round(timeSpanOfLastTwentyBeasts)))
 				return false;
 	# If it passes all our checks, it's a fine player state
 	return true

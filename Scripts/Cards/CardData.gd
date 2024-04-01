@@ -12,6 +12,7 @@ enum BoonType {
 	revealSooner = 7,
 	curseAdvanceMonsters = 8,
 	curseAdvanceSpawnRate = 9,
+	curseTchotchke = 10,
 }
 
 @export_group("Text")

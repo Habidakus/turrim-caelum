@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://deb28icumr5r3"]
+
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_curse_tchotchke.gd" id="1_jip3o"]
+
+[resource]
+script = ExtResource("1_jip3o")
+cardName = "Custom Flight Yoke"
+description = "A yoke and throttle custom cast in go-faster-red plastic."
+boonType = 10
+boonMultiple = 1.0

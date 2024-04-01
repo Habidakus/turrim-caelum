@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dr2eh04j1hf8o"]
+
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_curse_tchotchke.gd" id="1_8fhf4"]
+
+[resource]
+script = ExtResource("1_8fhf4")
+cardName = "Flight Suit"
+description = "Custom, designer, flight suit.
+Everyone loves a sharp dressed pilot."
+boonType = 10
+boonMultiple = 1.0

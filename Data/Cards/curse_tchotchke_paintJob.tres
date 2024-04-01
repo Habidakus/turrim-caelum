@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dnuely2jpycud"]
+
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_curse_tchotchke.gd" id="1_eet8y"]
+
+[resource]
+script = ExtResource("1_eet8y")
+cardName = "Fresh Coat of Paint"
+description = "Space ship is coated in a fresh paint job, with really cool looking accent lines."
+boonType = 10
+boonMultiple = 1.0

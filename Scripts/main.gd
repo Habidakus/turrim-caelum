@@ -63,6 +63,8 @@ var ltcWriteIndex : int = 0
 var highscore_list : Array = []
 var highscore_filepath = "user://highscores.dat"
 
+# TODO: While useful in testing to explicitly include all or just one card,
+# in the future maybe just automatically load all cards in the given directory.
 var possible_cards = [
 	load("res://Data/Cards/autospend_once.tres"),
 	load("res://Data/Cards/bulletRange.tres"),
@@ -85,6 +87,12 @@ var possible_curses = [
 	load("res://Data/Cards/curse_spawnRate_minor.tres"),
 	load("res://Data/Cards/curse_spawnRate_medium.tres"),
 	load("res://Data/Cards/curse_spawnRate_hard.tres"),
+	load("res://Data/Cards/curse_tchotchke_airFreshener.tres"),
+	load("res://Data/Cards/curse_tchotchke_flightstick.tres"),
+	load("res://Data/Cards/curse_tchotchke_flightsuit.tres"),
+	load("res://Data/Cards/curse_tchotchke_goggles.tres"),
+	load("res://Data/Cards/curse_tchotchke_paintJob.tres"),
+	load("res://Data/Cards/curse_tchotchke_subwoofer.tres"),
 ]
 
 signal increase_score(amount : int)
@@ -170,7 +178,8 @@ func start_shopping():
 		for card in possible_curses:
 			var worth : PlayerWorth = player.create_player_worth()
 			card.initialize_for_purchase(worth)
-			if worth.is_world_possible(card):
+			var valid : bool = worth.is_world_possible(card) if card.is_curse() else worth.is_player_possible(rollingMobHealthAverage, lastTwentyCreatures, card)
+			if valid:
 				if cardA == null:
 					cardA = card
 				elif cardB == null:
