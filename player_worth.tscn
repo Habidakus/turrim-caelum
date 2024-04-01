@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dobu5bq2v0mgc"]
-
-[ext_resource type="Script" path="res://PlayerWorth.gd" id="1_y0eq6"]
-
-[node name="PlayerWorth" type="Node"]
-script = ExtResource("1_y0eq6")
