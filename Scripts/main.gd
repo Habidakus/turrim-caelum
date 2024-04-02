@@ -36,7 +36,6 @@ extends Node
 # - Add more curses
 #   - castle wandering for castle levels
 # Bugs to fix:
-# - Add sound & VFX feedback when selecting upgrade card
 # - fix collision bug on larger enemies (or is it enemies at 45 degree angles?)
 
 var screen_size;
@@ -278,6 +277,7 @@ func player_bought_autospend():
 
 func player_has_spent():
 	spendable_money -= 1
+	$CardChosenSound.play()
 	%HUD.set_money(spendable_money)
 	%GameStateMachine.switch_state("Playing_Action")
 	

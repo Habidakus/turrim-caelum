@@ -133,7 +133,7 @@ func on_hit(damage : float):
 	for shieldIndex in shields.size():
 		var reverseIndex = shields.size() - (1 + shieldIndex)
 		if shields[reverseIndex][1] != null:
-			# TODO: Play *bzzzt* sound
+			$ShieldPop.play()
 			regrowShieldTimer = 2.0
 			shields[reverseIndex][1].queue_free()
 			shields[reverseIndex][1] = null

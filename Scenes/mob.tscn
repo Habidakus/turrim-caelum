@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://d1jafpuwvy3d0"]
+[gd_scene load_steps=11 format=3 uid="uid://d1jafpuwvy3d0"]
 
 [ext_resource type="Script" path="res://Scripts/mob.gd" id="1_7i00h"]
 [ext_resource type="PackedScene" uid="uid://unyekg2bj1ix" path="res://Scenes/smallExplosion.tscn" id="2_p6cdx"]
@@ -7,6 +7,7 @@
 [ext_resource type="SpriteFrames" uid="uid://bd27qr2v2wm4s" path="res://Graphics/EnemyASpriteFrames.tres" id="5_mc1ea"]
 [ext_resource type="AudioStream" uid="uid://c677p3ptk387h" path="res://Sound/impact-fx-41103.mp3" id="6_vxse1"]
 [ext_resource type="AudioStream" uid="uid://qjmpoob7yvl3" path="res://Sound/22-caliber-with-ricochet-39679.mp3" id="7_mghvi"]
+[ext_resource type="AudioStream" uid="uid://bln8vded3jb1x" path="res://Sound/shield-pop.mp3" id="8_5cp47"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hlyll"]
 shader = ExtResource("3_3vebn")
@@ -38,4 +39,8 @@ pitch_scale = 1.88
 
 [node name="ArmorTing" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("7_mghvi")
+volume_db = -26.012
+
+[node name="ShieldPop" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_5cp47")
 volume_db = -26.012
