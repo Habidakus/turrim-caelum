@@ -47,6 +47,7 @@ var rng = RandomNumberGenerator.new()
 var money = 0
 var spendable_money : int = 0
 var score = 0
+var kills = 0
 var mobId : int = 1
 var secondsPerMonster : float = 2.0
 var monster_spawnrate_increase : int = 0
@@ -114,6 +115,7 @@ func start_game():
 	money = 0
 	spendable_money = 0
 	score = 0
+	kills = 0
 	mobId = 1
 	monster_spawnrate_increase = 0
 	#rollingMobHealthAverage = 0
@@ -200,9 +202,18 @@ func _on_mob_timer_timeout():
 		freeXpCounter = 0
 		freeXp += 1
 	
-	spawn_mob(mobId, 0, current_path(), bonusScore)
+	var mob : Mob = spawn_mob(mobId, 0, current_path(), bonusScore)
 	map.on_mob_spawn(mobId, rng)
 	mobId += 1
+	
+	var mobChildCount = 0 if mob.spawn_children == 0 else mob.spawn_children + 2
+	var lastCreatureSummed = [Time.get_unix_time_from_system(), mob.hp, mob.armor, mob.shields.size(), mobChildCount]
+	if lastTwentyCreatures.size() >= 20:
+		lastTwentyCreatures[ltcWriteIndex] = lastCreatureSummed
+		ltcWriteIndex = (ltcWriteIndex + 1) % lastTwentyCreatures.size()
+	else:
+		lastTwentyCreatures.append(lastCreatureSummed)
+		ltcWriteIndex = 0
 	
 	$MobTimer.wait_time = lerp(secondsPerMonster, secondsPerMonster / 5.0, (monster_spawnrate_increase - 50) / 850.0)
 	monster_spawnrate_increase += 1
@@ -221,13 +232,6 @@ func spawn_mob(id, dist, path, bonusScore : int) -> Mob:
 	#	rollingMobHealthAverage = mob.hp + mob.armor
 	#else:
 	#	rollingMobHealthAverage = (rollingMobHealthAverage * 20 + mob.hp + mob.armor) / 21.0
-	var lastCreatureSummed = [Time.get_unix_time_from_system(), mob.hp, mob.armor, mob.shields.size()]
-	if lastTwentyCreatures.size() >= 20:
-		lastTwentyCreatures[ltcWriteIndex] = lastCreatureSummed
-		ltcWriteIndex = (ltcWriteIndex + 1) % lastTwentyCreatures.size()
-	else:
-		lastTwentyCreatures.append(lastCreatureSummed)
-		ltcWriteIndex = 0
 	return mob
 
 # Note - unlike most compare() functions in other languages, this one is only "is lesser" and expects true or false return value
@@ -278,6 +282,7 @@ func player_has_spent():
 	%GameStateMachine.switch_state("Playing_Action")
 	
 func _on_increase_score(amount):
+	kills += 1
 	money += amount
 	if money >= 23:
 		spendable_money += 1
@@ -324,3 +329,32 @@ func load_highscore():
 		highscore_list.sort_custom(highscore_list_sorter)
 		file.flush()
 		file.close()
+
+func populate_game_stat(grid: GridContainer, attr: String, value : String):
+		var attrChild = RichTextLabel.new()
+		attrChild.layout_mode = 2
+		attrChild.size_flags_horizontal = 3
+		attrChild.size_flags_vertical = 3
+		attrChild.bbcode_enabled = true
+		attrChild.text = str("[right][font_size=22]", attr, "[/font_size][/right]")
+		attrChild.fit_content = true
+		attrChild.scroll_active = false
+		grid.add_child(attrChild)
+		var valueChild = RichTextLabel.new()
+		valueChild.layout_mode = 2
+		valueChild.size_flags_horizontal = 3
+		valueChild.size_flags_vertical = 3
+		valueChild.bbcode_enabled = true
+		valueChild.text = str("[left][font_size=22]", value, "[/font_size][/left]")
+		valueChild.fit_content = true
+		valueChild.scroll_active = false
+		grid.add_child(valueChild)
+
+func populate_game_stats(grid : GridContainer):
+	var children = grid.get_children()
+	for child in children:
+		grid.remove_child(child)
+	populate_game_stat(grid, "Map:", map.get_map_name())
+	populate_game_stat(grid, "Score:", str(score))
+	populate_game_stat(grid, "Spawns:", str(mobId - 1))
+	populate_game_stat(grid, "Kills:", str(kills))

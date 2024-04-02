@@ -7,6 +7,10 @@ func start_game(_rng : RandomNumberGenerator):
 
 func game_over():
 	print_debug("Map ", self, " did not implement game_over()")
+
+func get_map_name() -> String:
+	print_debug("Map ", self, " did not implement get_map_name()")
+	return "UNNAMED"
 	
 func current_path() -> Curve2D:
 	print_debug("Map ", self, " did not implement current_path()")

@@ -6,6 +6,9 @@ var castle = null
 var pathArray : Array = []
 var currentPathIndex = 0
 
+func get_map_name() -> String:
+	return "Castle"
+
 func start_game(rng : RandomNumberGenerator):
 	
 	# Create the castle

@@ -3,6 +3,9 @@ extends Map
 var pathArray : Array = []
 var currentPathIndex = 0
 
+func get_map_name() -> String:
+	return "Open Space"
+
 func start_game(rng : RandomNumberGenerator):
 	pathArray = []
 	pathArray.append(generate_path(get_screen_edge(rng), get_screen_edge(rng), 0, rng))

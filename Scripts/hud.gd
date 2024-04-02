@@ -38,7 +38,7 @@ func _ready():
 	$GameTitle.hide()
 	$ScoreLabel.hide()
 	$ScoreValue.hide()
-	$GameOver.hide()
+	$GameOverStatsPage.hide()
 	$Menu.hide()
 	$HowToPlay.hide()
 	$Credits.hide()
@@ -222,17 +222,25 @@ func show_main_menu():
 func hide_main_menu():
 	$Menu.hide()
 
-func show_game_over():
+func show_game_over(canContinue : bool):
 	$ScoreLabel.show()
 	$ScoreValue.show()
 	$MoneyValue.hide()
 	$MoneyLabel.hide()
-	$GameOver.show()
+	$GameOverStatsPage.show()
+	if canContinue:
+		$GameOverStatsPage/PressAnyKey.show()
+	else:
+		$GameOverStatsPage/PressAnyKey.hide()
+		get_parent().populate_game_stats($GameOverStatsPage/StatsGrid)
 
 func hide_game_over():
 	$ScoreLabel.hide()
 	$ScoreValue.hide()
-	$GameOver.hide()
+	$GameOverStatsPage.hide()
+	var children = $GameOverStatsPage/StatsGrid.get_children()
+	for child in children:
+		$GameOverStatsPage/StatsGrid.remove_child(child)
 
 func show_game_card_selection():
 	$CardA.show()

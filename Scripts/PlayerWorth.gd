@@ -51,6 +51,7 @@ func is_player_possible(lastTwentyCreatures, _cardData : CardData) -> bool:
 			# [1] = hp
 			# [2] = armor
 			# [3] = shields
+			# [4] = children
 			if earliest == 0:
 				earliest = previousMob[0]
 				latest = previousMob[0]
@@ -60,7 +61,10 @@ func is_player_possible(lastTwentyCreatures, _cardData : CardData) -> bool:
 				earliest = previousMob[0]
 			var damagePastArmor : float = (self.bulletDamage - previousMob[2])
 			if damagePastArmor > 0.0:
-				shotsTaken += (int(ceilf(previousMob[1] / damagePastArmor)) + previousMob[3])
+				var shotsToKill : int = (int(ceilf(previousMob[1] / damagePastArmor)) + previousMob[3])
+				if previousMob[4] > 0:
+					shotsToKill *= (1 + previousMob[4])
+				shotsTaken += shotsToKill
 			else:
 				playerCanDamageAllMobs = false
 		var timeNeededToKillWithPerfectShots : float = shotsTaken / bulletsPerSecond
