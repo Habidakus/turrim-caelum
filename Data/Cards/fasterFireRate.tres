@@ -1,11 +1,11 @@
 [gd_resource type="Resource" load_steps=2 format=3 uid="uid://dg1jy743y60wc"]
 
-[ext_resource type="Script" path="res://Scripts/Cards/cardData_fasterRateOfFire.gd" id="1_omglu"]
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_fasterRateOfFire.gd" id="1_grbeu"]
 
 [resource]
-script = ExtResource("1_omglu")
+script = ExtResource("1_grbeu")
 cardName = "Gattling Gun"
 description = "Gattling Guns means more bullets:
 "
 boonType = 2
-boonMultiple = 1.33333
+boonMultiple = 1.25

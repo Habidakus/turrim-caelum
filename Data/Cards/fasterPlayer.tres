@@ -1,9 +1,9 @@
 [gd_resource type="Resource" load_steps=2 format=3 uid="uid://derr1esd7x2n6"]
 
-[ext_resource type="Script" path="res://Scripts/Cards/cardData_fasterPlayer.gd" id="1_j2mti"]
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_fasterPlayer.gd" id="1_wopee"]
 
 [resource]
-script = ExtResource("1_j2mti")
+script = ExtResource("1_wopee")
 cardName = "Rocket Fuel"
 description = "Nothing but the best for our pilots:
 "

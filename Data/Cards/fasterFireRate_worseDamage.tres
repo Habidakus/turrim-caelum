@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://clkijwctijhdw"]
+
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_fasterRateOfFire_worseDamage.gd" id="1_vpdle"]
+
+[resource]
+script = ExtResource("1_vpdle")
+cardName = "Shield Popping Guns"
+description = "A higher cycle rate will tear down shields faster, but at the cost of a little stopping power:
+"
+boonType = 2
+boonMultiple = 1.4

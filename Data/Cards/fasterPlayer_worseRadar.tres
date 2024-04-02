@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://bwyk5dkqw45g2"]
+
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_fasterPlayer_worseRadar.gd" id="1_sa8rc"]
+
+[resource]
+script = ExtResource("1_sa8rc")
+cardName = "Super Radioactive Engines"
+description = "Player ship moves faster, but this does disrupt radar:
+"
+boonType = 0
+boonMultiple = 1.4

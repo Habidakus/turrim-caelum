@@ -8,4 +8,4 @@ cardName = "Elephant Bullets"
 description = "These larger bullets do more damage to aliens, but at a slower firing rate:
 "
 boonType = 4
-boonMultiple = 1.4
+boonMultiple = 1.3

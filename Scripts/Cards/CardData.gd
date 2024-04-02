@@ -64,3 +64,15 @@ func get_increase_to_bullet_range(worth : PlayerWorth) -> float:
 	return (boonMultiple - 1.0) * worth.bulletRange
 func get_decrease_to_bullet_range(worth : PlayerWorth) -> float:
 	return (sqrt(boonMultiple) - 1.0) * worth.bulletRange
+
+func get_increase_to_player_speed(worth: PlayerWorth) -> float:
+	return (boonMultiple - 1.0) * worth.shipSpeed
+func get_decrease_to_player_speed(worth: PlayerWorth) -> float:
+	return (sqrt(boonMultiple) - 1.0) * worth.shipSpeed
+
+func get_increase_to_detection_range(worth: PlayerWorth) -> float:
+	var newPathDist = worth.showPathDist / boonMultiple
+	return worth.showPathDist - newPathDist
+func get_decrease_to_detection_range(worth: PlayerWorth) -> float:
+	var newPathDist = worth.showPathDist * sqrt(boonMultiple)
+	return newPathDist - worth.showPathDist 

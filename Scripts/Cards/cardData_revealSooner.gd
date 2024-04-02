@@ -1,7 +1,13 @@
 extends CardData
 
+var increaseToDetectionRange : float
+
 func initialize_for_purchase(worth : PlayerWorth):
-	worth.showPathDist /= boonMultiple
-	
+	increaseToDetectionRange = get_increase_to_detection_range(worth)
+	worth.showPathDist -= increaseToDetectionRange # Increase is actually a subtraction
+
+func get_description(_worth : PlayerWorth) -> String:
+	return str(description, "Detection range increased by ", int(round(100.0 * increaseToDetectionRange)), " quatlolubers")
+
 func apply_card(player: Player):
-	player.showPathDist /= boonMultiple
+	player.showPathDist -= increaseToDetectionRange # Increase is actually a subtraction

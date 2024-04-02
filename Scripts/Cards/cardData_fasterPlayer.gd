@@ -3,7 +3,7 @@ extends CardData
 var increaseToPlayerSpeed : float
 
 func initialize_for_purchase(worth : PlayerWorth):
-	increaseToPlayerSpeed = worth.shipSpeed * (boonMultiple - 1.0)
+	increaseToPlayerSpeed = get_increase_to_player_speed(worth)
 	worth.shipSpeed += increaseToPlayerSpeed
 
 func get_description(worth : PlayerWorth) -> String:

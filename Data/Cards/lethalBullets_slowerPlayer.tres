@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cvx6bf3ru3tkf"]
+
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_lethalBullets_slowerPlayer.gd" id="1_3413n"]
+
+[resource]
+script = ExtResource("1_3413n")
+cardName = "Overloaded Wing Mounts"
+description = "Larger guns on the wings packs quite the punch, but at the cost of slower ship speed:
+"
+boonType = 4
+boonMultiple = 1.3

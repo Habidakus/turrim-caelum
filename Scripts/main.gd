@@ -65,20 +65,25 @@ var highscore_filepath = "user://highscores.dat"
 # in the future maybe just automatically load all cards in the given directory.
 var earlyGameCards = [
 	load("res://Data/Cards/autospend_once.tres"),
-	load("res://Data/Cards/bulletRange.tres"),
 	load("res://Data/Cards/bulletRange_slowerSpeed.tres"),
-	load("res://Data/Cards/fasterBullets.tres"),
-	load("res://Data/Cards/fasterPlayer_a1.tres"),
-	load("res://Data/Cards/fasterFireRate_a1.tres"),
-	load("res://Data/Cards/lethalBullets.tres"),
 	load("res://Data/Cards/lethalBullets_slowerRate.tres"),
+	load("res://Data/Cards/fasterPlayer.tres"),
 	load("res://Data/Cards/revealFinalApproachSooner_a1.tres"),
+	load("res://Data/Cards/fasterBullets_lessDamage.tres"),
+	load("res://Data/Cards/lethalBullets_lessRange.tres"),
+	load("res://Data/Cards/fasterFireRate_worseDamage.tres"),
+	load("res://Data/Cards/lethalBullets_slowerPlayer.tres"),
+]
+
+var midGameCards = [
+	load("res://Data/Cards/fasterPlayer_worseRadar.tres"),
+	load("res://Data/Cards/bulletRange.tres"),
+	load("res://Data/Cards/fasterBullets.tres"),
+	load("res://Data/Cards/fasterFireRate.tres"),
+	load("res://Data/Cards/lethalBullets.tres"),
 ]
 
 var lateGameCards = [
-	load("res://Data/Cards/fasterPlayer_a2.tres"),
-	load("res://Data/Cards/fasterBullets_lessDamage.tres"),
-	load("res://Data/Cards/lethalBullets_lessRange.tres"),
 	load("res://Data/Cards/curse_idAdvance_minor.tres"),
 	load("res://Data/Cards/curse_idAdvance_medium.tres"),
 	load("res://Data/Cards/curse_idAdvance_hard.tres"),
@@ -103,6 +108,9 @@ func _ready():
 	for card in earlyGameCards.size():
 		if earlyGameCards[card] == null:
 			print_debug("BAD EARLY GAME CARD (#", card ,")")
+	for card in midGameCards.size():
+		if midGameCards[card] == null:
+			print_debug("BAD MID GAME CARD (#", card ,")")
 	for card in lateGameCards.size():
 		if lateGameCards[card] == null:
 			print_debug("BAD LATE GAME CARD (#", card ,")")
@@ -116,7 +124,6 @@ func start_game():
 	spawns = 0
 	mobId = 1
 	monster_spawnrate_increase = 0
-	#rollingMobHealthAverage = 0
 	lastTwentyCreatures = []
 	ltcWriteIndex = 0
 	freeXp = 1
@@ -141,9 +148,6 @@ func get_show_path_dist() -> float:
 	else:
 		return 0.7
 
-#func get_mob_average_health() -> float:
-#	return rollingMobHealthAverage
-
 func advance_id(advanceAmount : float):
 	var increase : float = float(min(200, mobId)) * (advanceAmount - 1.0)
 	mobId += int(round(increase))
@@ -155,37 +159,33 @@ func advance_spawnrate(advanceAmount : float):
 func current_path() -> Curve2D:
 	return map.current_path()
 
-func start_shopping():
-	earlyGameCards.shuffle()
-	var cardA : CardData = null
-	var cardB : CardData = null
-	var cardC : CardData = null
-	for card in earlyGameCards:
+func add_cards(cardStack, cardsNeeded : int, dump : bool):
+	cardStack.shuffle()
+	var chosenCards = []
+	for card in cardStack:
 		var worth : PlayerWorth = player.create_player_worth()
 		card.initialize_for_purchase(worth)
-		if worth.is_player_possible(lastTwentyCreatures, card):
-			if cardA == null:
-				cardA = card
-			elif cardB == null:
-				cardB = card
-			elif cardC == null:
-				cardC = card
-				
-	# We might have advanced so much that we're running
-	# out of good cards, so throw a bad card into the mix.
-	if cardC == null:
-		lateGameCards.shuffle()
-		for card in lateGameCards:
-			var worth : PlayerWorth = player.create_player_worth()
-			card.initialize_for_purchase(worth)
-			var valid : bool = worth.is_world_possible(card) if card.is_curse() else worth.is_player_possible(lastTwentyCreatures, card)
-			if valid:
-				if cardA == null:
-					cardA = card
-				elif cardB == null:
-					cardB = card
-				elif cardC == null:
-					cardC = card
+		if card.is_curse():
+			if worth.is_world_possible(card, dump):
+				chosenCards.append(card)
+		else:
+			if worth.is_player_possible(lastTwentyCreatures, card, dump):
+				chosenCards.append(card)
+		if chosenCards.size() >= cardsNeeded:
+			return chosenCards
+	return chosenCards
+
+func start_shopping():
+	# First see if we can add any of the early game cards
+	var cardStack = add_cards(earlyGameCards, 3, false)
+	if cardStack.size() < 3:
+		cardStack.append_array(add_cards(midGameCards, 3 - cardStack.size(), false))
+	if cardStack.size() < 3:
+		cardStack.append_array(add_cards(lateGameCards, 3 - cardStack.size(), false))
+	
+	var cardA : CardData = cardStack[0] if cardStack.size() > 0 else null
+	var cardB : CardData = cardStack[1] if cardStack.size() > 1 else null
+	var cardC : CardData = cardStack[2] if cardStack.size() > 2 else null
 	
 	if cardC != null:
 		$HUD.spend_points(cardA, cardB, cardC, player)
