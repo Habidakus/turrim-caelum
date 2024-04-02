@@ -1,0 +1,18 @@
+[gd_resource type="SpriteFrames" load_steps=3 format=3 uid="uid://cf44ny3btrphn"]
+
+[ext_resource type="Texture2D" uid="uid://t5fcs2iaj1ph" path="res://Graphics/Enemy05.png" id="1_r13c3"]
+[ext_resource type="Texture2D" uid="uid://u6gyup8brjiu" path="res://Graphics/Enemy06.png" id="2_2usta"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_r13c3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_2usta")
+}],
+"loop": true,
+"name": &"default",
+"speed": 2.0
+}]

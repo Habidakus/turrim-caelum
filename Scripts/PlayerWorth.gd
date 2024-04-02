@@ -14,16 +14,13 @@ var showPathDist : float
 func is_world_possible(_cardData : CardData) -> bool:
 	return true
 
-func is_player_possible(_averageMobHealth : float, lastTwentyCreatures, _cardData : CardData) -> bool:
+func is_player_possible(lastTwentyCreatures, _cardData : CardData) -> bool:
 	if showPathDist <= 0.5:
 		#print("Rejecting ", cardData.cardName, " because of short show path (", showPathDist, ")")
 		return false
 	if bulletsPerSecond > 5.0:
 		#print("Rejecting ", cardData.cardName, " because of too many bullets per minute (", 60.0 * bulletsPerSecond, ")")
 		return false
-	#if bulletDamage > 1.1 * averageMobHealth:
-		#print("Rejecting ", cardData.cardName, " because of bullet damage (", bulletDamage, ") is greater than mob health (", 1.1 * averageMobHealth, ")")
-		#return false
 	if bulletRange > 512.0:
 		#print("Rejecting ", cardData.cardName, " because of bullet range too great (", bulletRange, ")")
 		return false
@@ -53,6 +50,7 @@ func is_player_possible(_averageMobHealth : float, lastTwentyCreatures, _cardDat
 			# [0] = sec created
 			# [1] = hp
 			# [2] = armor
+			# [3] = shields
 			if earliest == 0:
 				earliest = previousMob[0]
 				latest = previousMob[0]
@@ -62,14 +60,14 @@ func is_player_possible(_averageMobHealth : float, lastTwentyCreatures, _cardDat
 				earliest = previousMob[0]
 			var damagePastArmor : float = (self.bulletDamage - previousMob[2])
 			if damagePastArmor > 0.0:
-				shotsTaken += int(ceilf(previousMob[1] / damagePastArmor))
+				shotsTaken += (int(ceilf(previousMob[1] / damagePastArmor)) + previousMob[3])
 			else:
 				playerCanDamageAllMobs = false
 		var timeNeededToKillWithPerfectShots : float = shotsTaken / bulletsPerSecond
 		var timeSpanOfLastTwentyBeasts : float = creatureCount * (latest - earliest) / (creatureCount - 1.0)
 		if playerCanDamageAllMobs:
 			if timeNeededToKillWithPerfectShots < timeSpanOfLastTwentyBeasts:
-				#print(cardData.cardName, " needs ", int(round(timeNeededToKillWithPerfectShots)), " seconds to kill the beasts generated in the last ", int(round(timeSpanOfLastTwentyBeasts)))
+				print(_cardData.cardName, " needs ", int(round(timeNeededToKillWithPerfectShots)), " seconds to kill the beasts generated in the last ", int(round(timeSpanOfLastTwentyBeasts)))
 				return false;
 	# If it passes all our checks, it's a fine player state
 	return true

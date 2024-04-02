@@ -56,7 +56,7 @@ var map : Map = null
 var freeXp: int = 1
 var freeXpCounter : int = 0
 
-var rollingMobHealthAverage : float = 0
+#var rollingMobHealthAverage : float = 0
 var lastTwentyCreatures = []
 var ltcWriteIndex : int = 0
 
@@ -65,22 +65,22 @@ var highscore_filepath = "user://highscores.dat"
 
 # TODO: While useful in testing to explicitly include all or just one card,
 # in the future maybe just automatically load all cards in the given directory.
-var possible_cards = [
+var earlyGameCards = [
 	load("res://Data/Cards/autospend_once.tres"),
 	load("res://Data/Cards/bulletRange.tres"),
 	load("res://Data/Cards/bulletRange_slowerSpeed.tres"),
 	load("res://Data/Cards/fasterBullets.tres"),
-	load("res://Data/Cards/fasterBullets_lessDamage.tres"),
 	load("res://Data/Cards/fasterPlayer_a1.tres"),
-	load("res://Data/Cards/fasterPlayer_a2.tres"),
 	load("res://Data/Cards/fasterFireRate_a1.tres"),
 	load("res://Data/Cards/lethalBullets.tres"),
-	load("res://Data/Cards/lethalBullets_lessRange.tres"),
 	load("res://Data/Cards/lethalBullets_slowerRate.tres"),
 	load("res://Data/Cards/revealFinalApproachSooner_a1.tres"),
 ]
 
-var possible_curses = [
+var lateGameCards = [
+	load("res://Data/Cards/fasterPlayer_a2.tres"),
+	load("res://Data/Cards/fasterBullets_lessDamage.tres"),
+	load("res://Data/Cards/lethalBullets_lessRange.tres"),
 	load("res://Data/Cards/curse_idAdvance_minor.tres"),
 	load("res://Data/Cards/curse_idAdvance_medium.tres"),
 	load("res://Data/Cards/curse_idAdvance_hard.tres"),
@@ -102,12 +102,12 @@ func _ready():
 	$MobTimer.timeout.connect(_on_mob_timer_timeout)
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	
-	for card in possible_cards.size():
-		if possible_cards[card] == null:
-			print_debug("BAD CARD (#", card ,")")
-	for card in possible_curses.size():
-		if possible_curses[card] == null:
-			print_debug("BAD CURSE (#", card ,")")
+	for card in earlyGameCards.size():
+		if earlyGameCards[card] == null:
+			print_debug("BAD EARLY GAME CARD (#", card ,")")
+	for card in lateGameCards.size():
+		if lateGameCards[card] == null:
+			print_debug("BAD LATE GAME CARD (#", card ,")")
 
 func start_game():
 	rng.seed = Time.get_ticks_msec()
@@ -116,7 +116,7 @@ func start_game():
 	score = 0
 	mobId = 1
 	monster_spawnrate_increase = 0
-	rollingMobHealthAverage = 0
+	#rollingMobHealthAverage = 0
 	lastTwentyCreatures = []
 	ltcWriteIndex = 0
 	freeXp = 1
@@ -128,7 +128,7 @@ func start_game():
 	screen_size = player.get_viewport_rect().size
 	player.position = screen_size / 2.0
 	
-	map = $Maps/Map_BasicNoCastle
+	map = $Maps/Map_BasicCastle
 	map.start_game(rng)
 	
 	$MobTimer.wait_time = secondsPerMonster
@@ -141,8 +141,8 @@ func get_show_path_dist() -> float:
 	else:
 		return 0.7
 
-func get_mob_average_health() -> float:
-	return rollingMobHealthAverage
+#func get_mob_average_health() -> float:
+#	return rollingMobHealthAverage
 
 func advance_id(advanceAmount : float):
 	var increase : float = float(min(200, mobId)) * (advanceAmount - 1.0)
@@ -156,14 +156,14 @@ func current_path() -> Curve2D:
 	return map.current_path()
 
 func start_shopping():
-	possible_cards.shuffle()
+	earlyGameCards.shuffle()
 	var cardA : CardData = null
 	var cardB : CardData = null
 	var cardC : CardData = null
-	for card in possible_cards:
+	for card in earlyGameCards:
 		var worth : PlayerWorth = player.create_player_worth()
 		card.initialize_for_purchase(worth)
-		if worth.is_player_possible(rollingMobHealthAverage, lastTwentyCreatures, card):
+		if worth.is_player_possible(lastTwentyCreatures, card):
 			if cardA == null:
 				cardA = card
 			elif cardB == null:
@@ -174,11 +174,11 @@ func start_shopping():
 	# We might have advanced so much that we're running
 	# out of good cards, so throw a bad card into the mix.
 	if cardC == null:
-		possible_curses.shuffle()
-		for card in possible_curses:
+		lateGameCards.shuffle()
+		for card in lateGameCards:
 			var worth : PlayerWorth = player.create_player_worth()
 			card.initialize_for_purchase(worth)
-			var valid : bool = worth.is_world_possible(card) if card.is_curse() else worth.is_player_possible(rollingMobHealthAverage, lastTwentyCreatures, card)
+			var valid : bool = worth.is_world_possible(card) if card.is_curse() else worth.is_player_possible(lastTwentyCreatures, card)
 			if valid:
 				if cardA == null:
 					cardA = card
@@ -217,11 +217,11 @@ func spawn_mob(id, dist, path, bonusScore : int) -> Mob:
 		
 	mob.set_target(final_target, speed_scale, id, path, dist, map, player, bonusScore, rng)
 	call_deferred("add_child", mob)
-	if rollingMobHealthAverage == 0:
-		rollingMobHealthAverage = mob.hp + mob.armor
-	else:
-		rollingMobHealthAverage = (rollingMobHealthAverage * 20 + mob.hp + mob.armor) / 21.0
-	var lastCreatureSummed = [Time.get_unix_time_from_system(), mob.hp, mob.armor]
+	#if rollingMobHealthAverage == 0:
+	#	rollingMobHealthAverage = mob.hp + mob.armor
+	#else:
+	#	rollingMobHealthAverage = (rollingMobHealthAverage * 20 + mob.hp + mob.armor) / 21.0
+	var lastCreatureSummed = [Time.get_unix_time_from_system(), mob.hp, mob.armor, mob.shields.size()]
 	if lastTwentyCreatures.size() >= 20:
 		lastTwentyCreatures[ltcWriteIndex] = lastCreatureSummed
 		ltcWriteIndex = (ltcWriteIndex + 1) % lastTwentyCreatures.size()

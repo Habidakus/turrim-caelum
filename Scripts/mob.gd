@@ -2,6 +2,7 @@ extends Area2D
 
 class_name Mob
 
+var regrowShieldTimer : float = -1.0
 var distance_travelled = 0.0
 var childOffset_regressDist = -1.0
 var childOffset_regressPoint = Vector2.ZERO
@@ -16,12 +17,15 @@ var score = 1
 var hp : float = 18
 var armor : float = 0
 var size = 1.0
+var shields = []
 var id_for_spawn = 0
 var spawn_children : int = 0
 var path : Curve2D = null
 var pathLength;
 var pathParticles : Array = []
-var alternateEnemyFrames = load("res://Graphics/EnemyBSpriteFrames.tres")
+var alternate1EnemyFrames = load("res://Graphics/EnemyBSpriteFrames.tres")
+var alternate2EnemyFrames = load("res://Graphics/EnemyCSpriteFrames.tres")
+var shieldScene : PackedScene = load("res://Scenes/Shield.tscn")
 @export var explosion_scene : PackedScene
 @export var path_particle_scene : PackedScene
 @onready var animationSprite = $AnimatedSprite2D
@@ -39,12 +43,21 @@ func set_target(target : Node2D, rotSpd : float, id : int, p: Curve2D, dist, pat
 	var id_for_hp = id
 	var id_for_map = id
 	var swerve : int = 0
+	var potentialShield : int = 0
 	score += (bonusScore * 2)
 	show_path_dist = player.showPathDist
 	final_target = target;
 	distance_travelled = dist
 	rotateSpeed = rotSpd;
 	var mutatorA = 0
+	# SEVENTEEN - tiny
+	while (id != 0) && (id % 17) == 0:
+		id = int(id / 17)
+		size *= 0.666
+		travelSpeed *= 1.1
+		score += 1
+		hp -= 5
+		armor += 5
 	# THIRTEEN - swerve
 	while (id != 0) && (id % 13) == 0:
 		id = int(id / 13)
@@ -54,18 +67,12 @@ func set_target(target : Node2D, rotSpd : float, id : int, p: Curve2D, dist, pat
 			rotateSpeed *= -1.0
 		rotateSpeed *= 1.25
 		show_path_dist *= 0.75
-	while (id != 0) && (id % 17) == 0:
-		id = int(id / 17)
-		size *= 0.666
-		travelSpeed *= 1.1
+	# ELEVEN - potential shield
+	while (id != 0) && (id % 11) == 0:
+		id = int(id / 11)
+		potentialShield += 3
+		travelSpeed *= 0.925
 		score += 1
-		hp -= 5
-		armor += 5
-	# ELEVEN - armored
-	while (id != 0) && (id % 2) == 0:
-		id = int(id / 2)
-		armor += 1
-		travelSpeed *= 0.95
 	# SEVEN - super sized
 	while (id != 0) && (id % 7) == 0:
 		id = int(id / 7)
@@ -85,6 +92,11 @@ func set_target(target : Node2D, rotSpd : float, id : int, p: Curve2D, dist, pat
 		spawn_children += 1
 		mutatorA = 1
 		travelSpeed *= 0.8
+	# TWO - armored
+	while (id != 0) && (id % 2) == 0:
+		id = int(id / 2)
+		armor += 1
+		travelSpeed *= 0.95
 	if id_for_hp >= 41:
 		hp *= pow(1.1, int(id_for_hp / 41))
 	if swerve > 0 && pathGenerator != null:
@@ -94,11 +106,22 @@ func set_target(target : Node2D, rotSpd : float, id : int, p: Curve2D, dist, pat
 	pathLength = path.get_baked_length()
 	self.scale *= size
 	if armor > 0:
-		$AnimatedSprite2D.sprite_frames = alternateEnemyFrames
+		if size > 1.16:
+			$AnimatedSprite2D.sprite_frames = alternate2EnemyFrames
+		else:
+			$AnimatedSprite2D.sprite_frames = alternate1EnemyFrames
 	if mutatorA > 0:
 		$AnimatedSprite2D.material.set_shader_parameter("mutatorA", mutatorA)
 	else:
 		$AnimatedSprite2D.material = null
+	var shieldScale : Vector2 = 1.5 * self.scale
+	while potentialShield > 0:
+		potentialShield -= 1
+		var shield = shieldScene.instantiate()
+		shield.scale *= shieldScale
+		shields.append([shieldScale, shield])
+		shieldScale *= 1.2
+		add_child(shield)
 
 func play_impact_sound():
 	if armor > 0:
@@ -107,6 +130,15 @@ func play_impact_sound():
 		$ImpactPlayer.play()
 
 func on_hit(damage : float):
+	for shieldIndex in shields.size():
+		var reverseIndex = shields.size() - (1 + shieldIndex)
+		if shields[reverseIndex][1] != null:
+			# TODO: Play *bzzzt* sound
+			regrowShieldTimer = 2.0
+			shields[reverseIndex][1].queue_free()
+			shields[reverseIndex][1] = null
+			return
+			
 	damage -= armor
 	if damage <= 0:
 		# TODO: Play *plink* sound
@@ -203,7 +235,22 @@ func _process(delta):
 		distance_travelled += delta * travelSpeed
 		var dir : Vector2 = (final_target.position - self.position).normalized()
 		self.position += dir * travelSpeed * delta
-	
+
+	if regrowShieldTimer > 0.0:
+		regrowShieldTimer -= delta
+		if regrowShieldTimer <= 0.0:
+			var shieldToRegrow : int = -1
+			for shieldIndex in shields.size():
+				if shields[shieldIndex][1] == null:
+					shieldToRegrow = shieldIndex
+					break
+			if shieldToRegrow != -1:
+				var shield = shieldScene.instantiate()
+				shield.scale *= shields[shieldToRegrow][0]
+				shields[shieldToRegrow][1] = shield
+				add_child(shield)
+				regrowShieldTimer = 0.75
+
 	var hue = 0
 	var frac : float = distance_travelled / pathLength
 	if frac > 1:
