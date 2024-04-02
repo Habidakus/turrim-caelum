@@ -159,32 +159,36 @@ func ensure_menu_has_focus():
 		pass
 	else:
 		$Menu/Menu_PlayGame.grab_focus()
+
+func populate_high_score_entry(hscore : String, hname : String):
+	var scoreChild = RichTextLabel.new()
+	scoreChild.layout_mode = 2
+	scoreChild.size_flags_horizontal = 3
+	scoreChild.size_flags_vertical = 3
+	scoreChild.bbcode_enabled = true
+	scoreChild.text = str("[right][font_size=22]", hscore, "[/font_size][/right]")
+	scoreChild.fit_content = true
+	scoreChild.scroll_active = false
+	$HighScoreList/ListContainer.add_child(scoreChild)
+	var nameChild = RichTextLabel.new()
+	nameChild.layout_mode = 2
+	nameChild.size_flags_horizontal = 3
+	nameChild.size_flags_vertical = 3
+	nameChild.bbcode_enabled = true
+	nameChild.text = str("[left][font_size=22]", hname, "[/font_size][/left]")
+	nameChild.fit_content = true
+	nameChild.scroll_active = false
+	$HighScoreList/ListContainer.add_child(nameChild)
 	
 func populate_high_score(highScores : Array):
 	var children = $HighScoreList/ListContainer.get_children()
 	for child in children:
 		$HighScoreList/ListContainer.remove_child(child)
+	populate_high_score_entry("Score", "Player")
 	for entry in highScores:
 		var hscore : int = entry[0]
-		var scoreChild = RichTextLabel.new()
-		scoreChild.layout_mode = 2
-		scoreChild.size_flags_horizontal = 3
-		scoreChild.size_flags_vertical = 3
-		scoreChild.bbcode_enabled = true
-		scoreChild.text = str("[right][font_size=22]", hscore, "[/font_size][/right]")
-		scoreChild.fit_content = true
-		scoreChild.scroll_active = false
-		$HighScoreList/ListContainer.add_child(scoreChild)
 		var hname : String = entry[1]
-		var nameChild = RichTextLabel.new()
-		nameChild.layout_mode = 2
-		nameChild.size_flags_horizontal = 3
-		nameChild.size_flags_vertical = 3
-		nameChild.bbcode_enabled = true
-		nameChild.text = str("[left][font_size=22]", hname, "[/font_size][/left]")
-		nameChild.fit_content = true
-		nameChild.scroll_active = false
-		$HighScoreList/ListContainer.add_child(nameChild)
+		populate_high_score_entry(str(hscore), hname)
 
 func _on_menu_play_game_pressed():
 	%GameStateMachine.switch_state("Playing_Action")

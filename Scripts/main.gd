@@ -16,8 +16,8 @@ extends Node
 # - settings screen
 #
 # Features to add:
-# - game outro (score, unlocks, etc...)
 # - barriers on the castle (unlocked via upgrades?)
+# - update high score to include map & kills (and header)
 # - meta progression
 #   - permanently apply some upgrades
 #   - more maps:
@@ -34,13 +34,10 @@ extends Node
 #   - hailstorm
 #   - movement-based power attacks (move in circle, move in star pattern, etc...)
 # - Add more curses
-#   - tchokies (GNDN flavour cards)
 #   - castle wandering for castle levels
 # Bugs to fix:
 # - Add sound & VFX feedback when selecting upgrade card
 # - fix collision bug on larger enemies (or is it enemies at 45 degree angles?)
-# - sometime mobs on final_target approach don't explode and just vanish???
-# - should be red trail only once the mob leaves the path, teal trail while on path
 
 var screen_size;
 var rng = RandomNumberGenerator.new()
@@ -48,6 +45,7 @@ var money = 0
 var spendable_money : int = 0
 var score = 0
 var kills = 0
+var spawns = 0
 var mobId : int = 1
 var secondsPerMonster : float = 2.0
 var monster_spawnrate_increase : int = 0
@@ -116,6 +114,7 @@ func start_game():
 	spendable_money = 0
 	score = 0
 	kills = 0
+	spawns = 0
 	mobId = 1
 	monster_spawnrate_increase = 0
 	#rollingMobHealthAverage = 0
@@ -228,6 +227,7 @@ func spawn_mob(id, dist, path, bonusScore : int) -> Mob:
 		
 	mob.set_target(final_target, speed_scale, id, path, dist, map, player, bonusScore, rng)
 	call_deferred("add_child", mob)
+	spawns += 1
 	#if rollingMobHealthAverage == 0:
 	#	rollingMobHealthAverage = mob.hp + mob.armor
 	#else:
@@ -356,5 +356,6 @@ func populate_game_stats(grid : GridContainer):
 		grid.remove_child(child)
 	populate_game_stat(grid, "Map:", map.get_map_name())
 	populate_game_stat(grid, "Score:", str(score))
-	populate_game_stat(grid, "Spawns:", str(mobId - 1))
+	populate_game_stat(grid, "Hardest Mob:", str(mobId - 1))	
+	populate_game_stat(grid, "Spawns:", str(spawns))
 	populate_game_stat(grid, "Kills:", str(kills))
