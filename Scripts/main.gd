@@ -141,9 +141,7 @@ func start_game():
 	player = player_scene.instantiate()
 	add_child(player)
 	screen_size = player.get_viewport_rect().size
-	player.position = screen_size / 2.0
-	
-	map.start_game(rng)
+	player.position = map.start_game(rng)
 	
 	$MobTimer.wait_time = secondsPerMonster
 	$MobTimer.start()

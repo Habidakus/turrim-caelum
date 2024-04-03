@@ -77,9 +77,11 @@ func _process(delta):
 				bullet.init(self.position, lifespan, bullet_speed, closestMob, bullet_damage)
 				self.get_parent().add_child(bullet)
 
-func _on_area_entered(area):
-	if area in get_tree().get_nodes_in_group("mob"):
-		area.on_hit(100)
+func _on_area_entered(area : Area2D):
+	var hitMob : bool = area.is_in_group("mob")
+	if hitMob || area.is_in_group("rock"):
+		if hitMob:
+			area.on_hit(100)
 		
 		# Explode
 		var particle = explosion_scene.instantiate()

@@ -36,8 +36,13 @@ func _on_area_entered(area : Area2D):
 	if can_kill == false:
 		return
 	
-	var mobs = get_tree().get_nodes_in_group("mob")
-	if area in mobs:
+	#var mobs = get_tree().get_nodes_in_group("mob")
+	#if area in mobs:
+	if area.is_in_group("mob"):
 		can_kill = false
 		self.queue_free()
 		area.on_hit(damage)
+	elif area.is_in_group("rock"):
+		can_kill = false
+		self.queue_free()
+	return

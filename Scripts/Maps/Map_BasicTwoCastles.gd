@@ -11,7 +11,7 @@ var currentPathIndex = 0
 func get_map_name() -> String:
 	return "Two Castles"
 
-func start_game(rng : RandomNumberGenerator):
+func start_game(rng : RandomNumberGenerator) -> Vector2:
 	
 	# Create the castle2
 	castle0 = castle_scene.instantiate()
@@ -24,6 +24,7 @@ func start_game(rng : RandomNumberGenerator):
 
 	pathArray = []
 	pathArray.append(generate_path(Vector2(0,0), get_castle().position, 0, rng))
+	return owner.screen_size / 2.0
 
 func game_over():
 	castle0.queue_free()

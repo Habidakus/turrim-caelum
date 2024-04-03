@@ -2,8 +2,9 @@ extends Node
 
 class_name Map
 
-func start_game(_rng : RandomNumberGenerator):
+func start_game(_rng : RandomNumberGenerator) -> Vector2:
 	print_debug("Map ", self, " did not implement start_game()")
+	return owner.screen_size / 2.0
 
 func game_over():
 	print_debug("Map ", self, " did not implement game_over()")
