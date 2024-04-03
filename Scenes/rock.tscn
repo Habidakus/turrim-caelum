@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://cil1elwp6156h"]
+
+[ext_resource type="Script" path="res://Scripts/rock.gd" id="1_t8wdw"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qm0tw"]
+radius = 16.0312
+
+[node name="Rock" type="Area2D"]
+collision_layer = 7
+collision_mask = 7
+script = ExtResource("1_t8wdw")
+metadata/_edit_group_ = true
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0.470588, 0.34902, 0.156863, 1)
+polygon = PackedVector2Array(11, 13, 5, 15, -11, 13, -15, -9, -6, -10, 4, -15, 14, -11, 15, -3, 10, 0, 11, 5, 15, 8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
+shape = SubResource("CircleShape2D_qm0tw")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
