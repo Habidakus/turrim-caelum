@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 @export var card_template_scene: PackedScene
+var mapButton = load("res://Scripts/MapButton.gd")
 
 var activeCard = null
 	
@@ -46,6 +47,7 @@ func _ready():
 	$MoneyLabel.hide()
 	$HighScoreList.hide()
 	$ShowPage_Why.hide()
+	$MapSelection.hide()
 
 func select_card(dir: int):
 	if dir == 0: # card was clicked on
@@ -191,11 +193,7 @@ func populate_high_score(highScores : Array):
 		populate_high_score_entry(str(hscore), hname)
 
 func _on_menu_play_game_pressed():
-	%GameStateMachine.switch_state("Playing_Action")
-	# Note that we don't currently put this call to the start_game() function in
-	# the Playing_Action enter() function because that's also called when
-	# switching back form picking cards. #TODO: can be better
-	%HUD.get_parent().start_game()
+	%GameStateMachine.switch_state("Playing_MapSelection")
 
 func _on_menu_how_to_play_pressed():
 	%GameStateMachine.switch_state("ShowPage_HowToPlay")
@@ -287,3 +285,16 @@ func show_page_why():
 
 func hide_page_why():
 	$ShowPage_Why.hide()
+
+func show_map_selection(maps):
+	$MapSelection.show()
+	for child in $MapSelection/MapButtons.get_children():
+		$MapSelection/MapButtons.remove_child(child)
+	for map : Map in maps:
+		var button = mapButton.new()
+		button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+		button.set_map(map, get_parent())
+		$MapSelection/MapButtons.add_child(button)
+
+func hide_map_selection():
+	$MapSelection.hide()

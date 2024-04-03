@@ -115,6 +115,14 @@ func _ready():
 		if lateGameCards[card] == null:
 			print_debug("BAD LATE GAME CARD (#", card ,")")
 
+func set_map(_map : Map):
+	map = _map
+	%GameStateMachine.switch_state("Playing_Action")
+	# Note that we can't put the call to the start_game() function
+	# in the Playing_Action enter() function because that's also
+	# called when switching back form picking cards.
+	start_game()
+
 func start_game():
 	rng.seed = Time.get_ticks_msec()
 	money = 0
@@ -135,7 +143,6 @@ func start_game():
 	screen_size = player.get_viewport_rect().size
 	player.position = screen_size / 2.0
 	
-	map = $Maps/Map_BasicCastle
 	map.start_game(rng)
 	
 	$MobTimer.wait_time = secondsPerMonster

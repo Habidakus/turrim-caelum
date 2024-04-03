@@ -406,6 +406,43 @@ theme_override_font_sizes/bold_font_size = 22
 bbcode_enabled = true
 fit_content = true
 
+[node name="MapSelection" type="VBoxContainer" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Top_Space" type="RichTextLabel" parent="MapSelection"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 26
+theme_override_font_sizes/bold_font_size = 22
+bbcode_enabled = true
+fit_content = true
+
+[node name="Text" type="RichTextLabel" parent="MapSelection"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 22
+theme_override_font_sizes/bold_font_size = 22
+bbcode_enabled = true
+text = "[center]Select Map:[/center]"
+fit_content = true
+
+[node name="MapButtons" type="VBoxContainer" parent="MapSelection"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Bottom_Space" type="RichTextLabel" parent="MapSelection"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 26
+theme_override_font_sizes/bold_font_size = 22
+bbcode_enabled = true
+fit_content = true
+
 [node name="GameOverStatsPage" type="VBoxContainer" parent="."]
 anchors_preset = 15
 anchor_right = 1.0

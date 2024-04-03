@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://3nphprqd1it8"]
+[gd_scene load_steps=28 format=3 uid="uid://3nphprqd1it8"]
 
 [ext_resource type="PackedScene" uid="uid://cc4fq5x80sure" path="res://Scenes/player.tscn" id="1_eo6vi"]
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_jojh5"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://Scripts/GameState/GameState_StartUp.gd" id="10_sk2ud"]
 [ext_resource type="Script" path="res://Scripts/GameState/GameState_MainMenu.gd" id="11_qjgcc"]
 [ext_resource type="Script" path="res://Scripts/GameState/GameState_Playing_Action.gd" id="12_1sd5n"]
+[ext_resource type="Script" path="res://Scripts/GameState/GameState_Playing_MapSelection.gd" id="12_pw767"]
 [ext_resource type="Script" path="res://Scripts/GameState/GameState_Playing_CardSelection.gd" id="13_3oitj"]
 [ext_resource type="Script" path="res://Scripts/GameState/GameState_Playing_GameOver.gd" id="14_sx1bj"]
 [ext_resource type="Script" path="res://Scripts/GameState/GameState_ShowPage_HowToPlay.gd" id="15_j06ph"]
@@ -76,6 +77,9 @@ wait_time = 3.0
 
 [node name="MainMenu" type="Node" parent="GameStateMachine"]
 script = ExtResource("11_qjgcc")
+
+[node name="Playing_MapSelection" type="Node" parent="GameStateMachine"]
+script = ExtResource("12_pw767")
 
 [node name="Playing_Action" type="Node" parent="GameStateMachine"]
 script = ExtResource("12_1sd5n")

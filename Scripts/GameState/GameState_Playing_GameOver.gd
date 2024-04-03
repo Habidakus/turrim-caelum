@@ -2,13 +2,15 @@ extends GameState
 
 var timerExpired : bool = false
 
+func _ready():
+	$Timer.timeout.connect(_on_timer_timeout)
+	$Timer.wait_time = 2
+
 func enter_state():
 	get_tree().paused = true
 	timerExpired = false
 	%HUD.show_game_over(false)
 	%HUD.get_parent().game_over()
-	$Timer.timeout.connect(_on_timer_timeout)
-	$Timer.wait_time = 2
 	$Timer.start()
 
 func exit_state():
