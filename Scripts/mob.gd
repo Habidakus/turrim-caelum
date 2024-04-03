@@ -159,7 +159,7 @@ func on_hit(damage : float):
 		spawn_children += 2
 	while spawn_children > 0:
 		spawn_children -= 1
-		var childMob : Mob = get_parent().spawn_mob(id_for_spawn, distance_travelled, path, 0)
+		var childMob : Mob = get_parent().spawn_mob(id_for_spawn, distance_travelled, path, final_target, 0)
 		if regressDist < pathLength:
 			childMob.set_child_path(self, regressDist, time)
 		else:

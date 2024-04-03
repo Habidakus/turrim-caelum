@@ -207,7 +207,8 @@ func _on_mob_timer_timeout():
 		freeXpCounter = 0
 		freeXp += 1
 	
-	var mob : Mob = spawn_mob(mobId, 0, current_path(), bonusScore)
+	var target : Node2D = player if !map.has_castle() else map.get_castle()
+	var mob : Mob = spawn_mob(mobId, 0, current_path(), target, bonusScore)
 	map.on_mob_spawn(mobId, rng)
 	mobId += 1
 	
@@ -223,21 +224,17 @@ func _on_mob_timer_timeout():
 	$MobTimer.wait_time = lerp(secondsPerMonster, secondsPerMonster / 5.0, (monster_spawnrate_increase - 50) / 850.0)
 	monster_spawnrate_increase += 1
 
-func spawn_mob(id, dist, path, bonusScore : int) -> Mob:
+func spawn_mob(id, dist, path, target : Node2D, bonusScore : int) -> Mob:
 	var mob : Mob = mob_scene.instantiate()
 	mob.position = path.sample_baked(dist)
 	var speed_scale = rng.randf_range(0.8, 1.2)
-	var final_target : Node2D = player
-	if map.has_castle():
-		final_target = map.get_castle() 
-		
-	mob.set_target(final_target, speed_scale, id, path, dist, map, player, bonusScore, rng)
+	#var final_target : Node2D = player
+	#if map.has_castle():
+	#	final_target = map.get_castle() 
+	mob.set_target(target, speed_scale, id, path, dist, map, player, bonusScore, rng)
 	call_deferred("add_child", mob)
 	spawns += 1
-	#if rollingMobHealthAverage == 0:
-	#	rollingMobHealthAverage = mob.hp + mob.armor
-	#else:
-	#	rollingMobHealthAverage = (rollingMobHealthAverage * 20 + mob.hp + mob.armor) / 21.0
+	
 	return mob
 
 # Note - unlike most compare() functions in other languages, this one is only "is lesser" and expects true or false return value
