@@ -10,10 +10,14 @@ var bulletDamage : float
 var autospendCount : int
 var tchotchkeCount : int
 var showPathDist : float
+var smartWeaponCount : int
 
-func is_possible(lastTwentyCreatures, cardData: CardData, dump : bool) -> bool:
+func is_possible(lastTwentyCreatures, cardData: CardData, map: Map, dump : bool) -> bool:
 	if cardData.does_change_player_or_bullet_speed():
 		if !is_possible_player_or_bullet_speed(cardData, dump):
+			return false
+	if cardData.does_reference_map():
+		if !is_possible_map(cardData, map, dump):
 			return false
 	if cardData.does_change_range():
 		if !is_possible_range(cardData, dump):
@@ -28,6 +32,13 @@ func is_possible(lastTwentyCreatures, cardData: CardData, dump : bool) -> bool:
 	if dump:
 		print("Accepting ", cardData.cardName, " as a world card");
 
+	return true
+
+func is_possible_map(cardData : CardData, map : Map, dump: bool) -> bool:
+	if cardData.does_requires_castle() && map.has_castle() == false:
+		if dump:
+			print("Rejecting ", cardData.cardName, " because no castle on map")
+		return false
 	return true
 
 func is_possible_player_or_bullet_speed(cardData : CardData, dump: bool) -> bool:
@@ -58,14 +69,18 @@ func is_possible_range(cardData : CardData, dump: bool) -> bool:
 	else:
 		return true
 
-func is_possible_player_charges(_cardData : CardData, dump: bool) -> bool:
+func is_possible_player_charges(cardData : CardData, dump: bool) -> bool:
 	if autospendCount > 1:
 		if dump:
-			print("Rejecting ", _cardData.cardName, " because we already have autospend")
+			print("Rejecting ", cardData.cardName, " because we already have autospend")
 		return false
 	if tchotchkeCount > 1:
 		if dump:
-			print("Rejecting ", _cardData.cardName, " because we already have tchotchke")
+			print("Rejecting ", cardData.cardName, " because we already have tchotchke")
+		return false
+	if smartWeaponCount > 1:
+		if dump:
+			print("Rejecting ", cardData.cardName, " because smart weapon on cooldown")
 		return false
 	return true
 

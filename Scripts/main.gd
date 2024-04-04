@@ -73,6 +73,8 @@ var earlyGameCards = [
 	load("res://Data/Cards/lethalBullets_lessRange.tres"),
 	load("res://Data/Cards/fasterFireRate_worseDamage.tres"),
 	load("res://Data/Cards/lethalBullets_slowerPlayer.tres"),
+	load("res://Data/Cards/smartWeapon_castle.tres"),
+	load("res://Data/Cards/smartWeapon_player.tres"),
 ]
 
 var midGameCards = [
@@ -170,7 +172,7 @@ func add_cards(cardStack, cardsNeeded : int, dump : bool):
 	for card in cardStack:
 		var worth : PlayerWorth = player.create_player_worth()
 		card.initialize_for_purchase(worth)
-		if worth.is_possible(lastTwentyCreatures, card, dump):
+		if worth.is_possible(lastTwentyCreatures, card, map, dump):
 			chosenCards.append(card)
 		if chosenCards.size() >= cardsNeeded:
 			return chosenCards
@@ -267,6 +269,24 @@ func game_over():
 	for bullet in get_tree().get_nodes_in_group("bullet"):
 		bullet.queue_free()
 
+func sort_mobs_closest_to_target(a : Mob, b : Mob) -> bool:
+	return a.distance_travelled > b.distance_travelled
+
+func sort_mobs_closest_to_player(a : Mob, b : Mob) -> bool:
+	return a.position.distance_squared_to(player.position) < b.position.distance_squared_to(player.position)
+
+func activate_smart_weapon(castleBased : bool) -> int:
+	var mobList = get_tree().get_nodes_in_group("mob")
+	if castleBased:
+		mobList.sort_custom(sort_mobs_closest_to_target)
+	else:
+		mobList.sort_custom(sort_mobs_closest_to_player)
+	
+	for i in mobList.size() / 2:
+		mobList[i].destruct(false)
+	
+	return 50 + mobId
+
 func player_can_spend_money():
 	return spendable_money > 0
 
@@ -279,13 +299,14 @@ func player_has_spent():
 	%HUD.set_money(spendable_money)
 	%GameStateMachine.switch_state("Playing_Action")
 	
-func _on_increase_score(amount):
+func _on_increase_score(amount : int, canGainMoney: bool):
 	kills += 1
-	money += amount
-	if money >= 23:
-		spendable_money += 1
-		money -= 23
-		$HUD.set_money(spendable_money)
+	if canGainMoney:
+		money += amount
+		if money >= 23:
+			spendable_money += 1
+			money -= 23
+			$HUD.set_money(spendable_money)
 	score += amount
 	$HUD.set_score(score)
 

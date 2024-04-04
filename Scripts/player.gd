@@ -12,6 +12,7 @@ var bullet_range : float = 275.0;
 var bullet_speed : float = 215.0;
 var bullet_damage : float = 9.0;
 var next_shot
+var smartWeaponUnlock : int = 100;
 var autospend : bool = false;
 var tchotchke : bool = false;
 
@@ -34,7 +35,11 @@ func create_player_worth() -> PlayerWorth:
 	worth.autospendCount = 1 if autospend else 0
 	worth.tchotchkeCount = 1 if tchotchke else 0
 	worth.showPathDist = showPathDist
+	worth.smartWeaponCount = 0 if smartWeaponUnlock < get_parent().mobId else 1
 	return worth
+
+func activate_smart_weapon(castleBased : bool):
+	smartWeaponUnlock = get_parent().activate_smart_weapon(castleBased)
 
 #func _draw():
 	#draw_line(Vector2.ZERO, to_local(draw_target), Color.RED, 5, true)

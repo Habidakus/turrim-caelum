@@ -425,10 +425,10 @@ fit_content = true
 
 [node name="Text" type="RichTextLabel" parent="MapSelection"]
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 22
+theme_override_font_sizes/normal_font_size = 30
 theme_override_font_sizes/bold_font_size = 22
 bbcode_enabled = true
-text = "[center][font_size=30]Select Map:[/font][/center]"
+text = "[center]Select Map:[/center]"
 fit_content = true
 
 [node name="MapButtons" type="VBoxContainer" parent="MapSelection"]

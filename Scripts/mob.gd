@@ -3,8 +3,8 @@ extends Area2D
 class_name Mob
 
 var regrowShieldTimer : float = -1.0
-var distance_travelled = 0.0
-var childOffset_regressDist = -1.0
+var distance_travelled : float = 0.0
+var childOffset_regressDist : float = -1.0
 var childOffset_regressPoint = Vector2.ZERO
 var childOffset_regressTime = -1.0
 var show_path_dist = 1.0
@@ -153,20 +153,24 @@ func on_hit(damage : float):
 		distance_travelled -= 3.0
 		return
 	
-	var regressDist = distance_travelled - 20.0
-	var time = 0.3333
+	# finally, we can blow this mob up
+	destruct(true)
+
+func destruct(increasesScore : bool):
 	if spawn_children > 0:
 		spawn_children += 2
-	while spawn_children > 0:
-		spawn_children -= 1
-		var childMob : Mob = get_parent().spawn_mob(id_for_spawn, distance_travelled, path, final_target, 0)
-		if regressDist < pathLength:
-			childMob.set_child_path(self, regressDist, time)
-		else:
-			var regressionVector : Vector2 = (self.position - final_target.position).normalized() * (distance_travelled - regressDist);
-			childMob.set_child_vector(self, self.position + regressionVector, time)
-		regressDist -= 30.0
-		time += 0.3333
+		var regressDist = distance_travelled - 20.0
+		var time = 0.3333
+		while spawn_children > 0:
+			spawn_children -= 1
+			var childMob : Mob = get_parent().spawn_mob(id_for_spawn, distance_travelled, path, final_target, 0)
+			if regressDist < pathLength:
+				childMob.set_child_path(self, regressDist, time)
+			else:
+				var regressionVector : Vector2 = (self.position - final_target.position).normalized() * (distance_travelled - regressDist);
+				childMob.set_child_vector(self, self.position + regressionVector, time)
+			regressDist -= 30.0
+			time += 0.3333
 	
 	# Explode
 	var particle = explosion_scene.instantiate()
@@ -180,7 +184,7 @@ func on_hit(damage : float):
 	get_parent().add_child(particle);
 	
 	# Increase player score
-	get_parent().increase_score.emit(score)
+	get_parent().increase_score.emit(score, increasesScore)
 	
 	# Remove Self
 	self.queue_free()
@@ -221,10 +225,10 @@ func _process(delta):
 		var diffPerSec : float = delta / childOffset_regressTime
 		childOffset_regressTime -= delta
 		if childOffset_regressDist >= 0.0:
-			distance_travelled = lerp(distance_travelled, childOffset_regressDist, sqrt(diffPerSec))
+			distance_travelled = lerpf(distance_travelled, childOffset_regressDist, sqrt(diffPerSec))
 			self.position = path.sample_baked(distance_travelled)
 		else:
-			self.position = Vector2(lerp(self.position.x, childOffset_regressPoint.x, sqrt(diffPerSec)), lerp(self.position.y, childOffset_regressPoint.y, sqrt(diffPerSec)))
+			self.position = Vector2(lerpf(self.position.x, childOffset_regressPoint.x, sqrt(diffPerSec)), lerpf(self.position.y, childOffset_regressPoint.y, sqrt(diffPerSec)))
 			self.position = lerp(self.position, childOffset_regressPoint, sqrt(diffPerSec))
 	elif distance_travelled < pathLength:
 		# Mob is travelling along the pre-defined path

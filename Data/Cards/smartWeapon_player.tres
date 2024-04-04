@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://b2d3xyv2dpgbv"]
+
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_smartWeapon_player.gd" id="1_iaqes"]
+
+[resource]
+script = ExtResource("1_iaqes")
+cardName = "Activate: Death Blossom"
+description = "The enemy closest to the star ship will be struck by automated defenses."
+boonMultiple = 0.0

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://c67dq7tlb4vow"]
+
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_smartWeapon_castle.gd" id="1_vyixu"]
+
+[resource]
+script = ExtResource("1_vyixu")
+cardName = "Activate: Castle Defenses"
+description = "The enemy closest to the castle(s) will be struck by automated castle defenses."
+boonMultiple = 0.0
