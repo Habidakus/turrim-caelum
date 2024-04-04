@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://bveldx1duvif2"]
+
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_smartWeapon_regression.gd" id="1_ejbre"]
+
+[resource]
+script = ExtResource("1_ejbre")
+cardName = "Activate: Entropath"
+description = "Push all enemies back.
+
+CAUTION: May fling enemies back into ship."
+boonMultiple = 1.3

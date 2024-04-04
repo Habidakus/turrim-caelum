@@ -115,18 +115,18 @@ script = ExtResource("18_38mt6")
 script = ExtResource("18_kj1r7")
 castle_scene = ExtResource("4_132h1")
 
-[node name="Map_RocksWithCastle" type="Node" parent="Maps"]
-script = ExtResource("22_53cmg")
-castle_scene = ExtResource("4_132h1")
-wall_scene = ExtResource("23_xplb7")
+[node name="Map_BasicNoCastle" type="Node" parent="Maps"]
+script = ExtResource("20_vnfb1")
 
 [node name="Map_WallsWithCastle" type="Node" parent="Maps"]
 script = ExtResource("24_78npa")
 castle_scene = ExtResource("4_132h1")
 wall_scene = ExtResource("23_xplb7")
 
-[node name="Map_BasicNoCastle" type="Node" parent="Maps"]
-script = ExtResource("20_vnfb1")
+[node name="Map_RocksWithCastle" type="Node" parent="Maps"]
+script = ExtResource("22_53cmg")
+castle_scene = ExtResource("4_132h1")
+wall_scene = ExtResource("23_xplb7")
 
 [node name="Map_BasicTwoCastles" type="Node" parent="Maps"]
 script = ExtResource("23_685n7")

@@ -16,11 +16,11 @@ func start_game(rng : RandomNumberGenerator) -> Vector2:
 	# Create the castle2
 	castle0 = castle_scene.instantiate()
 	add_child(castle0)
-	castle0.position = Vector2(owner.screen_size.x -20, owner.screen_size.y / 3)
+	castle0.position = Vector2(owner.screen_size.x -20, owner.screen_size.y / 2)
 
 	castle1 = castle_scene.instantiate()
 	add_child(castle1)
-	castle1.position = Vector2(owner.screen_size.x / 3, owner.screen_size.y - 20)
+	castle1.position = Vector2(owner.screen_size.x / 2, owner.screen_size.y - 20)
 
 	pathArray = []
 	pathArray.append(generate_path(Vector2(0,0), get_castle().position, 0, rng))

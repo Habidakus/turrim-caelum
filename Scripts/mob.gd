@@ -156,6 +156,27 @@ func on_hit(damage : float):
 	# finally, we can blow this mob up
 	destruct(true)
 
+func be_regressed(regressFrac : float, regressTime : float):
+	if childOffset_regressTime > 0:
+		if childOffset_regressDist >= 0.0:
+			var regressDist = max(0, (1.0 - regressFrac)) * childOffset_regressDist
+			# Creature was already regressing, send it back to a fraction of where it's reset point was to be
+			set_regression_path(regressDist, regressTime + childOffset_regressTime)
+		else:
+			# Creature was regressing along a vector... oh, tricky
+			var regressDist = max(0, (1.0 - regressFrac)) * distance_travelled
+			var regressionVector : Vector2 = (self.position - final_target.position).normalized() * (distance_travelled - regressDist);
+			set_regression_vector(self.position + regressionVector, regressTime + childOffset_regressTime)
+	else:
+		var regressDist = max(0, (1.0 - regressFrac)) * distance_travelled
+		if distance_travelled <= pathLength:
+			# Creature still travelling along the path, simple regression
+			set_regression_path(regressDist, regressTime)
+		else:
+			# Creature aiming at the target
+			var regressionVector : Vector2 = (self.position - final_target.position).normalized() * (distance_travelled - regressDist);
+			set_regression_vector(self.position + regressionVector, regressTime)
+
 func destruct(increasesScore : bool):
 	if spawn_children > 0:
 		spawn_children += 2
@@ -165,10 +186,13 @@ func destruct(increasesScore : bool):
 			spawn_children -= 1
 			var childMob : Mob = get_parent().spawn_mob(id_for_spawn, distance_travelled, path, final_target, 0)
 			if regressDist < pathLength:
-				childMob.set_child_path(self, regressDist, time)
+				childMob.set_regression_path(regressDist, time)
 			else:
 				var regressionVector : Vector2 = (self.position - final_target.position).normalized() * (distance_travelled - regressDist);
-				childMob.set_child_vector(self, self.position + regressionVector, time)
+				childMob.set_regression_vector(self.position + regressionVector, time)
+			childMob.position = position
+			childMob.rotation = rotation
+			childMob.travelSpeed = travelSpeed
 			regressDist -= 30.0
 			time += 0.3333
 	
@@ -190,20 +214,14 @@ func destruct(increasesScore : bool):
 	self.queue_free()
 
 # If this mob is a child of a just destroyed parent, set their child regression point
-func set_child_path(parent: Mob, regressDist: float, regressTime: float):
+func set_regression_path(regressDist: float, regressTime: float):
 	assert(regressDist < pathLength)
-	travelSpeed = parent.travelSpeed
-	position = parent.position
-	rotation = parent.rotation
 	childOffset_regressTime = regressTime
 	childOffset_regressDist = max(0.0, regressDist)
 	childOffset_regressPoint = Vector2.ZERO
 
 # If this mob is a child of a just destroyed parent, set their child regression point
-func set_child_vector(parent: Mob, regressPoint: Vector2, regressTime: float):
-	travelSpeed = parent.travelSpeed
-	position = parent.position
-	rotation = parent.rotation
+func set_regression_vector(regressPoint: Vector2, regressTime: float):
 	childOffset_regressTime = regressTime
 	childOffset_regressPoint = regressPoint
 	childOffset_regressDist = -1

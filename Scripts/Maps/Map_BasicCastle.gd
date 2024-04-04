@@ -21,8 +21,9 @@ func start_game(rng : RandomNumberGenerator) -> Vector2:
 	return owner.screen_size / 2.0
 
 func game_over():
-	castle.queue_free()
-	castle = null
+	if castle != null:
+		castle.queue_free()
+		castle = null
 	
 func current_path() -> Curve2D:
 	if pathArray.size() == 1:

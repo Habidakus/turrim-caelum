@@ -21,11 +21,8 @@ extends Node
 # - meta progression
 #   - permanently apply some upgrades
 #   - more maps:
-#     - screen to select which map to play on
 #     - add map name to high score list
 #     - maps that start with mob ID at larger numbers 
-#     - rocks that will block both enemy paths & blow up the player
-#     - walls (like rocks, but much longer)
 #     - hostile zones that would blow up the player but allow mobs to pass through
 # - display stats while in advancement selection screen (and on end screen)
 # - more advancements:
@@ -36,7 +33,7 @@ extends Node
 # - Add more curses
 #   - castle wandering for castle levels
 # Bugs to fix:
-# - fix collision bug on larger enemies (or is it enemies at 45 degree angles?)
+# - have the bullets render under the player's ship
 
 var screen_size;
 var rng = RandomNumberGenerator.new()
@@ -73,12 +70,13 @@ var earlyGameCards = [
 	load("res://Data/Cards/lethalBullets_lessRange.tres"),
 	load("res://Data/Cards/fasterFireRate_worseDamage.tres"),
 	load("res://Data/Cards/lethalBullets_slowerPlayer.tres"),
-	load("res://Data/Cards/smartWeapon_castle.tres"),
-	load("res://Data/Cards/smartWeapon_player.tres"),
 ]
 
 var midGameCards = [
 	load("res://Data/Cards/fasterPlayer_worseRadar.tres"),
+	load("res://Data/Cards/smartWeapon_player.tres"),
+	load("res://Data/Cards/smartWeapon_regression.tres"),
+	load("res://Data/Cards/smartWeapon_castle.tres"),
 	load("res://Data/Cards/bulletRange.tres"),
 	load("res://Data/Cards/fasterBullets.tres"),
 	load("res://Data/Cards/fasterFireRate.tres"),
@@ -284,6 +282,13 @@ func activate_smart_weapon(castleBased : bool) -> int:
 	
 	for i in mobList.size() / 2:
 		mobList[i].destruct(false)
+	
+	return 50 + mobId
+
+func activate_smart_weapon_regression(regressDist: float):
+	var mobList = get_tree().get_nodes_in_group("mob")
+	for i in mobList.size():
+		mobList[i].be_regressed(regressDist, 2.5)
 	
 	return 50 + mobId
 

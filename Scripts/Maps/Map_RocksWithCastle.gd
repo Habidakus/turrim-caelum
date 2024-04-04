@@ -63,10 +63,11 @@ func start_game(rng : RandomNumberGenerator) -> Vector2:
 	return playerSpawn
 
 func game_over():
-	castle.queue_free()
+	if castle != null:
+		castle.queue_free()
+		castle = null
 	for rock in rocks:
 		rock.queue_free()
-	castle = null
 	rocks = []
 	
 func current_path() -> Curve2D:
