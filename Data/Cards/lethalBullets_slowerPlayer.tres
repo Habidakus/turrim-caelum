@@ -7,5 +7,4 @@ script = ExtResource("1_3413n")
 cardName = "Overloaded Wing Mounts"
 description = "Larger guns on the wings packs quite the punch, but at the cost of slower ship speed:
 "
-boonType = 4
 boonMultiple = 1.3

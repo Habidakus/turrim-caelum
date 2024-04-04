@@ -6,5 +6,4 @@
 script = ExtResource("1_jip3o")
 cardName = "Custom Flight Yoke"
 description = "A yoke and throttle custom cast in go-faster-red plastic."
-boonType = 10
 boonMultiple = 1.0

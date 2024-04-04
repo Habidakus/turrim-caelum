@@ -7,5 +7,4 @@ script = ExtResource("1_oh6nw")
 cardName = "Gyrojet Bullets"
 description = "Bullets fly slower, but farther:
 "
-boonType = 3
 boonMultiple = 1.5

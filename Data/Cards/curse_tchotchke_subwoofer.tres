@@ -6,5 +6,4 @@
 script = ExtResource("1_7xme0")
 cardName = "Sub-woofer"
 description = "The deepest, most rumbliest, sub-woofer for all the best accustic accompaniment as you fight these invaders."
-boonType = 10
 boonMultiple = 1.0

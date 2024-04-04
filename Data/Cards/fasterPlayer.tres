@@ -7,5 +7,4 @@ script = ExtResource("1_wopee")
 cardName = "Rocket Fuel"
 description = "Nothing but the best for our pilots:
 "
-boonType = 0
 boonMultiple = 1.25

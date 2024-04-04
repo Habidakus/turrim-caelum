@@ -6,5 +6,4 @@
 script = ExtResource("1_b78as")
 cardName = "Custom Goggles"
 description = "All the other pilots will be envious of these goggles."
-boonType = 10
 boonMultiple = 1.0

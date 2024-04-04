@@ -7,5 +7,4 @@ script = ExtResource("1_om6ri")
 cardName = "Harder Enemy"
 description = "Monsters get so much more difficult.
 Yikes."
-boonType = 8
 boonMultiple = 2.0

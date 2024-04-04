@@ -6,5 +6,4 @@
 script = ExtResource("1_b78as")
 cardName = "Fresh Coat of Paint"
 description = "Space ship is coated in a fresh paint job, with really cool looking accent lines."
-boonType = 10
 boonMultiple = 1.0

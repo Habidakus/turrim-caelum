@@ -6,5 +6,4 @@
 script = ExtResource("1_4vtem")
 cardName = "Harder Enemy"
 description = "Monsters get much more difficult."
-boonType = 8
 boonMultiple = 1.75

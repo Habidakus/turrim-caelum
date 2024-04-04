@@ -7,5 +7,4 @@ script = ExtResource("1_cc5fj")
 cardName = "Better Radar"
 description = "Enemy on final approach give telltale signs sooner:
 "
-boonType = 6
 boonMultiple = 1.1

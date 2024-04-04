@@ -7,5 +7,4 @@ script = ExtResource("1_3qp7d")
 cardName = "High Explosive Shells"
 description = "These larger bullets do more damage to aliens, but at a reduced range:
 "
-boonType = 4
 boonMultiple = 1.4

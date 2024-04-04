@@ -7,5 +7,4 @@ script = ExtResource("1_5ttjc")
 cardName = "Faster Spawn Rates"
 description = "Monsters spawn so much faster.
 Oh dear."
-boonType = 9
 boonMultiple = 2.0

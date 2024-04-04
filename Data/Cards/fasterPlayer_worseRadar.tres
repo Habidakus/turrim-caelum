@@ -7,5 +7,4 @@ script = ExtResource("1_sa8rc")
 cardName = "Super Radioactive Engines"
 description = "Player ship moves faster, but this does disrupt radar:
 "
-boonType = 0
 boonMultiple = 1.4

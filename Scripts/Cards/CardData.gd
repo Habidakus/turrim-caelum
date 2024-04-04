@@ -2,25 +2,8 @@ extends Resource
 
 class_name CardData
 
-enum BoonType { 
-	playerSpeed = 1, 
-	bulletSpeed = 2,
-	fireRate = 3,
-	bulletLife = 4,
-	moreDamage = 5,
-	autospend = 6,
-	revealSooner = 7,
-	curseAdvanceMonsters = 8,
-	curseAdvanceSpawnRate = 9,
-	curseTchotchke = 10,
-}
-
-@export_group("Text")
 @export var cardName : String
 @export_multiline var description : String
-
-@export_group("boon")
-@export var boonType : BoonType
 @export var boonMultiple : float
 
 func is_curse() -> bool:

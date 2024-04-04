@@ -7,5 +7,4 @@ script = ExtResource("1_ufkfv")
 cardName = "Mag Acceleration Barrel"
 description = "Your bullets move faster:
 "
-boonType = 1
 boonMultiple = 1.25

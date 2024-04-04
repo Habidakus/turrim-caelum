@@ -7,5 +7,4 @@ script = ExtResource("1_fdi3i")
 cardName = "Rifled Barrel"
 description = "Bullets fly farther:
 "
-boonType = 3
 boonMultiple = 1.25

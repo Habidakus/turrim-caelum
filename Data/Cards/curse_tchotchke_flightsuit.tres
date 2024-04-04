@@ -7,5 +7,4 @@ script = ExtResource("1_8fhf4")
 cardName = "Flight Suit"
 description = "Custom, designer, flight suit.
 Everyone loves a sharp dressed pilot."
-boonType = 10
 boonMultiple = 1.0

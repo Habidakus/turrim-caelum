@@ -7,5 +7,4 @@ script = ExtResource("1_eau56")
 cardName = "Tiny Aerodynamic Bullets"
 description = "Bullets travel much faster, but do less damage:
 "
-boonType = 1
 boonMultiple = 1.5

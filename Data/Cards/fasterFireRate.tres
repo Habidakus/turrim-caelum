@@ -7,5 +7,4 @@ script = ExtResource("1_grbeu")
 cardName = "Gattling Gun"
 description = "Gattling Guns means more bullets:
 "
-boonType = 2
 boonMultiple = 1.25

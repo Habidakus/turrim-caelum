@@ -7,5 +7,4 @@ script = ExtResource("1_vpdle")
 cardName = "Shield Popping Guns"
 description = "A higher cycle rate will tear down shields faster, but at the cost of a little stopping power:
 "
-boonType = 2
 boonMultiple = 1.4

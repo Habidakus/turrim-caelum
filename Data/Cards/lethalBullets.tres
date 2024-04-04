@@ -7,5 +7,4 @@ script = ExtResource("1_t2t4b")
 cardName = "Uranium Bullets"
 description = "These dense bullets do more damage to aliens:
 "
-boonType = 4
 boonMultiple = 1.2
