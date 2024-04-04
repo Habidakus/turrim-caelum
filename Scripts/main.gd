@@ -17,7 +17,6 @@ extends Node
 #
 # Features to add:
 # - barriers on the castle (unlocked via upgrades?)
-# - update high score to include map & kills (and header)
 # - meta progression
 #   - permanently apply some upgrades
 #   - more maps:
@@ -72,13 +71,13 @@ var earlyGameCards = [
 	load("res://Data/Cards/lethalBullets_lessRange.tres"),
 	load("res://Data/Cards/fasterFireRate_worseDamage.tres"),
 	load("res://Data/Cards/lethalBullets_slowerPlayer.tres"),
+	load("res://Data/Cards/smartWeapon_player.tres"),
+	load("res://Data/Cards/smartWeapon_regression.tres"),
+	load("res://Data/Cards/smartWeapon_castle.tres"),
 ]
 
 var midGameCards = [
 	load("res://Data/Cards/fasterPlayer_worseRadar.tres"),
-	load("res://Data/Cards/smartWeapon_player.tres"),
-	load("res://Data/Cards/smartWeapon_regression.tres"),
-	load("res://Data/Cards/smartWeapon_castle.tres"),
 	load("res://Data/Cards/bulletRange.tres"),
 	load("res://Data/Cards/fasterBullets.tres"),
 	load("res://Data/Cards/fasterFireRate.tres"),
