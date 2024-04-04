@@ -16,6 +16,7 @@ color = Color(0.470588, 0.34902, 0.156863, 1)
 polygon = PackedVector2Array(11, 13, 5, 15, -11, 13, -15, -9, -6, -10, 4, -15, 14, -11, 15, -3, 10, 0, 11, 5, 15, 8)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, 1)
 shape = SubResource("CircleShape2D_qm0tw")
 
