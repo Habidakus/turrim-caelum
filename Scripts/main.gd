@@ -47,6 +47,8 @@ var secondsPerMonster : float = 2.0
 var monster_spawnrate_increase : int = 0
 var player : Player = null
 var map : Map = null
+var shotsTaken : int = 0
+var shotAccuracy : int = 0
 
 var freeXp: int = 1
 var freeXpCounter : int = 0
@@ -136,6 +138,8 @@ func start_game():
 	ltcWriteIndex = 0
 	freeXp = 1
 	freeXpCounter = 0
+	shotsTaken = 0
+	shotAccuracy = 0
 	
 	# Create the player
 	player = player_scene.instantiate()
@@ -152,6 +156,11 @@ func get_show_path_dist() -> float:
 		return player.showPathDist
 	else:
 		return 0.7
+
+func on_bullet_freed(hitSomething : bool):
+	shotsTaken += 1
+	if hitSomething:
+		shotAccuracy += 1
 
 func advance_id(advanceAmount : float):
 	var increase : float = float(min(200, mobId)) * (advanceAmount - 1.0)
@@ -238,10 +247,17 @@ func highscore_list_sorter(a, b):
 		return false
 	elif a[0] > b[0]:
 		return true
-	# Tie-break on player's names
+		
+	# Tie-break on map name
 	elif a[1] < b[1]:
 		return true
 	elif a[1] > b[1]:
+		return false
+		
+	# Tie-break on player's names
+	elif a[2] < b[2]:
+		return true
+	elif a[2] > b[2]:
 		return false
 	# otherwise equal
 	else:
@@ -256,7 +272,7 @@ func game_over():
 	var username = "Player One"
 	if OS.has_environment("USERNAME"):
 		username = OS.get_environment("USERNAME")
-	highscore_list.append([score, username])
+	highscore_list.append([score, map.get_map_name(), username])
 	highscore_list.sort_custom(highscore_list_sorter)
 	while highscore_list.size() > 255:
 		highscore_list.remove_at(highscore_list.size() - 1)
@@ -335,7 +351,9 @@ func save_highscore():
 	for entry in count:
 		var hscore : int = highscore_list[entry][0]
 		file.store_32(hscore)
-		var hname : String = highscore_list[entry][1]
+		var hmap : String = highscore_list[entry][1]
+		file.store_pascal_string(hmap)
+		var hname : String = highscore_list[entry][2]
 		file.store_pascal_string(hname)
 	file.flush()
 	file.close()
@@ -347,8 +365,9 @@ func load_highscore():
 		var count : int = file.get_8()
 		for i in count:
 			var hscore : int = file.get_32()
+			var hmap : String = file.get_pascal_string()
 			var hname : String = file.get_pascal_string()
-			var entry : Array = [hscore, hname]
+			var entry : Array = [hscore, hmap, hname]
 			highscore_list.append(entry)
 		highscore_list.sort_custom(highscore_list_sorter)
 		file.flush()
@@ -383,3 +402,7 @@ func populate_game_stats(grid : GridContainer):
 	populate_game_stat(grid, "Hardest Mob:", str(mobId - 1))	
 	populate_game_stat(grid, "Spawns:", str(spawns))
 	populate_game_stat(grid, "Kills:", str(kills))
+	if shotsTaken == 0:
+		populate_game_stat(grid, "Accuracy:", "no shots taken")
+	else:
+		populate_game_stat(grid, "Accuracy:", str(int(round(10000 * shotAccuracy / float(shotsTaken))) / 100.0, "%"))

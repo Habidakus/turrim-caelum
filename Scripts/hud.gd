@@ -162,7 +162,7 @@ func ensure_menu_has_focus():
 	else:
 		$Menu/Menu_PlayGame.grab_focus()
 
-func populate_high_score_entry(hscore : String, hname : String):
+func populate_high_score_entry(hscore : String, hmap : String, hname : String):
 	var scoreChild = RichTextLabel.new()
 	scoreChild.layout_mode = 2
 	scoreChild.size_flags_horizontal = 3
@@ -172,6 +172,15 @@ func populate_high_score_entry(hscore : String, hname : String):
 	scoreChild.fit_content = true
 	scoreChild.scroll_active = false
 	$HighScoreList/ListContainer.add_child(scoreChild)
+	var mapChild = RichTextLabel.new()
+	mapChild.layout_mode = 2
+	mapChild.size_flags_horizontal = 3
+	mapChild.size_flags_vertical = 3
+	mapChild.bbcode_enabled = true
+	mapChild.text = str("[center][font_size=22]", hmap, "[/font_size][/center]")
+	mapChild.fit_content = true
+	mapChild.scroll_active = false
+	$HighScoreList/ListContainer.add_child(mapChild)
 	var nameChild = RichTextLabel.new()
 	nameChild.layout_mode = 2
 	nameChild.size_flags_horizontal = 3
@@ -186,11 +195,12 @@ func populate_high_score(highScores : Array):
 	var children = $HighScoreList/ListContainer.get_children()
 	for child in children:
 		$HighScoreList/ListContainer.remove_child(child)
-	populate_high_score_entry("Score", "Player")
+	populate_high_score_entry("Score", "Map", "Player")
 	for entry in highScores:
 		var hscore : int = entry[0]
-		var hname : String = entry[1]
-		populate_high_score_entry(str(hscore), hname)
+		var hmap : String = entry[1]
+		var hname : String = entry[2]
+		populate_high_score_entry(str(hscore), hmap, hname)
 
 func _on_menu_play_game_pressed():
 	%GameStateMachine.switch_state("Playing_MapSelection")
