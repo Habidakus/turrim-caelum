@@ -3,6 +3,11 @@ extends CardData
 var increaseToBulletDamage : float
 var decreaseToBulletRange : float
 
+func does_change_range() -> bool:
+	return true
+func does_change_dps() -> bool:
+	return true
+
 func initialize_for_purchase(worth : PlayerWorth):
 	increaseToBulletDamage = get_damage_we_will_add(worth)
 	worth.bulletDamage += increaseToBulletDamage

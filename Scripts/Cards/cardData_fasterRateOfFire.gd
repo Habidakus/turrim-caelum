@@ -3,6 +3,9 @@ extends CardData
 var currentBulletsPerMinute : float;
 var newBulletsPerMinute : float;
 
+func does_change_dps() -> bool:
+	return true
+
 func initialize_for_purchase(worth : PlayerWorth):
 	currentBulletsPerMinute = 60.0 * worth.bulletsPerSecond
 	newBulletsPerMinute = get_delta_increased_rate_of_fire_per_minute(worth) + currentBulletsPerMinute

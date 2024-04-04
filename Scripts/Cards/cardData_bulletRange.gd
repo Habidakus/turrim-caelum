@@ -2,6 +2,9 @@ extends CardData
 
 var increaseToBulletRange : float
 
+func does_change_range() -> bool:
+	return true
+
 func initialize_for_purchase(worth : PlayerWorth):
 	increaseToBulletRange = get_increase_to_bullet_range(worth)
 	worth.bulletRange += increaseToBulletRange

@@ -11,36 +11,54 @@ var autospendCount : int
 var tchotchkeCount : int
 var showPathDist : float
 
-func is_world_possible(_cardData : CardData, _dump: bool) -> bool:
-	if _dump:
-		print("Accepting ", _cardData.cardName, " as a world card");
+func is_possible(lastTwentyCreatures, cardData: CardData, dump : bool) -> bool:
+	if cardData.does_change_player_or_bullet_speed():
+		if !is_possible_player_or_bullet_speed(cardData, dump):
+			return false
+	if cardData.does_change_range():
+		if !is_possible_range(cardData, dump):
+			return false
+	if cardData.does_change_player_charges():
+		if !is_possible_player_charges(cardData, dump):
+			return false
+	if cardData.does_change_dps():
+		if !is_possible_dps(lastTwentyCreatures, cardData, dump):
+			return false
+
+	if dump:
+		print("Accepting ", cardData.cardName, " as a world card");
+
 	return true
 
-func is_player_possible(lastTwentyCreatures, _cardData : CardData, dump: bool) -> bool:
-	if showPathDist <= 0.5:
-		if dump:
-			print("Rejecting ", _cardData.cardName, " because of short show path (", showPathDist, ")")
-		return false
-	if bulletsPerSecond > 5.0:
-		if dump:
-			print("Rejecting ", _cardData.cardName, " because of too many bullets per minute (", 60.0 * bulletsPerSecond, ")")
-		return false
-	if bulletRange > 512.0:
-		if dump:
-			print("Rejecting ", _cardData.cardName, " because of bullet range too great (", bulletRange, ")")
-		return false
+func is_possible_player_or_bullet_speed(cardData : CardData, dump: bool) -> bool:
 	if shipSpeed > 800.0:
 		if dump:
-			print("Rejecting ", _cardData.cardName, " because of ship speed too great (", shipSpeed, ")")
+			print("Rejecting ", cardData.cardName, " because of ship speed too great (", shipSpeed, ")")
 		return false
 	if bulletSpeed > 950.0:
 		if dump:
-			print("Rejecting ", _cardData.cardName, " because of bullet speed too great (", bulletSpeed, ")")
+			print("Rejecting ", cardData.cardName, " because of bullet speed too great (", bulletSpeed, ")")
 		return false
 	if shipSpeed >= bulletSpeed:
 		if dump:
-			print("Rejecting ", _cardData.cardName, " because of ship speed (", shipSpeed, ") greater than bullet speed (", bulletSpeed, ")")
+			print("Rejecting ", cardData.cardName, " because of ship speed (", shipSpeed, ") greater than bullet speed (", bulletSpeed, ")")
 		return false
+	else:
+		return true
+
+func is_possible_range(cardData : CardData, dump: bool) -> bool:
+	if bulletRange > 512.0:
+		if dump:
+			print("Rejecting ", cardData.cardName, " because of bullet range too great (", bulletRange, ")")
+		return false
+	if showPathDist <= 0.5:
+		if dump:
+			print("Rejecting ", cardData.cardName, " because of short show path (", showPathDist, ")")
+		return false
+	else:
+		return true
+
+func is_possible_player_charges(_cardData : CardData, dump: bool) -> bool:
 	if autospendCount > 1:
 		if dump:
 			print("Rejecting ", _cardData.cardName, " because we already have autospend")
@@ -48,6 +66,13 @@ func is_player_possible(lastTwentyCreatures, _cardData : CardData, dump: bool) -
 	if tchotchkeCount > 1:
 		if dump:
 			print("Rejecting ", _cardData.cardName, " because we already have tchotchke")
+		return false
+	return true
+
+func is_possible_dps(lastTwentyCreatures, cardData : CardData, dump: bool) -> bool:
+	if bulletsPerSecond > 5.0:
+		if dump:
+			print("Rejecting ", cardData.cardName, " because of too many bullets per minute (", 60.0 * bulletsPerSecond, ")")
 		return false
 	
 	var earliest = 0
@@ -82,10 +107,6 @@ func is_player_possible(lastTwentyCreatures, _cardData : CardData, dump: bool) -
 		if playerCanDamageAllMobs:
 			if timeNeededToKillWithPerfectShots * 1.166 < timeSpanOfLastTwentyBeasts:
 				if dump:
-					print(_cardData.cardName, " is ", round(100.0 * timeSpanOfLastTwentyBeasts / timeNeededToKillWithPerfectShots) / 100.0, " times more efficient than current monsters")
-				return false;
-
-	# If it passes all our checks, it's a fine player state
-	if dump:
-		print("Accepting ", _cardData.cardName)
+					print(cardData.cardName, " is ", round(100.0 * timeSpanOfLastTwentyBeasts / timeNeededToKillWithPerfectShots) / 100.0, " times more efficient than current monsters")
+				return false
 	return true

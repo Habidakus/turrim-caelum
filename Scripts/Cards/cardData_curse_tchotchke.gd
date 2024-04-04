@@ -1,9 +1,7 @@
 extends CardData
 
-func is_curse() -> bool:
-	# Although slotted with the curses, this curse is a GNDN curse;
-	# so don't give it the red background, and test to see if it's player valid
-	return false;
+func does_change_player_charges() -> bool:
+	return true
 
 func initialize_for_purchase(worth : PlayerWorth):
 	worth.tchotchkeCount += 1

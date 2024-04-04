@@ -2,6 +2,9 @@ extends CardData
 
 var increaseToBulletDamage : float
 
+func does_change_dps() -> bool:
+	return true
+
 func initialize_for_purchase(worth : PlayerWorth):
 	increaseToBulletDamage = get_damage_we_will_add(worth)
 	worth.bulletDamage += increaseToBulletDamage

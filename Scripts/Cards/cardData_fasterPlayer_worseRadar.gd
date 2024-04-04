@@ -3,6 +3,11 @@ extends CardData
 var increaseToPlayerSpeed : float
 var decreaseToDetectionRange : float
 
+func does_change_player_or_bullet_speed() -> bool:
+	return true
+func does_change_range() -> bool:
+	return true
+
 func initialize_for_purchase(worth : PlayerWorth):
 	increaseToPlayerSpeed = get_increase_to_player_speed(worth)
 	worth.shipSpeed += increaseToPlayerSpeed

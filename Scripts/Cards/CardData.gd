@@ -26,6 +26,15 @@ enum BoonType {
 func is_curse() -> bool:
 	return false
 
+func does_change_player_or_bullet_speed() -> bool:
+	return false
+func does_change_range() -> bool:
+	return false
+func does_change_player_charges() -> bool:
+	return false
+func does_change_dps() -> bool:
+	return false
+	
 func initialize_for_purchase(_worth : PlayerWorth):
 	print_debug("CARD ", cardName, " failed to implement initialize_for_purchase")
 

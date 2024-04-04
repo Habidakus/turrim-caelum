@@ -170,12 +170,8 @@ func add_cards(cardStack, cardsNeeded : int, dump : bool):
 	for card in cardStack:
 		var worth : PlayerWorth = player.create_player_worth()
 		card.initialize_for_purchase(worth)
-		if card.is_curse():
-			if worth.is_world_possible(card, dump):
-				chosenCards.append(card)
-		else:
-			if worth.is_player_possible(lastTwentyCreatures, card, dump):
-				chosenCards.append(card)
+		if worth.is_possible(lastTwentyCreatures, card, dump):
+			chosenCards.append(card)
 		if chosenCards.size() >= cardsNeeded:
 			return chosenCards
 	return chosenCards

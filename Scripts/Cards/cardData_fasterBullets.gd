@@ -2,6 +2,9 @@ extends CardData
 
 var increaseToBulletSpeed : float
 
+func does_change_player_or_bullet_speed() -> bool:
+	return true
+
 func initialize_for_purchase(worth : PlayerWorth):
 	increaseToBulletSpeed = get_bullet_speed_we_will_add(worth)
 	worth.bulletSpeed += increaseToBulletSpeed

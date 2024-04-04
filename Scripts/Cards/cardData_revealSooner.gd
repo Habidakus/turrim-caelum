@@ -2,6 +2,9 @@ extends CardData
 
 var increaseToDetectionRange : float
 
+func does_change_range() -> bool:
+	return true
+
 func initialize_for_purchase(worth : PlayerWorth):
 	increaseToDetectionRange = get_increase_to_detection_range(worth)
 	worth.showPathDist -= increaseToDetectionRange # Increase is actually a subtraction
