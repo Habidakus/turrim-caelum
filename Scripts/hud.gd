@@ -263,6 +263,9 @@ func _on_menu_quit_gui_input(event):
 	if is_event_joypad_select_button(event):
 		get_tree().quit()
 
+func _on_text_meta_clicked(meta):
+	OS.shell_open(str(meta))
+	
 # ----------------- STATE FUNCTIONS -----------------
 
 func show_title():

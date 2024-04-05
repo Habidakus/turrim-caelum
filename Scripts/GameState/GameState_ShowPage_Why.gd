@@ -15,5 +15,5 @@ func update(_delta):
 		if Input.is_action_just_released("pause"):
 			mustReleaseFirst = false
 		return
-	if Input.is_anything_pressed():
+	if Input.is_action_just_pressed("pause"):
 		%GameStateMachine.switch_state("MainMenu")

@@ -154,8 +154,8 @@ bbcode_enabled = true
 text = "[b]Designers who actually know something about design and were very gratious and gave me feedback[/b]:
 [indent]Jesse Decker[/indent]
 [indent]Jeff Hamilton[/indent]
-[indent]Andy Kirton[/indent]
-[indent]John Hegner[/indent]"
+[indent]John Hegner[/indent]
+[indent]Andy Kirton[/indent]"
 fit_content = true
 
 [node name="Art" type="RichTextLabel" parent="Credits"]
@@ -283,7 +283,7 @@ theme_override_font_sizes/bold_font_size = 22
 bbcode_enabled = true
 text = "Either use a controller or the WASD keys to move your ship around.
 
-The enemies will eventually get to the castle in the lower right corner, but they will always take some zigs and zags before getting there. When the enemies are on final approach to the castle, they will spin faster and leave a trail.
+The enemies will eventually get to the castle in the lower right corner, but they will always take some zigs and zags before getting there. When the enemies are on final approach to the castle, they will spin faster and leave a trail. There is one map level that has no castle (\"Open Space\") and on that level the enemies will eventually try to reach your ship.
 
 Game ends when:
 [ul]an enemy collides with you[/ul]
@@ -292,11 +292,12 @@ Game ends when:
 
 Your ship is always going to be firing towards the closest enemy to you, but your bullets can only travel so far.
 
-Periodically you will earn upgrades (message will appear in the upper right hand corner). When you have breathing room hit ENTER (or the A button on a controller) and it will allow you to pick an upgrade.
+Periodically you will earn upgrades (message will appear in the upper right hand corner). When you have breathing room hit [code]ENTER[/code] (or the [code]A button[/code] on a controller) and it will allow you to pick an upgrade.
 
 Enemies can sometimes come with various mutations:
 [ul] extra large ones take more than one hit to kill[/ul]
 [ul] faster enemy[/ul]
+[ul] shielded enemies[/ul]
 [ul] armored enemies that shrug off damage[/ul]
 [ul] blinky ones that will split into multiple children when they die[/ul]
 Sometimes enemies can come with more than one mutation (or the same mutation several times)"
@@ -392,11 +393,13 @@ bbcode_enabled = true
 text = "This game was created, mostly, so that I could learn to use Godot.
 
 There isn't any great design effort here, and certainly no laudible art in this game. 
-Heck, even the coding isn't that interesting (although I do plan on making it available on GitHub).
+Heck, even the coding isn't that interesting (although available under the MIT license at [url]https://github.com/Habidakus/turrim-caelum[/url]).
 
 It's just here so that I can, soup to nuts, make a complete game in Godot. I've imposed a limit of 120 hours (three work weeks) of time that I'll invest in it.
 
-If you found any enjoyment in it, that's above and beyond any expectations on my part."
+If you found any enjoyment in it, that's above and beyond any expectations on my part.
+
+[font_size=12][center](press ENTER or Controller A to continue)[/center][/font_size]"
 fit_content = true
 
 [node name="Bottom_Space" type="RichTextLabel" parent="ShowPage_Why"]
@@ -515,3 +518,4 @@ fit_content = true
 [connection signal="pressed" from="Menu/Menu_HighScore" to="." method="_on_menu_highscore_pressed"]
 [connection signal="gui_input" from="Menu/Menu_Quit" to="." method="_on_menu_quit_gui_input"]
 [connection signal="pressed" from="Menu/Menu_Quit" to="." method="_on_menu_quit_pressed"]
+[connection signal="meta_clicked" from="ShowPage_Why/Text" to="." method="_on_text_meta_clicked"]
