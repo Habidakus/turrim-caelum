@@ -154,7 +154,8 @@ bbcode_enabled = true
 text = "[b]Designers who actually know something about design and were very gratious and gave me feedback[/b]:
 [indent]Jesse Decker[/indent]
 [indent]Jeff Hamilton[/indent]
-[indent]Andy Kirton[/indent]"
+[indent]Andy Kirton[/indent]
+[indent]John Hegner[/indent]"
 fit_content = true
 
 [node name="Art" type="RichTextLabel" parent="Credits"]
@@ -199,7 +200,7 @@ grow_vertical = 2
 layout_mode = 2
 size_flags_vertical = 4
 focus_next = NodePath("../Menu_HowToPlay")
-focus_previous = NodePath("../Menu_Credits")
+focus_previous = NodePath("../Menu_Quit")
 theme_override_font_sizes/font_size = 42
 toggle_mode = true
 button_group = ExtResource("3_xur4o")
@@ -218,7 +219,7 @@ text = "How to Play"
 [node name="Menu_Credits" type="Button" parent="Menu"]
 layout_mode = 2
 size_flags_vertical = 4
-focus_next = NodePath("../Menu_PlayGame")
+focus_next = NodePath("../Menu_Why")
 focus_previous = NodePath("../Menu_HowToPlay")
 theme_override_font_sizes/font_size = 42
 toggle_mode = true
@@ -228,8 +229,8 @@ text = "Credits"
 [node name="Menu_Why" type="Button" parent="Menu"]
 layout_mode = 2
 size_flags_vertical = 4
-focus_next = NodePath("../Menu_PlayGame")
-focus_previous = NodePath("../Menu_HowToPlay")
+focus_next = NodePath("../Menu_HighScore")
+focus_previous = NodePath("../Menu_Credits")
 theme_override_font_sizes/font_size = 42
 toggle_mode = true
 button_group = ExtResource("3_xur4o")
@@ -238,8 +239,8 @@ text = "Why"
 [node name="Menu_HighScore" type="Button" parent="Menu"]
 layout_mode = 2
 size_flags_vertical = 4
-focus_next = NodePath("../Menu_PlayGame")
-focus_previous = NodePath("../Menu_HowToPlay")
+focus_next = NodePath("../Menu_Quit")
+focus_previous = NodePath("../Menu_Why")
 theme_override_font_sizes/font_size = 42
 toggle_mode = true
 button_group = ExtResource("3_xur4o")
@@ -249,7 +250,7 @@ text = "High Scores"
 layout_mode = 2
 size_flags_vertical = 4
 focus_next = NodePath("../Menu_PlayGame")
-focus_previous = NodePath("../Menu_HowToPlay")
+focus_previous = NodePath("../Menu_HighScore")
 theme_override_font_sizes/font_size = 42
 toggle_mode = true
 button_group = ExtResource("3_xur4o")
@@ -502,9 +503,15 @@ fit_content = true
 [connection signal="gui_input" from="CardB" to="." method="_on_card_a_gui_input"]
 [connection signal="mouse_entered" from="CardB" to="." method="_on_card_a_mouse_entered"]
 [connection signal="mouse_exited" from="CardB" to="." method="_on_card_a_mouse_exited"]
+[connection signal="gui_input" from="Menu/Menu_PlayGame" to="." method="_on_menu_play_game_gui_input"]
 [connection signal="pressed" from="Menu/Menu_PlayGame" to="." method="_on_menu_play_game_pressed"]
+[connection signal="gui_input" from="Menu/Menu_HowToPlay" to="." method="_on_menu_how_to_play_gui_input"]
 [connection signal="pressed" from="Menu/Menu_HowToPlay" to="." method="_on_menu_how_to_play_pressed"]
+[connection signal="gui_input" from="Menu/Menu_Credits" to="." method="_on_menu_credits_gui_input"]
 [connection signal="pressed" from="Menu/Menu_Credits" to="." method="_on_menu_credits_pressed"]
+[connection signal="gui_input" from="Menu/Menu_Why" to="." method="_on_menu_why_gui_input"]
 [connection signal="pressed" from="Menu/Menu_Why" to="." method="_on_menu_why_pressed"]
+[connection signal="gui_input" from="Menu/Menu_HighScore" to="." method="_on_menu_highscore_gui_input"]
 [connection signal="pressed" from="Menu/Menu_HighScore" to="." method="_on_menu_highscore_pressed"]
+[connection signal="gui_input" from="Menu/Menu_Quit" to="." method="_on_menu_quit_gui_input"]
 [connection signal="pressed" from="Menu/Menu_Quit" to="." method="_on_menu_quit_pressed"]

@@ -149,8 +149,14 @@ func activate_menu():
 		_on_menu_play_game_pressed()
 	elif $Menu/Menu_HowToGame.has_focus():
 		_on_menu_how_to_play_pressed()
-	else:
+	elif $Menu/Menu_Credits.has_focus():
 		_on_menu_credits_pressed()
+	elif $Menu/Menu_Why.has_focus():
+		_on_menu_why_pressed()
+	elif $Menu/Menu_HighScore.has_focus():
+		_on_menu_highscore_pressed()
+	else:
+		_on_menu_quit_pressed()
 		
 func ensure_menu_has_focus():
 	if $Menu/Menu_PlayGame.has_focus():
@@ -158,6 +164,12 @@ func ensure_menu_has_focus():
 	elif $Menu/Menu_HowToPlay.has_focus():
 		pass
 	elif $Menu/Menu_Credits.has_focus():
+		pass
+	elif $Menu/Menu_Why.has_focus():
+		pass
+	elif $Menu/Menu_HighScore.has_focus():
+		pass
+	elif $Menu/Menu_Quit.has_focus():
 		pass
 	else:
 		$Menu/Menu_PlayGame.grab_focus()
@@ -202,23 +214,54 @@ func populate_high_score(highScores : Array):
 		var hname : String = entry[2]
 		populate_high_score_entry(str(hscore), hmap, hname)
 
+func is_event_joypad_select_button(event):
+	if event is InputEventJoypadButton:
+		var joypadEvent : InputEventJoypadButton = event
+		return joypadEvent.is_action_pressed("pause")
+	else:
+		return false
+
 func _on_menu_play_game_pressed():
 	%GameStateMachine.switch_state("Playing_MapSelection")
+
+func _on_menu_play_game_gui_input(event):
+	if is_event_joypad_select_button(event):
+		%GameStateMachine.switch_state("Playing_MapSelection")
 
 func _on_menu_how_to_play_pressed():
 	%GameStateMachine.switch_state("ShowPage_HowToPlay")
 
+func _on_menu_how_to_play_gui_input(event):
+	if is_event_joypad_select_button(event):
+		%GameStateMachine.switch_state("ShowPage_HowToPlay")
+
 func _on_menu_credits_pressed():
 	%GameStateMachine.switch_state("ShowPage_Credits")
 
+func _on_menu_credits_gui_input(event):
+	if is_event_joypad_select_button(event):
+		%GameStateMachine.switch_state("ShowPage_Credits")
+
 func _on_menu_why_pressed():
 	%GameStateMachine.switch_state("ShowPage_Why")
+
+func _on_menu_why_gui_input(event):
+	if is_event_joypad_select_button(event):
+		%GameStateMachine.switch_state("ShowPage_Why")
 	
 func _on_menu_highscore_pressed():
 	%GameStateMachine.switch_state("ShowPage_HighScore")
 
+func _on_menu_highscore_gui_input(event):
+	if is_event_joypad_select_button(event):
+		%GameStateMachine.switch_state("ShowPage_HighScore")
+
 func _on_menu_quit_pressed():
 	get_tree().quit()
+	
+func _on_menu_quit_gui_input(event):
+	if is_event_joypad_select_button(event):
+		get_tree().quit()
 
 # ----------------- STATE FUNCTIONS -----------------
 
@@ -308,3 +351,14 @@ func show_map_selection(maps):
 
 func hide_map_selection():
 	$MapSelection.hide()
+
+func ensure_map_selection_has_focus():
+	for button in $MapSelection/MapButtons.get_children():
+		if button.has_focus():
+			return
+	$MapSelection/MapButtons.get_child(0).grab_focus()
+
+func activate_map_selection_with_focus():
+	for button in $MapSelection/MapButtons.get_children():
+		if button.has_focus():
+			button._on_pressed()
