@@ -48,6 +48,7 @@ var player : Player = null
 var map : Map = null
 var shotsTaken : int = 0
 var shotAccuracy : int = 0
+var gameTime : float = 0
 
 var freeXp: int = 1
 var freeXpCounter : int = 0
@@ -116,6 +117,16 @@ func _ready():
 		if lateGameCards[card] == null:
 			print_debug("BAD LATE GAME CARD (#", card ,")")
 
+func _process(delta):
+	gameTime += delta
+
+func set_pause_state(isPaused : bool):
+	if isPaused:
+		$MobTimer.paused = true
+	else:
+		$MobTimer.paused = false
+		get_tree().paused = false
+
 func set_map(_map : Map):
 	map = _map
 	%GameStateMachine.switch_state("Playing_Action")
@@ -126,6 +137,7 @@ func set_map(_map : Map):
 
 func start_game():
 	rng.seed = Time.get_ticks_msec()
+	gameTime = 0
 	money = 0
 	spendable_money = 0
 	score = 0
@@ -215,7 +227,7 @@ func _on_mob_timer_timeout():
 	mobId += 1
 	
 	var mobChildCount = 0 if mob.spawn_children == 0 else mob.spawn_children + 2
-	var lastCreatureSummed = [Time.get_unix_time_from_system(), mob.hp, mob.armor, mob.shields.size(), mobChildCount]
+	var lastCreatureSummed = [gameTime, mob.hp, mob.armor, mob.shields.size(), mobChildCount]
 	if lastTwentyCreatures.size() >= 20:
 		lastTwentyCreatures[ltcWriteIndex] = lastCreatureSummed
 		ltcWriteIndex = (ltcWriteIndex + 1) % lastTwentyCreatures.size()
@@ -230,9 +242,6 @@ func spawn_mob(id, dist, path, target : Node2D, bonusScore : int) -> Mob:
 	var mob : Mob = mob_scene.instantiate()
 	mob.position = path.sample_baked(dist)
 	var speed_scale = rng.randf_range(0.8, 1.2)
-	#var final_target : Node2D = player
-	#if map.has_castle():
-	#	final_target = map.get_castle() 
 	mob.set_target(target, speed_scale, id, path, dist, map, player, bonusScore, rng)
 	call_deferred("add_child", mob)
 	spawns += 1

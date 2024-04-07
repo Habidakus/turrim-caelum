@@ -2,11 +2,12 @@ extends GameState
 
 var main
 func enter_state():
-	get_tree().paused = false
 	main = %GameStateMachine.get_parent()
+	main.set_pause_state(false)
 	%HUD.show_game_action()
 
 func exit_state():
+	main.set_pause_state(true)
 	%HUD.hide_game_action()
 
 func update(_delta):
