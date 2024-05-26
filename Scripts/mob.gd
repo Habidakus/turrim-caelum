@@ -23,9 +23,9 @@ var spawn_children : int = 0
 var path : Curve2D = null
 var pathLength;
 var pathParticles : Array = []
-var alternate1EnemyFrames = load("res://Graphics/EnemyBSpriteFrames.tres")
-var alternate2EnemyFrames = load("res://Graphics/EnemyCSpriteFrames.tres")
-var shieldScene : PackedScene = load("res://Scenes/Shield.tscn")
+var alternate1EnemyFrames = preload("res://Graphics/EnemyBSpriteFrames.tres")
+var alternate2EnemyFrames = preload("res://Graphics/EnemyCSpriteFrames.tres")
+var shieldScene : PackedScene = preload("res://Scenes/Shield.tscn")
 @export var explosion_scene : PackedScene
 @export var path_particle_scene : PackedScene
 @onready var animationSprite = $AnimatedSprite2D
