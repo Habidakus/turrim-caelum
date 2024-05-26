@@ -31,8 +31,6 @@ extends Node
 #   - movement-based power attacks (move in circle, move in star pattern, etc...)
 # - Add more curses
 #   - castle wandering for castle levels
-# Bugs to fix:
-# - have the bullets render under the player's ship
 
 var screen_size;
 var rng = RandomNumberGenerator.new()

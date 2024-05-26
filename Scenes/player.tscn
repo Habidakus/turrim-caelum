@@ -9,6 +9,7 @@ radius = 12.0
 height = 28.0
 
 [node name="Player" type="Area2D"]
+z_index = 1
 script = ExtResource("1_f2hwf")
 bullet_scene = ExtResource("2_fktcj")
 explosion_scene = ExtResource("3_hk7yx")
