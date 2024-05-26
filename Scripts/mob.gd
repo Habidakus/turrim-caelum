@@ -54,7 +54,7 @@ func set_target(target : Node2D, rotSpd : float, id : int, p: Curve2D, dist, pat
 	while (id != 0) && (id % 17) == 0:
 		id = int(id / 17)
 		size *= 0.666
-		travelSpeed *= 1.1
+		travelSpeed *= 1.08
 		score += 1
 		hp -= 5
 		armor += 5
@@ -83,7 +83,7 @@ func set_target(target : Node2D, rotSpd : float, id : int, p: Curve2D, dist, pat
 	# FIVE - speedy
 	while (id != 0) && (id % 5) == 0:
 		id = int(id / 5)
-		travelSpeed *= 1.8
+		travelSpeed *= 1.666
 		rotateSpeed *= 1.5
 	# THREE - children
 	while (id != 0) && (id % 3) == 0:
@@ -227,7 +227,9 @@ func set_regression_vector(regressPoint: Vector2, regressTime: float):
 	childOffset_regressDist = -1
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(preDilationDelta):
+	var delta : float = preDilationDelta * get_parent().timeDilation
+	
 	if childOffset_regressTime > 0 && childOffset_regressTime < delta:
 		# The impact has finally warn off, set the child to their regress point
 		if childOffset_regressDist >= 0.0:

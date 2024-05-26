@@ -11,12 +11,14 @@ var rocks : Array = []
 func get_map_name() -> String:
 	return "Rocks with Castle"
 
-func start_game(rng : RandomNumberGenerator) -> Vector2:
+func start_game(rng : RandomNumberGenerator, mainLoop) -> Vector2:
 	
 	# Create the castle
 	castle = castle_scene.instantiate()
 	add_child(castle)
 	castle.position = owner.screen_size - Vector2(20,20)
+	
+	mainLoop.timeDilation = mainLoop.timeDilation * 2.0 / 3.0
 	
 	pathArray = []
 	pathArray.append(generate_path(Vector2(0,0), castle.position, 0, rng))

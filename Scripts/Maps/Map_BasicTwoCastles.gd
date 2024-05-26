@@ -11,7 +11,7 @@ var currentPathIndex = 0
 func get_map_name() -> String:
 	return "Two Castles"
 
-func start_game(rng : RandomNumberGenerator) -> Vector2:
+func start_game(rng : RandomNumberGenerator, _mainLoop) -> Vector2:
 	
 	# Create the castle2
 	castle0 = castle_scene.instantiate()

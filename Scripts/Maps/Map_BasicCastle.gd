@@ -9,7 +9,7 @@ var currentPathIndex = 0
 func get_map_name() -> String:
 	return "Castle"
 
-func start_game(rng : RandomNumberGenerator) -> Vector2:
+func start_game(rng : RandomNumberGenerator, _mainLoop) -> Vector2:
 	
 	# Create the castle
 	castle = castle_scene.instantiate()

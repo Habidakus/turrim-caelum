@@ -26,11 +26,12 @@ func init(start_pos : Vector2, _lifespan: float, _speed : float, target, _damage
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	position += target_vec * delta * speed
-	lifespan -= delta
+	var timeDilation : float = get_parent().timeDilation
+	position += target_vec * delta * speed * timeDilation
+	lifespan -= delta * timeDilation
 	if lifespan <= 0:
 		var tween = get_tree().create_tween()
-		tween.tween_property(self, "modulate", Color.RED, 0.2)
+		tween.tween_property(self, "modulate", Color.RED, 0.2 / timeDilation)
 		tween.tween_callback(self.queue_free)
 
 func _notification(what):

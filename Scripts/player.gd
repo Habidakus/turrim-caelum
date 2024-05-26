@@ -49,7 +49,9 @@ func activate_smart_weapon_regression(regressDist: float):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	next_shot -= delta;
+	var timeDilation : float = get_parent().timeDilation
+	next_shot -= delta * timeDilation
+	
 	var velocity = Vector2.ZERO # The player's movement vector.
 	if Input.is_action_pressed("move_right"):
 		velocity.x += 1
@@ -63,7 +65,7 @@ func _process(delta):
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed
 	
-	position += velocity * delta
+	position += velocity * delta * timeDilation
 	position = position.clamp(Vector2(20,20), screen_size - Vector2(20,20))
 	
 	var maxDist = -1

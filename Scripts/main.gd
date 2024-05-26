@@ -47,6 +47,7 @@ var map : Map = null
 var shotsTaken : int = 0
 var shotAccuracy : int = 0
 var gameTime : float = 0
+var timeDilation : float = 2.0
 
 var freeXp: int = 1
 var freeXpCounter : int = 0
@@ -116,7 +117,7 @@ func _ready():
 			print_debug("BAD LATE GAME CARD (#", card ,")")
 
 func _process(delta):
-	gameTime += delta
+	gameTime += delta * timeDilation
 
 func set_pause_state(isPaused : bool):
 	if isPaused:
@@ -149,14 +150,15 @@ func start_game():
 	freeXpCounter = 0
 	shotsTaken = 0
 	shotAccuracy = 0
+	timeDilation = 2.0
 	
 	# Create the player
 	player = player_scene.instantiate()
 	add_child(player)
 	screen_size = player.get_viewport_rect().size
-	player.position = map.start_game(rng)
+	player.position = map.start_game(rng, self)
 	
-	$MobTimer.wait_time = secondsPerMonster
+	$MobTimer.wait_time = secondsPerMonster / timeDilation
 	$MobTimer.start()
 	$HUD.set_score(0)
 
@@ -233,7 +235,7 @@ func _on_mob_timer_timeout():
 		lastTwentyCreatures.append(lastCreatureSummed)
 		ltcWriteIndex = 0
 	
-	$MobTimer.wait_time = lerp(secondsPerMonster, secondsPerMonster / 5.0, (monster_spawnrate_increase - 50) / 850.0)
+	$MobTimer.wait_time = lerp(secondsPerMonster, secondsPerMonster / 5.0, (monster_spawnrate_increase - 50) / 850.0) / timeDilation
 	monster_spawnrate_increase += 1
 
 func spawn_mob(id, dist, path, target : Node2D, bonusScore : int) -> Mob:

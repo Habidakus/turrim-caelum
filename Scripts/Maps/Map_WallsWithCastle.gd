@@ -41,13 +41,15 @@ func add_rock(rng : RandomNumberGenerator, edge : Vector2, fraction : float):
 	owner.add_child(rock)
 	rock.add_to_group("rock")
 
-func start_game(rng : RandomNumberGenerator) -> Vector2:
+func start_game(rng : RandomNumberGenerator, mainLoop) -> Vector2:
 	
 	# Create the castle
 	castle = castle_scene.instantiate()
 	add_child(castle)
 	castle.position = owner.screen_size - Vector2(20,20)
 	var centerOfScreen : Vector2 = owner.screen_size / 2
+	
+	mainLoop.timeDilation = mainLoop.timeDilation * 2.0 / 3.0
 	
 	edgeXLow = Vector2(10, centerOfScreen.y)
 	edgeXHigh = Vector2(owner.screen_size.x - 10, centerOfScreen.y)

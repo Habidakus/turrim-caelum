@@ -6,9 +6,10 @@ var currentPathIndex = 0
 func get_map_name() -> String:
 	return "Open Space"
 
-func start_game(rng : RandomNumberGenerator) -> Vector2:
+func start_game(rng : RandomNumberGenerator, mainLoop) -> Vector2:
 	pathArray = []
 	pathArray.append(generate_path(get_screen_edge(rng), get_screen_edge(rng), 0, rng))
+	mainLoop.timeDilation = mainLoop.timeDilation * 3.0 / 2.0
 	return owner.screen_size / 2.0
 
 func game_over():
