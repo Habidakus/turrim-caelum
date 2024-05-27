@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cpartojokq71v"]
+
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_timeDilation.gd" id="1_opjsf"]
+
+[resource]
+script = ExtResource("1_opjsf")
+cardName = "Ace Reflexes"
+description = "Like the rest of the world is moving in slow motion:
+"
+boonMultiple = 1.25

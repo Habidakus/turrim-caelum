@@ -21,7 +21,9 @@ func does_reference_map() -> bool:
 	return false
 func does_requires_castle() -> bool:
 	return false
-	
+func does_change_time_dilation() -> bool:
+	return false
+
 func initialize_for_purchase(_worth : PlayerWorth):
 	print_debug("CARD ", cardName, " failed to implement initialize_for_purchase")
 
@@ -72,3 +74,7 @@ func get_increase_to_detection_range(worth: PlayerWorth) -> float:
 func get_decrease_to_detection_range(worth: PlayerWorth) -> float:
 	var newPathDist = worth.showPathDist * sqrt(boonMultiple)
 	return newPathDist - worth.showPathDist 
+
+func get_new_time_dilation(worth: PlayerWorth) -> float:
+	var new_time_dilation = worth.timeDilation / boonMultiple
+	return new_time_dilation

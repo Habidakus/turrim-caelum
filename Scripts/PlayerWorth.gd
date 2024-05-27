@@ -11,6 +11,7 @@ var autospendCount : int
 var tchotchkeCount : int
 var showPathDist : float
 var smartWeaponCount : int
+var timeDilation : float
 
 func is_possible(lastTwentyCreatures, cardData: CardData, map: Map, dump : bool) -> bool:
 	if cardData.does_change_player_or_bullet_speed():
@@ -28,10 +29,20 @@ func is_possible(lastTwentyCreatures, cardData: CardData, map: Map, dump : bool)
 	if cardData.does_change_dps():
 		if !is_possible_dps(lastTwentyCreatures, cardData, dump):
 			return false
+	if cardData.does_change_time_dilation():
+		if !is_possible_time_dilation(cardData, dump):
+			return false;
 
 	if dump:
 		print("Accepting ", cardData.cardName, " as a world card");
 
+	return true
+
+func is_possible_time_dilation(cardData : CardData, dump: bool) -> bool:
+	if timeDilation < 0.75:
+		if dump:
+			print("Rejecting ", cardData.cardName, " because time dilation would be too low")
+		return false
 	return true
 
 func is_possible_map(cardData : CardData, map : Map, dump: bool) -> bool:

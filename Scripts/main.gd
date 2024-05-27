@@ -74,6 +74,7 @@ var earlyGameCards = [
 	load("res://Data/Cards/smartWeapon_player.tres"),
 	load("res://Data/Cards/smartWeapon_regression.tres"),
 	load("res://Data/Cards/smartWeapon_castle.tres"),
+	load("res://Data/Cards/timeDilation.tres"),
 ]
 
 var midGameCards = [
@@ -82,6 +83,7 @@ var midGameCards = [
 	load("res://Data/Cards/fasterBullets.tres"),
 	load("res://Data/Cards/fasterFireRate.tres"),
 	load("res://Data/Cards/lethalBullets.tres"),
+	load("res://Data/Cards/timeDilation_playerSpeed.tres"),
 ]
 
 var lateGameCards = [

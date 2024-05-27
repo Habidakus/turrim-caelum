@@ -36,6 +36,7 @@ func create_player_worth() -> PlayerWorth:
 	worth.tchotchkeCount = 1 if tchotchke else 0
 	worth.showPathDist = showPathDist
 	worth.smartWeaponCount = 0 if smartWeaponUnlock < get_parent().mobId else 1
+	worth.timeDilation = get_parent().timeDilation
 	return worth
 
 func activate_smart_weapon(castleBased : bool):
