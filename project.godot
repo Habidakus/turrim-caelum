@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Turrim Caelum"
 config/description="Simple bullet heaven game"
-config/version="0.2a"
+config/version="0.3"
 run/main_scene="res://Scenes/main.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://Graphics/Enemy02.png"
