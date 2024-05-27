@@ -1,10 +1,10 @@
 [gd_resource type="Resource" load_steps=2 format=3 uid="uid://c5kx10317p4j2"]
 
-[ext_resource type="Script" path="res://Scripts/Cards/cardData_timeDilation_playerSpeed.gd" id="1_e8qwe"]
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_timeDilation.gd" id="1_7kkml"]
 
 [resource]
-script = ExtResource("1_e8qwe")
+script = ExtResource("1_7kkml")
 cardName = "Time Dilation Fluxer"
 description = "Overclock the inside of the starship, at the cost of engine power:
 "
-boonMultiple = 1.5
+boonMultiple = 1.2
