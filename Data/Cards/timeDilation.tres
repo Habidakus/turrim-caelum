@@ -4,7 +4,6 @@
 
 [resource]
 script = ExtResource("1_7kkml")
-cardName = "Time Dilation Fluxer"
-description = "Overclock the inside of the starship, at the cost of engine power:
-"
+cardName = "Ace Reflexes"
+description = "Like the rest of the world is moving in slow motion:"
 boonMultiple = 1.2
