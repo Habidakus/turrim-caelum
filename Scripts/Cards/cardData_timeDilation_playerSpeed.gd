@@ -9,7 +9,7 @@ func does_change_player_or_bullet_speed() -> bool:
 	return true
 
 func initialize_for_purchase(worth : PlayerWorth):
-	newTimeDilation = get_new_time_dilation(worth)
+	newTimeDilation = get_better_time_dilation(worth)
 	worth.timeDilation = newTimeDilation
 	decreaseToPlayerSpeed = get_decrease_to_player_speed(worth)
 	worth.shipSpeed -= decreaseToPlayerSpeed

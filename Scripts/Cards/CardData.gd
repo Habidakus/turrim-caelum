@@ -75,6 +75,9 @@ func get_decrease_to_detection_range(worth: PlayerWorth) -> float:
 	var newPathDist = worth.showPathDist * sqrt(boonMultiple)
 	return newPathDist - worth.showPathDist 
 
-func get_new_time_dilation(worth: PlayerWorth) -> float:
+func get_better_time_dilation(worth: PlayerWorth) -> float:
 	var new_time_dilation = worth.timeDilation / boonMultiple
+	return new_time_dilation
+func get_worse_time_dilation(worth: PlayerWorth) -> float:
+	var new_time_dilation = worth.timeDilation * sqrt(boonMultiple)
 	return new_time_dilation

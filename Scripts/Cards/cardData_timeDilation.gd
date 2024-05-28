@@ -6,7 +6,7 @@ func does_change_time_dilation() -> bool:
 	return true
 
 func initialize_for_purchase(worth : PlayerWorth):
-	newTimeDilation = get_new_time_dilation(worth)
+	newTimeDilation = get_better_time_dilation(worth)
 	worth.timeDilation = newTimeDilation
 	
 func get_description(worth : PlayerWorth) -> String:

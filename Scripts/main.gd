@@ -69,6 +69,7 @@ var earlyGameCards = [
 	load("res://Data/Cards/revealFinalApproachSooner_a1.tres"),
 	load("res://Data/Cards/fasterBullets_lessDamage.tres"),
 	load("res://Data/Cards/lethalBullets_lessRange.tres"),
+	load("res://Data/Cards/fasterFireRate_timeDilation.tres"),
 	load("res://Data/Cards/fasterFireRate_worseDamage.tres"),
 	load("res://Data/Cards/lethalBullets_slowerPlayer.tres"),
 	load("res://Data/Cards/smartWeapon_player.tres"),

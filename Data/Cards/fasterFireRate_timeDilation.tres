@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dififj5fc3gqb"]
+
+[ext_resource type="Script" path="res://Scripts/Cards/cardData_fasterRateOfFire_timeDilation.gd" id="1_wkb7r"]
+
+[resource]
+script = ExtResource("1_wkb7r")
+cardName = "Overclocked Guns"
+description = "Risky overclocking of barrel cycle rate that might be distracting:
+"
+boonMultiple = 1.4
