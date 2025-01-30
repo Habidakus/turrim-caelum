@@ -26,4 +26,3 @@ func mouse_hover(is_hovering : bool):
 func apply():
 	cardData.apply_card(player)
 	player.get_parent().player_has_spent()
-
