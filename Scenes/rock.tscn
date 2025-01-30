@@ -11,12 +11,22 @@ collision_mask = 7
 script = ExtResource("1_t8wdw")
 metadata/_edit_group_ = true
 
-[node name="Polygon2D" type="Polygon2D" parent="."]
+[node name="VisualShape1" type="Polygon2D" parent="."]
+visible = false
 color = Color(0.470588, 0.34902, 0.156863, 1)
 polygon = PackedVector2Array(11, 13, 5, 15, -11, 13, -15, -9, -6, -10, 4, -15, 14, -11, 15, -3, 10, 0, 11, 5, 15, 8)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="VisualShape2" type="Polygon2D" parent="."]
 visible = false
+color = Color(0.470588, 0.34902, 0.156863, 1)
+polygon = PackedVector2Array(2, 10, -6, 14, -15, 6, -14, -7, -9, -13, -1, -10, 6, -14, 15, -3, 10, 0, 14, 9, 7, 15)
+
+[node name="VisualShape3" type="Polygon2D" parent="."]
+visible = false
+color = Color(0.470588, 0.34902, 0.156863, 1)
+polygon = PackedVector2Array(5, 16, -6, 16, -16, 3, -13, -8, -6, -14, 0, -8, 9, -12, 12, -9, 16, -1, 11, -2, 10, 3, 16, 5, 9, 10)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 1)
 shape = SubResource("CircleShape2D_qm0tw")
 
